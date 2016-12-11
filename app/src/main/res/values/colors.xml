@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--调用的统一颜色-->
+    <color name="colorPrimary">@color/color_brown</color>
+    <color name="colorPrimaryDark">@color/color_browndark</color>
+    <color name="colorSecondd">@color/color_browblack</color>
+    <color name="gray_background">@color/color_bggrey</color>
+    <color name="colorAccent">#3399e0</color>
+    <color name="colorPrimary_text">#FF9C743C</color>
+
+    <!--主要颜色-->
+    <color name="color_browblack">#3C372F</color>
+    <color name="color_bggrey">#F5F5F5</color>
+    <color name="color_brown">#C1B087</color>
+    <color name="color_browndark">#9C743C</color>
+    <color name="color_transparent">#00000000</color>
+
+    <!--主色调的透明颜色-->
+    <color name="colorPrimary_alpha10">#19C1B087</color>
+    <color name="colorPrimary_alpha40">#66C1B087</color>
+
+    <color name="black_alpha100">#FF000000</color>
+    <color name="black_alpha95">#F3000000</color>
+    <color name="black_alpha90">#E5000000</color>
+    <color name="black_alpha85">#DA000000</color>
+    <color name="black_alpha80">#CC000000</color>
+    <color name="black_alpha75">#C0000000</color>
+    <color name="black_alpha70">#B3000000</color>
+    <color name="black_alpha65">#A6000000</color>
+    <color name="black_alpha60">#99000000</color>
+    <color name="black_alpha55">#8D000000</color>
+    <color name="black_alpha50">#7f000000</color>
+    <color name="black_alpha45">#74000000</color>
+    <color name="black_alpha40">#66000000</color>
+    <color name="black_alpha35">#5A000000</color>
+    <color name="black_alpha30">#4C000000</color>
+    <color name="black_alpha25">#3f000000</color>
+    <color name="black_alpha20">#33000000</color>
+    <color name="black_alpha15">#26000000</color>
+    <color name="black_alpha10">#19000000</color>
+    <color name="black_alpha5">#0C000000</color>
+    <color name="black_alpha0">#00000000</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="white_alpha80">#CCffffff</color>
+    <color name="white_alpha90">#f0ffffff</color>
+    <color name="white_alpha60">#99ffffff</color>
+    <color name="white_alpha50">#7fffffff</color>
+    <color name="white_alpha45">#74ffffff</color>
+    <color name="white_alpha30">#4Cffffff</color>
+    <color name="white_alpha20">#33ffffff</color>
+    <color name="white_alpha15">#26ffffff</color>
+    <color name="white_alpha10">#19FFFFFF</color>
+
+    <!--底部button字体颜色-->
+    <color name="main_bottom_tab_title_default">#bebebe</color>
+    <color name="main_bottom_tab_title_selected">#72674E</color>
+
+    <!--水波纹颜色-->
+    <color name="ripple_color">#0C999999</color>
+
+</resources>
