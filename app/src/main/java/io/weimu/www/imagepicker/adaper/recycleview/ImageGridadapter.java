@@ -32,7 +32,7 @@ public class ImageGridadapter extends BaseRecycerAdapter<String> {
     public ImageGridadapter(Context mContext, int maxImageNumber) {
         super(mContext);
         this.maxImageNumber = maxImageNumber;
-        footView = LayoutInflater.from(mContext).inflate(R.layout.grid_item_footer, null);
+        footView = LayoutInflater.from(mContext).inflate(R.layout.grid_item_image_add, null);
         addFootView(footView);
     }
 
@@ -61,7 +61,7 @@ public class ImageGridadapter extends BaseRecycerAdapter<String> {
 
     @Override
     protected int getItemLayoutRes() {
-        return R.layout.grid_item;
+        return R.layout.grid_item_image;
     }
 
     @Override
