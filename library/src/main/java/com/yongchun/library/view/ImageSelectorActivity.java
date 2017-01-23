@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yongchun.library.Consts;
 import com.yongchun.library.R;
 import com.yongchun.library.adapter.ImageFolderAdapter;
 import com.yongchun.library.adapter.ImageListAdapter;
@@ -260,13 +263,9 @@ public class ImageSelectorActivity extends AppCompatActivity {
      * start to camera、preview、crop
      */
     public void startCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            File cameraFile = FileUtils.createCameraFile(this);
-            cameraPath = cameraFile.getAbsolutePath();
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
-            startActivityForResult(cameraIntent, REQUEST_CAMERA);
-        }
+        File cameraFile = FileUtils.createCameraFile(this);
+        cameraPath = cameraFile.getAbsolutePath();
+        FileUtils.startActionCapture(this,cameraFile,REQUEST_CAMERA);
     }
 
     public void startPreview(List<LocalMedia> previewImages, int position) {
