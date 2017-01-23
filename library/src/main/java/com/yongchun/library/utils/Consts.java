@@ -1,4 +1,4 @@
-package com.yongchun.library;
+package com.yongchun.library.utils;
 
 /**
  * Created by lichaoyang on 2017/1/23.

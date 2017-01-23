@@ -10,8 +10,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 
-import com.yongchun.library.Consts;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -61,6 +59,7 @@ public class FileUtils {
             return;
         }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         intent.putExtra(MediaStore.EXTRA_OUTPUT, getUriForFile(activity, file));
         activity.startActivityForResult(intent, requestCode);
     }
@@ -70,7 +69,7 @@ public class FileUtils {
             throw new NullPointerException();
         }
         Uri uri;
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             uri = FileProvider.getUriForFile(context.getApplicationContext(), Consts.FilePreoviderAuthorities, file);
         } else {
             uri = Uri.fromFile(file);
