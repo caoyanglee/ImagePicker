@@ -1,9 +1,11 @@
 1) 调用ImageSelectorActivity
 
+第一种方法
+
 ```java
 ImageSelectorActivity.start(MainActivity.this, maxSelectNum, mode, isShow,isPreview,isCrop);
 ```
-same this
+第二种方法
 
 ```java
 public static void start(Activity activity, int maxSelectNum, int mode, boolean isShow, boolean enablePreview, boolean enableCrop) {
