@@ -1,4 +1,4 @@
-1) 调用ImageSelectorActivity
+1)调用ImageSelectorActivity
 
 第一种方法
 
