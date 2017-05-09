@@ -2,6 +2,7 @@ package com.yongchun.library.adapter;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -175,9 +176,10 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void selectImage(ViewHolder holder, boolean isChecked) {
         holder.check.setSelected(isChecked);
         if (isChecked) {
-            holder.picture.setColorFilter(context.getResources().getColor(R.color.image_overlay2), PorterDuff.Mode.SRC_ATOP);
+
+            holder.picture.setColorFilter(ContextCompat.getColor(context,R.color.image_overlay2), PorterDuff.Mode.SRC_ATOP);
         } else {
-            holder.picture.setColorFilter(context.getResources().getColor(R.color.image_overlay), PorterDuff.Mode.SRC_ATOP);
+            holder.picture.setColorFilter(ContextCompat.getColor(context,R.color.image_overlay), PorterDuff.Mode.SRC_ATOP);
         }
     }
 

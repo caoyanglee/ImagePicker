@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new ImageGridadapter(this, maxImageNumber);
         gridManager = new GridLayoutManager(this, spanCount);
         recyclerView.setLayoutManager(gridManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, ScreenUtils.dip2px(this, 16), false));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, ScreenUtils.dip2px(this, 8), false));
         //设置Item增加、移除动画
         recyclerView.setItemAnimator(new NoAlphaItemAnimator());
         recyclerView.setAdapter(mAdapter);
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.AddListenter(new ImageGridadapter.AddListenter() {
             @Override
             public void onAddClick(int needNumber) {
-                ImageSelectorActivity.start(MainActivity.this, needNumber, ImageSelectorActivity.MODE_MULTIPLE, true, true, true);
+                ImageSelectorActivity.start(MainActivity.this, needNumber, ImageSelectorActivity.MODE_SINGLE, true, true, true);
             }
 
             @Override
