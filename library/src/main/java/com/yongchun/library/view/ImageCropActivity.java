@@ -1,6 +1,5 @@
 package com.yongchun.library.view;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +10,6 @@ import android.net.Uri;
 import android.opengl.GLES10;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -74,6 +70,8 @@ public class ImageCropActivity extends SelectorBaseActivity {
         cropImageView.setHandleSizeInDp(8);//设置裁剪四周小圆球的大小
         cropImageView.setFrameStrokeWeightInDp(1);
         cropImageView.setGuideStrokeWeightInDp(1);
+        cropImageView.setInitialFrameScale(0.5f);//裁剪区域为原图的一半
+        cropImageView.setCropMode(CropImageView.CropMode.CIRCLE);//设置裁剪方式为圆形，可换
     }
 
     public void initView() {

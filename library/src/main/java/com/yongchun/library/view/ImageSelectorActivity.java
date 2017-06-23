@@ -54,7 +54,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     private int spanCount = 3;
 
-    private Toolbar toolbar;
     private TextView doneText;
 
     private TextView previewText;
@@ -117,10 +116,8 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     public void initView() {
         folderWindow = new FolderWindow(this);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         toolbar.setTitle(R.string.picture);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.mipmap.ic_back);
 
         doneText = (TextView) findViewById(R.id.done_text);
         doneText.setVisibility(selectMode == MODE_MULTIPLE ? View.VISIBLE : View.GONE);
@@ -142,12 +139,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     }
 
     public void registerListener() {
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               onBackPressed();
-            }
-        });
         folderLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

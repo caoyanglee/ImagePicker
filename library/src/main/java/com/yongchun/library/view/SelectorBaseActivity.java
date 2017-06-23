@@ -20,7 +20,7 @@ import com.yongchun.library.R;
  */
 
 public class SelectorBaseActivity extends AppCompatActivity {
-    private Toolbar toolbar;
+    protected Toolbar toolbar;
 
 
     @Override
