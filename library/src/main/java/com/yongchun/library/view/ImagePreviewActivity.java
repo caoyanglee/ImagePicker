@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ImagePreviewActivity extends AppCompatActivity {
+public class ImagePreviewActivity extends SelectorBaseActivity {
     public static final int REQUEST_PREVIEW = 68;
     public static final String EXTRA_PREVIEW_LIST = "previewList";
     public static final String EXTRA_PREVIEW_SELECT_LIST = "previewSelectList";
@@ -220,7 +220,7 @@ public class ImagePreviewActivity extends AppCompatActivity {
         intent.putExtra(OUTPUT_LIST, (ArrayList) selectImages);
         intent.putExtra(OUTPUT_ISDONE, isDone);
         setResult(RESULT_OK, intent);
-        finish();
+        super.onBackPressed();
     }
 
     @Override

@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".activity.PhotoViewPagerActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

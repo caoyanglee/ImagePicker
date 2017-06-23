@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ImageSelectorActivity extends AppCompatActivity {
+public class ImageSelectorActivity extends SelectorBaseActivity {
     public final static int REQUEST_IMAGE = 66;
     public final static int REQUEST_CAMERA = 67;
 
@@ -145,7 +145,7 @@ public class ImageSelectorActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+               onBackPressed();
             }
         });
         folderLayout.setOnClickListener(new View.OnClickListener() {
@@ -171,8 +171,8 @@ public class ImageSelectorActivity extends AppCompatActivity {
                 doneText.setEnabled(enable ? true : false);
                 previewText.setEnabled(enable ? true : false);
                 if (enable) {
-                    doneText.setText(getString(R.string.done_num, selectImages.size(), maxSelectNum));
-                    previewText.setText(getString(R.string.preview_num, selectImages.size()));
+                    doneText.setText(getString(R.string.done_num, selectImages.size() + "", maxSelectNum + ""));
+                    previewText.setText(getString(R.string.preview_num, selectImages.size()+""));
                 } else {
                     doneText.setText(R.string.done);
                     previewText.setText(R.string.preview);
@@ -261,7 +261,7 @@ public class ImageSelectorActivity extends AppCompatActivity {
     public void startCamera() {
         File cameraFile = FileUtils.createCameraFile(this);
         cameraPath = cameraFile.getAbsolutePath();
-        FileUtils.startActionCapture(this,cameraFile,REQUEST_CAMERA);
+        FileUtils.startActionCapture(this, cameraFile, REQUEST_CAMERA);
     }
 
     public void startPreview(List<LocalMedia> previewImages, int position) {
@@ -269,7 +269,7 @@ public class ImageSelectorActivity extends AppCompatActivity {
     }
 
     public void startCrop(String path) {
-        ImageCropActivity.startCrop(this, path);
+        startActivityForResult(ImageCropActivity.newIntent(this, path), ImageCropActivity.REQUEST_CROP);
     }
 
     /**
@@ -293,6 +293,6 @@ public class ImageSelectorActivity extends AppCompatActivity {
 
     public void onResult(ArrayList<String> images) {
         setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, images));
-        finish();
+        onBackPressed();
     }
 }

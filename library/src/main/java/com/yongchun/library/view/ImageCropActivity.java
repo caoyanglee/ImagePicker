@@ -2,6 +2,7 @@ package com.yongchun.library.view;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,7 +12,7 @@ import android.opengl.GLES10;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -27,27 +28,29 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
-public class ImageCropActivity extends AppCompatActivity {
-    public static final String EXTRA_PATH = "extraPath";
-    public static final String OUTPUT_PATH = "outputPath";
+public class ImageCropActivity extends SelectorBaseActivity {
     public static final int REQUEST_CROP = 69;
+
+    public static final String DATA_EXTRA_PATH = "data_extra_path";
+    public static final String OUTPUT_PATH = "outputPath";
+
     private static final int SIZE_DEFAULT = 2048;
     private static final int SIZE_LIMIT = 4096;
 
-    private Toolbar toolbar;
     private TextView doneText;
     private CropImageView cropImageView;
 
 
-    private Uri sourceUri;
-    private Uri saveUri;
+    private Uri sourceUri;//源URI
+    private Uri saveUri;//存储URI
 
     private final Handler handler = new Handler();
 
-    public static void startCrop(Activity activity, String path) {
-        Intent intent = new Intent(activity, ImageCropActivity.class);
-        intent.putExtra(EXTRA_PATH, path);
-        activity.startActivityForResult(intent, REQUEST_CROP);
+
+    public static Intent newIntent(Context context, String path) {
+        Intent intent = new Intent(context, ImageCropActivity.class);
+        intent.putExtra(DATA_EXTRA_PATH, path);
+        return intent;
     }
 
 
@@ -55,24 +58,26 @@ public class ImageCropActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_crop);
-        String path = getIntent().getStringExtra(EXTRA_PATH);
-        sourceUri = Uri.fromFile(new File(path));
-
+        initBase();
         initView();
         registerListener();
     }
 
-    public void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.mipmap.ic_back);
-
+    private void initBase() {
+        //data
+        String path = getIntent().getStringExtra(DATA_EXTRA_PATH);
+        sourceUri = Uri.fromFile(new File(path));
+        //findview
         doneText = (TextView) findViewById(R.id.done_text);
         cropImageView = (CropImageView) findViewById(R.id.cropImageView);
-        cropImageView.setHandleSizeInDp(10);
+        //crop setup
+        cropImageView.setHandleSizeInDp(8);//设置裁剪四周小圆球的大小
+        cropImageView.setFrameStrokeWeightInDp(1);
+        cropImageView.setGuideStrokeWeightInDp(1);
+    }
 
-
+    public void initView() {
+        //获取源图片的旋转角度
         int exifRotation = CropUtil.getExifRotation(CropUtil.getFromMediaUri(this, getContentResolver(), sourceUri));
 
         InputStream is = null;
@@ -97,12 +102,6 @@ public class ImageCropActivity extends AppCompatActivity {
 
 
     public void registerListener() {
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         doneText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +120,7 @@ public class ImageCropActivity extends AppCompatActivity {
             int cy = bitmap.getHeight() / 2;
             matrix.preTranslate(-cx, -cy);
             matrix.postRotate(rotation);
-            matrix.postTranslate(bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+            matrix.postTranslate(cx, cy);
         }
         return matrix;
     }
@@ -181,6 +180,6 @@ public class ImageCropActivity extends AppCompatActivity {
                 b.recycle();
             }
         });
-        finish();
+        onBackPressed();
     }
 }
