@@ -71,7 +71,7 @@ public class ImageCropActivity extends SelectorBaseActivity {
         cropImageView.setFrameStrokeWeightInDp(1);
         cropImageView.setGuideStrokeWeightInDp(1);
         cropImageView.setInitialFrameScale(0.5f);//裁剪区域为原图的一半
-        cropImageView.setCropMode(CropImageView.CropMode.CIRCLE);//设置裁剪方式为圆形，可换
+        cropImageView.setCropMode(CropImageView.CropMode.SQUARE);//设置裁剪方式为圆形，可换
     }
 
     public void initView() {

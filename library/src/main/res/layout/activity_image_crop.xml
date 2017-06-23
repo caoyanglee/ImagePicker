@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/black"
     android:orientation="vertical">
 
 
@@ -38,6 +39,7 @@
     <com.isseiaoki.simplecropview.CropImageView
         android:id="@+id/cropImageView"
         android:layout_width="match_parent"
+        android:background="#303030"
         android:layout_height="match_parent" />
 
 </LinearLayout>
