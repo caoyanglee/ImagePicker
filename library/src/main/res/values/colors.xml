@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#F75255</color>
+    <color name="colorPrimaryDark">#B3F75255</color>
     <color name="white">#ffffff</color>
     <color name="white_70">#ADFFFFFF</color>
 
     <color name="bar_grey">#393a3e</color>
-    <color name="bar_grey_90">#dd393a3e</color>
+    <color name="bar_grey_50">#7f393a3e</color>
     <color name="grey">#999999</color>
     <color name="divider_color">#dcdcdc</color>
     <color name="content_grey">#353535</color>
@@ -15,7 +17,4 @@
     <color name="black">#000000</color>
     <color name="black_alpha80">#CC000000</color>
 
-    <color name="toolbarColor">#000000</color>
-    <color name="primaryColor">#F75255</color>
-    <color name="primaryColorAlpha70">#B3F75255</color>
 </resources>

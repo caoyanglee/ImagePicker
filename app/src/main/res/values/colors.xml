@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--调用的统一颜色-->
-    <color name="colorPrimary">@color/color_brown</color>
-    <color name="colorPrimaryDark">@color/color_browndark</color>
-    <color name="colorSecondd">@color/color_browblack</color>
+    <color name="colorPrimary">#F75255</color>
+    <color name="colorPrimaryDark">#F75255</color>
+    <color name="colorAccent">#F75255</color>
     <color name="gray_background">@color/color_bggrey</color>
-    <color name="colorAccent">#3399e0</color>
-    <color name="colorPrimary_text">#FF9C743C</color>
 
     <!--主要颜色-->
     <color name="color_browblack">#3C372F</color>

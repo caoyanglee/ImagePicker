@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 
+import com.yongchun.library.Consts;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,13 +66,19 @@ public class FileUtils {
         activity.startActivityForResult(intent, requestCode);
     }
 
+    /**
+     * @param
+     * @return
+     * @description 兼容7.0的文件操作
+     * @remark
+     */
     private static Uri getUriForFile(Context context, File file) {
         if (context == null || file == null) {
             throw new NullPointerException();
         }
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(context.getApplicationContext(), PicConsts.FilePreoviderAuthorities, file);
+            uri = FileProvider.getUriForFile(context.getApplicationContext(), Consts.FileProviderAuthorities, file);
         } else {
             uri = Uri.fromFile(file);
         }

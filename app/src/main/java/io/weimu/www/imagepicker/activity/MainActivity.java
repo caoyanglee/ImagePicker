@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.AddListenter(new ImageGridadapter.AddListenter() {
             @Override
             public void onAddClick(int needNumber) {
-                ImageSelectorActivity.start(MainActivity.this, needNumber, ImageSelectorActivity.MODE_SINGLE, true, true, true);
+                ImageSelectorActivity.start(MainActivity.this, needNumber, ImageSelectorActivity.MODE_MULTIPLE, true, true, true);
             }
 
             @Override
             public void onItemClick(int position) {
-                startActivity(PhotoViewPagerActivity.newInstance(MainActivity.this,position, (ArrayList<String>) mAdapter.getDataList()));
+                startActivity(PhotoViewPagerActivity.newInstance(MainActivity.this, position, (ArrayList<String>) mAdapter.getDataList()));
             }
 
             @Override
@@ -67,11 +67,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("wm", "resultCode " + resultCode);
         if (resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE) {
             ArrayList<String> pics = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
             mAdapter.addData(pics);
-            return;
         }
     }
 }

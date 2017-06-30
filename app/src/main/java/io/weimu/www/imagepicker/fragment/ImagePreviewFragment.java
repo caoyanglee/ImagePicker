@@ -2,25 +2,29 @@ package io.weimu.www.imagepicker.fragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.yongchun.library.view.ImagePreviewActivity;
 
 
 import io.weimu.www.imagepicker.activity.PhotoViewPagerActivity;
 import io.weimu.www.imagepicker.R;
 import io.weimu.www.imagepicker.fragment.base.BaseFragment;
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class ImagePreviewFragment extends BaseFragment {
-    private ImageView imageView;
+    private PhotoView photo_view;
+
 
     @Override
     protected void findViewByIDS() {
-        imageView = myFindViewsById(R.id.preview_image);
+        photo_view = myFindViewsById(R.id.photo_view);
     }
 
 
@@ -41,7 +45,6 @@ public class ImagePreviewFragment extends BaseFragment {
 
     @Override
     protected void onGenerate() {
-        final PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
 
         Glide.with(mContext)
                 .load(getArguments().getString(PATH))
@@ -49,16 +52,26 @@ public class ImagePreviewFragment extends BaseFragment {
                 .into(new SimpleTarget<Bitmap>(480, 800) {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        imageView.setImageBitmap(resource);
-                        mAttacher.update();
+                        photo_view.setImageBitmap(resource);
                     }
                 });
 
-        mAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+        photo_view.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
             @Override
-            public void onViewTap(View view, float x, float y) {
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
                 PhotoViewPagerActivity activity = (PhotoViewPagerActivity) getActivity();
                 activity.switchBarVisibility();
+                return true;
+            }
+
+            @Override
+            public boolean onDoubleTapEvent(MotionEvent e) {
+                return false;
             }
         });
     }

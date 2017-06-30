@@ -2,4 +2,4 @@
 <bitmap
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:src="@mipmap/ic_checked"
-    android:tint="@color/primaryColor"/>
+    android:tint="@color/colorPrimary"/>

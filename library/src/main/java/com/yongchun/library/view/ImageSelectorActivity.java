@@ -37,43 +37,43 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     public final static String REQUEST_OUTPUT = "outputList";
 
-    public final static String EXTRA_SELECT_MODE = "SelectMode";
-    public final static String EXTRA_SHOW_CAMERA = "ShowCamera";
-    public final static String EXTRA_ENABLE_PREVIEW = "EnablePreview";
-    public final static String EXTRA_ENABLE_CROP = "EnableCrop";
-    public final static String EXTRA_MAX_SELECT_NUM = "MaxSelectNum";
+
+    public final static String EXTRA_MAX_SELECT_NUM = "MaxSelectNum";//最大选择数
+    public final static String EXTRA_SELECT_MODE = "SelectMode";//选择模式
+    public final static String EXTRA_SHOW_CAMERA = "ShowCamera";//是否显示摄像头
+    public final static String EXTRA_ENABLE_PREVIEW = "EnablePreview";//是否需要预览
+    public final static String EXTRA_ENABLE_CROP = "EnableCrop";//是否需要裁剪
+
 
     public final static int MODE_MULTIPLE = 1;
     public final static int MODE_SINGLE = 2;
 
     private int maxSelectNum = 9;
     private int selectMode = MODE_MULTIPLE;
-    private boolean showCamera = true;
+    private boolean enableCamera = true;
     private boolean enablePreview = true;
     private boolean enableCrop = false;
 
     private int spanCount = 3;
-
+    //ui
     private TextView doneText;
-
     private TextView previewText;
-
     private RecyclerView recyclerView;
     private ImageListAdapter imageAdapter;
-
     private LinearLayout folderLayout;
     private TextView folderName;
     private FolderWindow folderWindow;
+
 
     private String cameraPath;
 
     private List<LocalMediaFolder> allFolders;//所有图片文件夹
 
-    public static void start(Activity activity, int maxSelectNum, int mode, boolean isShow, boolean enablePreview, boolean enableCrop) {
+    public static void start(Activity activity, int maxSelectNum, int mode, boolean enableCamera, boolean enablePreview, boolean enableCrop) {
         Intent intent = new Intent(activity, ImageSelectorActivity.class);
         intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum);
         intent.putExtra(EXTRA_SELECT_MODE, mode);
-        intent.putExtra(EXTRA_SHOW_CAMERA, isShow);
+        intent.putExtra(EXTRA_SHOW_CAMERA, enableCamera);
         intent.putExtra(EXTRA_ENABLE_PREVIEW, enablePreview);
         intent.putExtra(EXTRA_ENABLE_CROP, enableCrop);
         activity.startActivityForResult(intent, REQUEST_IMAGE);
@@ -83,7 +83,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imageselector);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//请求为竖直屏幕
 
 
         maxSelectNum = getIntent().getIntExtra(EXTRA_MAX_SELECT_NUM, 9);
@@ -102,6 +101,8 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         }
         initView();
         registerListener();
+
+        ///load data
         new LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage(new LocalMediaLoader.LocalMediaLoadListener() {
 
             @Override
@@ -115,7 +116,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     public void initView() {
         folderWindow = new FolderWindow(this);
-
 
         toolbar.setTitle(R.string.picture);
 
@@ -133,9 +133,8 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, ScreenUtils.dip2px(this, 2), false));
         recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
 
-        imageAdapter = new ImageListAdapter(this, maxSelectNum, selectMode, showCamera, enablePreview);
+        imageAdapter = new ImageListAdapter(this, maxSelectNum, selectMode, enableCamera, enablePreview);
         recyclerView.setAdapter(imageAdapter);
-
     }
 
     public void registerListener() {
@@ -163,7 +162,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
                 previewText.setEnabled(enable ? true : false);
                 if (enable) {
                     doneText.setText(getString(R.string.done_num, selectImages.size() + "", maxSelectNum + ""));
-                    previewText.setText(getString(R.string.preview_num, selectImages.size()+""));
+                    previewText.setText(getString(R.string.preview_num, selectImages.size() + ""));
                 } else {
                     doneText.setText(R.string.done);
                     previewText.setText(R.string.preview);

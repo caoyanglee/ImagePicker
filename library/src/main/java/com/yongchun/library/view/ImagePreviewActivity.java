@@ -36,7 +36,6 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
     public static final String OUTPUT_LIST = "outputList";
     public static final String OUTPUT_ISDONE = "isDone";
 
-    private LinearLayout barLayout;
     private RelativeLayout selectBarLayout;
     private Toolbar toolbar;
     private TextView doneText;
@@ -65,8 +64,6 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//请求为竖直屏幕
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_image_preview);
         initView();
         registerListener();
@@ -78,7 +75,6 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
         maxSelectNum = getIntent().getIntExtra(EXTRA_MAX_SELECT_NUM, 9);
         position = getIntent().getIntExtra(EXTRA_POSITION, 1);
 
-        barLayout = (LinearLayout) findViewById(R.id.bar_layout);
         selectBarLayout = (RelativeLayout) findViewById(R.id.select_bar_layout);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -204,7 +200,6 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
     }
 
     public void switchBarVisibility() {
-        barLayout.setVisibility(isShowBar ? View.GONE : View.VISIBLE);
         toolbar.setVisibility(isShowBar ? View.GONE : View.VISIBLE);
         selectBarLayout.setVisibility(isShowBar ? View.GONE : View.VISIBLE);
         if (isShowBar) {
