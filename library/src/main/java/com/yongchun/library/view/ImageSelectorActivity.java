@@ -2,13 +2,10 @@ package com.yongchun.library.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -87,7 +84,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
         maxSelectNum = getIntent().getIntExtra(EXTRA_MAX_SELECT_NUM, 9);
         selectMode = getIntent().getIntExtra(EXTRA_SELECT_MODE, MODE_MULTIPLE);
-        showCamera = getIntent().getBooleanExtra(EXTRA_SHOW_CAMERA, true);
+        enableCamera = getIntent().getBooleanExtra(EXTRA_SHOW_CAMERA, true);
         enablePreview = getIntent().getBooleanExtra(EXTRA_ENABLE_PREVIEW, true);
         enableCrop = getIntent().getBooleanExtra(EXTRA_ENABLE_CROP, false);
 
