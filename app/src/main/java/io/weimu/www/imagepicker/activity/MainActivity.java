@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.yongchun.library.utils.GridSpacingItemDecoration;
 import com.yongchun.library.utils.ScreenUtils;
+import com.yongchun.library.view.CameraSelectorActivity;
 import com.yongchun.library.view.ImageSelectorActivity;
 
 import java.util.ArrayList;
@@ -48,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.AddListenter(new ImageGridadapter.AddListenter() {
             @Override
             public void onAddClick(int needNumber) {
-                ImageSelectorActivity.start(MainActivity.this, needNumber, ImageSelectorActivity.MODE_MULTIPLE, true, true, true);
+                CameraSelectorActivity.start(MainActivity.this,false);//使用摄像头
+//                ImageSelectorActivity.start(MainActivity.this, needNumber, ImageSelectorActivity.MODE_MULTIPLE, true, true, true);
             }
 
             @Override
