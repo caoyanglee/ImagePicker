@@ -19,7 +19,7 @@ public static void start(Activity activity, int maxSelectNum, int mode, boolean 
 }
 ```
 
-第二种方法~单纯使用摄像头
+第三种方法 单纯使用摄像头
 ```java
 CameraSelectorActivity.start(MainActivity.this,false);
 ```
