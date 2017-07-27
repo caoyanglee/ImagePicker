@@ -18,6 +18,13 @@ public static void start(Activity activity, int maxSelectNum, int mode, boolean 
     activity.startActivityForResult(intent, REQUEST_IMAGE);
 }
 ```
+
+第二种方法~单纯使用摄像头
+```java
+CameraSelectorActivity.start(MainActivity.this,false);
+```
+
+
 2)接收结果信息
 
 ``` java
