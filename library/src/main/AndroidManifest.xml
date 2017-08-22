@@ -12,13 +12,13 @@
         android:supportsRtl="true">
         <activity
             android:name=".view.ImageSelectorActivity"
-            android:theme="@style/BaseAppTheme" />
+            android:theme="@style/MainAppTheme" />
         <activity
             android:name=".view.ImagePreviewActivity"
-            android:theme="@style/BaseAppTheme" />
+            android:theme="@style/MainAppTheme" />
         <activity
             android:name=".view.ImageCropActivity"
-            android:theme="@style/BaseAppTheme" />
+            android:theme="@style/MainAppTheme" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Library</string>
+    <string name="app_name">selector</string>
     <string name="picture">Select Images</string>
     <string name="all_image">All Images</string>
     <string name="take_picture">Take Photo</string>

@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.AddListenter(new ImageGridadapter.AddListenter() {
             @Override
             public void onAddClick(int needNumber) {
-                CameraSelectorActivity.start(MainActivity.this,false);//使用摄像头
-//                ImageSelectorActivity.start(MainActivity.this, needNumber, ImageSelectorActivity.MODE_MULTIPLE, true, true, true);
+//                CameraSelectorActivity.start(MainActivity.this,false);//使用摄像头
+                ImageSelectorActivity.start(MainActivity.this, needNumber, ImageSelectorActivity.MODE_MULTIPLE, true, true, true);
             }
 
             @Override

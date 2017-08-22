@@ -14,6 +14,12 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+
+    <!--沉浸式主题-->
+    <style name="MainAppTheme" parent="BaseAppTheme">
+    </style>
+
+
     <style name="ToolBarTheme" parent="Base.Widget.AppCompat.Toolbar">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:layout_width">match_parent</item>
