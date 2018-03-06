@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.yongchun.library.ImagePicker;
 import com.yongchun.library.utils.GridSpacingItemDecoration;
 import com.yongchun.library.utils.ScreenUtils;
 import com.yongchun.library.view.CameraSelectorActivity;
@@ -49,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.AddListenter(new ImageGridadapter.AddListenter() {
             @Override
             public void onAddClick(int needNumber) {
-                //CameraSelectorActivity.start(MainActivity.this,true);//使用摄像头
-                ImageSelectorActivity.start(MainActivity.this, needNumber, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
+                ImagePicker.getInstance().pickImage(MainActivity.this, needNumber, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
+                //ImagePicker.getInstance().takePhoto(MainActivity.this, true);//使用摄像头
             }
 
             @Override

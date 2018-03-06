@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--调用的统一颜色-->
-    <color name="colorPrimary">#F75255</color>
-    <color name="colorPrimaryDark">#F75255</color>
-    <color name="colorAccent">#F75255</color>
+    <color name="colorPrimary">#52A6FF</color>
+    <color name="colorPrimaryDark">#52A6FF</color>
+    <color name="colorAccent">#52A6FF</color>
     <color name="gray_background">@color/color_bggrey</color>
 
     <!--主要颜色-->

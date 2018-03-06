@@ -21,17 +21,9 @@
             android:name=".view.ImageCropActivity"
             android:theme="@style/MainAppTheme" />
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.yongchun.library.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
-        </provider>
 
-        <activity android:name=".view.CameraSelectorActivity"></activity>
+
+        <activity android:name=".view.CameraSelectorActivity"/>
     </application>
 
 </manifest>

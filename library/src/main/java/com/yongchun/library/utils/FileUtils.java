@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 
-import com.yongchun.library.Consts;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -78,7 +77,8 @@ public class FileUtils {
         }
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(context.getApplicationContext(), Consts.FileProviderAuthorities, file);
+            String auth = context.getPackageName() + "fileprovider";
+            uri = FileProvider.getUriForFile(context.getApplicationContext(), auth, file);
         } else {
             uri = Uri.fromFile(file);
         }

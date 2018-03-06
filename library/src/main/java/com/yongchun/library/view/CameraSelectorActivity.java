@@ -38,6 +38,7 @@ public class CameraSelectorActivity extends SelectorBaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putString(BUNDLE_CAMERA_PATH, cameraPath);
     }
 
@@ -78,11 +79,10 @@ public class CameraSelectorActivity extends SelectorBaseActivity {
                 String path = data.getStringExtra(ImageCropActivity.OUTPUT_PATH);
                 onSelectDone(path);
             }
-        }else{
+        } else {
             onBackPressed();
         }
     }
-
 
 
     public void startCrop(String path) {

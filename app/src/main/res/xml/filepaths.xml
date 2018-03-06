@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- external-path:sd ；path:你的应用保存文件的根目录；name随便定义-->
+    <external-path
+        name="external_storage_root"
+        path="." />
+    <external-path
+        name="CameraImage"
+        path="ImageSelector/CameraImage/" />
+    <external-path
+        name="CropImage"
+        path="ImageSelector/CropImage/" />
+</paths>
