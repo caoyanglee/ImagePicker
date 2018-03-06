@@ -49,7 +49,7 @@ compile 'www.weimu.io:silentupdate:{version_code}@aar'
 
 ## 用法
 
-1.打开图库
+1.1打开图库
 ```java
 ImagePicker.getInstance().pickImage(activity);
 ```
@@ -57,7 +57,6 @@ ImagePicker.getInstance().pickImage(activity);
 **多参数调用**
 ```java
 /**
- *
  * @param activity
  * @param maxSelectNum 最大选择图片数          default=9
  * @param mode 图库模式【单选】【多选】         default=ImageSelectorActivity.MODE_MULTIPLE
@@ -69,7 +68,7 @@ ImagePicker.getInstance().pickImage(activity, 9, ImageSelectorActivity.MODE_MULT
 ```
 
 
-2.直接拍张
+1.2.直接拍张
 ```java
 ImagePicker.getInstance().takePhoto(activity);
 ```
@@ -77,14 +76,13 @@ ImagePicker.getInstance().takePhoto(activity);
 **多参数调用**
 ```java
 /**
- *
  * @param activity
  * @param enableCrop 是否启用裁剪 default=false
  */
 ImagePicker.getInstance().takePhoto(activity,false);
 ```
 
-接收结果信息
+2.接收结果信息
 ``` java
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
