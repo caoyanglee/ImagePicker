@@ -2,8 +2,8 @@
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [ ![Download](https://api.bintray.com/packages/yongdongji/android/imagepicker/images/download.svg) ](https://bintray.com/yongdongji/android/imagepicker/_latestVersion)
 
-## Demo
-![](https://github.com/CaoyangLee/ImagePicker/blob/master/img/img_demo.jpg)
+## 演示
+![](https://github.com/CaoyangLee/ImagePicker/blob/master/img/gif_demo.gif)
 
 ## 准备工作 
 1.获取依赖
