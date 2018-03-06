@@ -102,11 +102,8 @@ public class LocalMediaLoader {
                     if (parentFile.list() == null)
                         continue;
 
-                    // TODO: 2016/08/19 处理文件夹数据    文件夹与所有图片顺序没有对应
                     //处理文件夹数据
                     LocalMediaFolder localMediaFolder = getImageFolder(path, imageFolders);
-
-                    Log.e("caoyang", "本地文件夹名称——————   " + parentFile.toString());
 
                     //获取文件夹里的所有图片
                     File[] files = parentFile.listFiles(new FilenameFilter() {

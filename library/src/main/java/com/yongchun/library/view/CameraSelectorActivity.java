@@ -101,8 +101,8 @@ public class CameraSelectorActivity extends SelectorBaseActivity {
     }
 
     @Override
-    public void finish() {
-        super.finish();
+    public void onBackPressed() {
+        finish();
         overridePendingTransition(0, R.anim.transparent);
     }
 }

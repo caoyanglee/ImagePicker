@@ -1,5 +1,6 @@
 package com.yongchun.library.view;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.yongchun.library.R;
 
@@ -47,10 +49,7 @@ public class SelectorBaseActivity extends AppCompatActivity {
 
 
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
+
 
     /**
      * TollBar】默认左上角为返回，若有特殊需求请覆盖此方法

@@ -10,7 +10,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_margin="16dp"
+        android:text="请选择图片"
+        android:textSize="16sp" />
 
 
     <android.support.v7.widget.RecyclerView

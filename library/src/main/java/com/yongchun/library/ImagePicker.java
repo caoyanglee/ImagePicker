@@ -24,12 +24,44 @@ public class ImagePicker {
 
     }
 
-    //打开图库
+    /**
+     * 打开图库【默认模式】
+     *
+     * @param activity
+     */
+    public void pickImage(Activity activity) {
+        ImageSelectorActivity.start(activity, 9, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
+    }
+
+    /**
+     * 打开图库
+     *
+     * @param activity
+     * @param maxSelectNum  最大选择图片数
+     * @param mode          图库模式【单选】【多选】
+     * @param enableCamera  是否启用摄像头
+     * @param enablePreview 是否打开预览
+     * @param enableCrop    是否进行裁剪【单选可用】
+     */
     public void pickImage(Activity activity, int maxSelectNum, int mode, boolean enableCamera, boolean enablePreview, boolean enableCrop) {
         ImageSelectorActivity.start(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop);
     }
 
-    //使用摄像头
+    /**
+     * 使用摄像头【默认模式】
+     *
+     * @param activity
+     */
+    public void takePhoto(Activity activity) {
+        CameraSelectorActivity.start(activity, false);
+    }
+
+    /**
+     * 使用摄像头
+     *
+     * @param activity
+     * @param enableCrop 是否启用裁剪
+     */
     public void takePhoto(Activity activity, boolean enableCrop) {
         CameraSelectorActivity.start(activity, enableCrop);
     }
