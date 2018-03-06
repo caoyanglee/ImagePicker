@@ -48,6 +48,15 @@ public class ImagePicker {
     }
 
     /**
+     * 选择头像
+     *
+     * @param activity
+     */
+    public void pickAvatar(Activity activity) {
+        ImageSelectorActivity.start(activity, 1, ImageSelectorActivity.MODE_SINGLE, true, true, true);
+    }
+
+    /**
      * 使用摄像头【默认模式】
      *
      * @param activity
