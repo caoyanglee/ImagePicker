@@ -56,10 +56,10 @@ public class PhotoViewPagerActivity extends BaseActivity {
     }
 
     private void initToolBar() {
-        toolbar = (Toolbar) findViewById(com.yongchun.library.R.id.toolbar);
+        toolbar = (Toolbar) findViewById(com.weimu.library.R.id.toolbar);
         toolbar.setTitle((position + 1) + "/" + imagList.size());
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(com.yongchun.library.R.mipmap.ic_back);
+        toolbar.setNavigationIcon(com.weimu.library.R.mipmap.ic_back);
     }
 
     private void initFirst() {

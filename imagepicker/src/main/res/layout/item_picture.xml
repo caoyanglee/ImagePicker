@@ -4,16 +4,16 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/iv_cover"
+        android:id="@+id/picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@color/colorPrimary" />
+        android:transitionName="share_image" />
 
     <ImageView
-        android:id="@+id/iv_cover_delete"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:id="@+id/check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_picture_del_n" />
+        android:padding="@dimen/margin_text"
+        android:src="@drawable/checkbox_selector" />
 </com.weimu.library.widget.SquareRelativeLayout>

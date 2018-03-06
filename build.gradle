@@ -14,10 +14,10 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url  "https://dl.bintray.com/yongdongji/android" }
         jcenter()
         google()
         maven { url "https://jitpack.io" }
-
     }
     //加上这些
     tasks.withType(Javadoc) {

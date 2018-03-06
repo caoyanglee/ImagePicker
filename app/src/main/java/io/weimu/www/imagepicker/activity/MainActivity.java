@@ -1,23 +1,20 @@
 package io.weimu.www.imagepicker.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import com.yongchun.library.ImagePicker;
-import com.yongchun.library.utils.GridSpacingItemDecoration;
-import com.yongchun.library.utils.ScreenUtils;
-import com.yongchun.library.view.CameraSelectorActivity;
-import com.yongchun.library.view.ImageSelectorActivity;
+import com.weimu.library.ImagePicker;
+import com.weimu.library.utils.GridSpacingItemDecoration;
+import com.weimu.library.utils.ScreenUtils;
+import com.weimu.library.view.ImageSelectorActivity;
 
 import java.util.ArrayList;
 
-import io.weimu.www.imagepicker.adaper.recycleview.ImageGridadapter;
 import io.weimu.www.imagepicker.R;
-import io.weimu.www.imagepicker.adaper.recycleview.base.itemanimator.NoAlphaItemAnimator;
+import io.weimu.www.imagepicker.adaper.recycleview.ImageGridadapter;
 
 public class MainActivity extends AppCompatActivity {
 
