@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, ScreenUtils.dip2px(this, 8), false));
         //设置Item增加、移除动画
-        recyclerView.setItemAnimator(new NoAlphaItemAnimator());
+        //recyclerView.setItemAnimator(new NoAlphaItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
         mAdapter.AddListenter(new ImageGridadapter.AddListenter() {
