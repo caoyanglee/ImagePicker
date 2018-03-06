@@ -1,6 +1,5 @@
 package com.yongchun.library.view;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -10,16 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.yongchun.library.R;
 
-/**
- * @author 艹羊
- * @project ImagePicker
- * @date 2017/6/23 下午1:41
- * @description
- */
 
 public class SelectorBaseActivity extends AppCompatActivity {
     protected Toolbar toolbar;
