@@ -1,5 +1,6 @@
 package com.yongchun.library.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
@@ -120,7 +121,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 @Override
                 public void onClick(View v) {
                     if ((selectMode == ImageSelectorActivity.MODE_SINGLE || enablePreview) && imageSelectChangedListener != null) {
-                        imageSelectChangedListener.onPictureClick(image, showCamera ? position - 1 : position);
+                        imageSelectChangedListener.onPictureClick(image, showCamera ? position - 1 : position,((ViewHolder) holder).picture);
                     } else {
                         changeCheckboxState(contentHolder, image);
                     }
@@ -134,6 +135,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return showCamera ? images.size() + 1 : images.size();
     }
 
+    @SuppressLint("StringFormatMatches")
     private void changeCheckboxState(ViewHolder contentHolder, LocalMedia image) {
         boolean isChecked = contentHolder.check.isSelected();
         if (selectImages.size() >= maxSelectNum && !isChecked) {
@@ -212,7 +214,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         void onTakePhoto();
 
-        void onPictureClick(LocalMedia media, int position);
+        void onPictureClick(LocalMedia media, int position,View view);
     }
 
     public void setOnImageSelectChangedListener(OnImageSelectChangedListener imageSelectChangedListener) {

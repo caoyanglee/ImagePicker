@@ -99,4 +99,10 @@ public class CameraSelectorActivity extends SelectorBaseActivity {
         setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, images));
         onBackPressed();
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, R.anim.transparent);
+    }
 }

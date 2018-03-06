@@ -103,8 +103,7 @@ public class ImageCropActivity extends SelectorBaseActivity {
         doneText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProgressDialog.show(
-                        ImageCropActivity.this, null, getString(R.string.save_ing), true, false);
+                //ProgressDialog.show(ImageCropActivity.this, null, getString(R.string.save_ing), true, false);
                 saveUri = Uri.fromFile(FileUtils.createCropFile(ImageCropActivity.this));
                 saveOutput(cropImageView.getCroppedBitmap());
             }

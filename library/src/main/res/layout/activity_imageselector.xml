@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/colorPrimary"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -26,8 +26,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/folder_list"
@@ -36,6 +36,8 @@
             android:clipToPadding="false"
             android:paddingBottom="48dp"
             android:paddingLeft="2dp"
+            android:fadingEdge="none"
+            android:overScrollMode="never"
             android:paddingRight="2dp"
             android:scrollbars="vertical" />
 

@@ -14,7 +14,8 @@
             android:id="@+id/done_text"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/btn_height"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/margin_text"
             android:layout_marginRight="@dimen/margin_text"
             android:background="@drawable/btn_round_green_selector"
             android:enabled="false"
@@ -29,10 +30,12 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
+
         <com.yongchun.library.widget.PreviewViewPager
             android:id="@+id/preview_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:transitionName="share_image" />
 
 
         <RelativeLayout

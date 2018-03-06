@@ -53,22 +53,11 @@ public class SelectorBaseActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.mipmap.ic_back);
     }
 
-    @Override
-    public void startActivity(Intent intent) {
-        super.startActivity(intent);
-        overridePendingTransition(R.anim.slide_right_in,0);
-    }
 
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
-        overridePendingTransition(R.anim.slide_right_in,0);
-    }
 
     @Override
     public void onBackPressed() {
         finish();
-        overridePendingTransition(0, R.anim.slide_right_out);
     }
 
     /**

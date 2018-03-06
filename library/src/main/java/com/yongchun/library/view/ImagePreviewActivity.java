@@ -1,9 +1,12 @@
 package com.yongchun.library.view;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -60,6 +63,18 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
         intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum);
         context.startActivityForResult(intent, REQUEST_PREVIEW);
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public static void startPreviewWithAnim(Activity context, List<LocalMedia> images, List<LocalMedia> selectImages, int maxSelectNum, int position, View view) {
+        Intent intent = new Intent(context, ImagePreviewActivity.class);
+        intent.putExtra(EXTRA_PREVIEW_LIST, (ArrayList) images);
+        intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, (ArrayList) selectImages);
+        intent.putExtra(EXTRA_POSITION, position);
+        intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(context, view, "share_image").toBundle());
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

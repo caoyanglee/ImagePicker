@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ public class FolderWindow extends PopupWindow {
     private ImageFolderAdapter adapter;
 
     private boolean isDismiss = false;
+
     public FolderWindow(Context context) {
         this.context = context;
         window = LayoutInflater.from(context).inflate(R.layout.window_folder, null);
@@ -54,26 +56,39 @@ public class FolderWindow extends PopupWindow {
         recyclerView.addItemDecoration(new ItemDivider());
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
+
+        recyclerView.setVisibility(View.GONE);
     }
 
     public void registerListener() {
 
     }
-    public void bindFolder(List<LocalMediaFolder> folders){
+
+    public void bindFolder(List<LocalMediaFolder> folders) {
         adapter.bindFolder(folders);
     }
+
     @Override
     public void showAsDropDown(View anchor) {
         super.showAsDropDown(anchor);
-        Animation animation = AnimationUtils.loadAnimation(context, R.anim.up_in);
-        recyclerView.startAnimation(animation);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.setVisibility(View.VISIBLE);
+                Animation animation = AnimationUtils.loadAnimation(context, R.anim.up_in);
+                recyclerView.startAnimation(animation);
+            }
+        }, 300);
+
     }
-    public void setOnItemClickListener(ImageFolderAdapter.OnItemClickListener onItemClickListener){
+
+    public void setOnItemClickListener(ImageFolderAdapter.OnItemClickListener onItemClickListener) {
         adapter.setOnItemClickListener(onItemClickListener);
     }
+
     @Override
     public void dismiss() {
-        if(isDismiss){
+        if (isDismiss) {
             return;
         }
         isDismiss = true;
@@ -89,8 +104,10 @@ public class FolderWindow extends PopupWindow {
             @Override
             public void onAnimationEnd(Animation animation) {
                 isDismiss = false;
+                recyclerView.setVisibility(View.GONE);
                 FolderWindow.super.dismiss();
             }
+
             @Override
             public void onAnimationRepeat(Animation animation) {
 
@@ -98,27 +115,30 @@ public class FolderWindow extends PopupWindow {
         });
     }
 
-    public static void setPopupWindowTouchModal(PopupWindow popupWindow,boolean touchModal) {
+    public static void setPopupWindowTouchModal(PopupWindow popupWindow, boolean touchModal) {
         if (null == popupWindow) {
             return;
         }
         Method method;
         try {
-            method = PopupWindow.class.getDeclaredMethod("setTouchModal",boolean.class);
+            method = PopupWindow.class.getDeclaredMethod("setTouchModal", boolean.class);
             method.setAccessible(true);
             method.invoke(popupWindow, touchModal);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public class ItemDivider extends RecyclerView.ItemDecoration {
         private Drawable mDrawable;
+
         public ItemDivider() {
             mDrawable = context.getResources().getDrawable(R.drawable.item_divider);
         }
+
         @Override
         public void onDrawOver(Canvas c, RecyclerView parent) {
-            final int left = ScreenUtils.dip2px(parent.getContext(),16);
+            final int left = ScreenUtils.dip2px(parent.getContext(), 16);
             final int right = parent.getWidth() - left;
 
             final int childCount = parent.getChildCount();

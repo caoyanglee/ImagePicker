@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.yongchun.library.view.ImagePreviewActivity;
 
@@ -56,24 +57,14 @@ public class ImagePreviewFragment extends BaseFragment {
                     }
                 });
 
-        photo_view.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
+        photo_view.setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
+            public void onPhotoTap(ImageView view, float x, float y) {
                 PhotoViewPagerActivity activity = (PhotoViewPagerActivity) getActivity();
                 activity.switchBarVisibility();
-                return true;
-            }
-
-            @Override
-            public boolean onDoubleTapEvent(MotionEvent e) {
-                return false;
             }
         });
+
     }
 
 }

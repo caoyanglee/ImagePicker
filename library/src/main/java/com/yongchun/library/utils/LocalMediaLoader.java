@@ -50,7 +50,7 @@ public class LocalMediaLoader {
         this.type = type;
     }
 
-    HashSet<String> mDirPaths = new HashSet<String>();//文件夹路径
+    private HashSet<String> mDirPaths = new HashSet<String>();//文件夹路径
 
     public void loadAllImage(final LocalMediaLoadListener imageLoadListener) {
         activity.getSupportLoaderManager().initLoader(type, null, new LoaderManager.LoaderCallbacks<Cursor>() {
@@ -74,7 +74,7 @@ public class LocalMediaLoader {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
                 ArrayList<LocalMediaFolder> imageFolders = new ArrayList<LocalMediaFolder>();//一组文件夹
-                LocalMediaFolder allImageFolder = new LocalMediaFolder();//文件夹
+                LocalMediaFolder allImageFolder = new LocalMediaFolder();//全部图片-文件夹
                 List<LocalMedia> allImages = new ArrayList<LocalMedia>();//图片
                 //while循环
                 while (data != null && data.moveToNext()) {

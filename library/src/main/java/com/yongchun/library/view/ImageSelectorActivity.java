@@ -3,7 +3,9 @@ package com.yongchun.library.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -51,7 +53,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     private boolean enablePreview = true;
     private boolean enableCrop = false;
 
-    private int spanCount = 3;
+    private int spanCount = 4;
     //ui
     private TextView doneText;
     private TextView previewText;
@@ -172,9 +174,15 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
             }
 
             @Override
-            public void onPictureClick(LocalMedia media, int position) {
+            public void onPictureClick(LocalMedia media, int position,View view) {
                 if (enablePreview) {
-                    startPreview(imageAdapter.getImages(), position);
+
+                    if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+                        startPreviewWithAnim(imageAdapter.getImages(),position,view);
+                    }else{
+                        startPreview(imageAdapter.getImages(), position);
+                    }
+
                 } else if (enableCrop) {
                     startCrop(media.getPath());
                 } else {
@@ -249,6 +257,11 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         File cameraFile = FileUtils.createCameraFile(this);
         cameraPath = cameraFile.getAbsolutePath();
         FileUtils.startActionCapture(this, cameraFile, REQUEST_CAMERA);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void startPreviewWithAnim(List<LocalMedia> previewImages, int position, View view) {
+        ImagePreviewActivity.startPreviewWithAnim(this, previewImages, imageAdapter.getSelectedImages(), maxSelectNum, position, view);
     }
 
     public void startPreview(List<LocalMedia> previewImages, int position) {
