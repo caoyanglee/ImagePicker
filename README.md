@@ -19,7 +19,7 @@ allprojects {
 [ ![Download](https://api.bintray.com/packages/yongdongji/android/imagepicker/images/download.svg) ](https://bintray.com/yongdongji/android/imagepicker/_latestVersion)
 
 ```gradle
-compile 'www.weimu.io:silentupdate:{version_code}@aar'
+compile 'www.weimu.io:imagepicker:{version_code}@aar'
 ```
 
 2.增加权限
