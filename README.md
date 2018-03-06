@@ -51,13 +51,12 @@ compile 'www.weimu.io:silentupdate:{version_code}@aar'
 
 1.打开图库
 ```java
-//默认调用
 ImagePicker.getInstance().pickImage(activity);
+```
 
-//多参数调用
-
+**多参数调用**
+```java
 /**
- * 参数解释
  *
  * @param activity
  * @param maxSelectNum 最大选择图片数          default=9
@@ -72,13 +71,12 @@ ImagePicker.getInstance().pickImage(activity, 9, ImageSelectorActivity.MODE_MULT
 
 2.直接拍张
 ```java
-//默认模式
 ImagePicker.getInstance().takePhoto(activity);
+```
 
-//多参数调用
-
+**多参数调用**
+```java
 /**
- * 参数解释
  *
  * @param activity
  * @param enableCrop 是否启用裁剪 default=false
