@@ -52,7 +52,7 @@ compile 'www.weimu.io:imagepicker:{version_code}@aar'
 
 ## 用法
 
-1.1打开图库
+1.1.打开图库
 ```java
 ImagePicker.getInstance().pickImage(activity);
 ```
