@@ -94,6 +94,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```
 ## 自定义配置
 1.主题设置
+
 主题由主项目color文件中的3个颜色进行定义
 ```xml
 <color name="colorPrimary">#52A6FF</color>
