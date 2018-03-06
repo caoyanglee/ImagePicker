@@ -51,12 +51,29 @@ compile 'www.weimu.io:silentupdate:{version_code}@aar'
 
 1.打开图库
 ```java
-ImagePicker.getInstance().pickImage(MainActivity.this, needNumber, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
+/**
+ * 参数解释
+ *
+ * @param activity
+ * @param maxSelectNum 最大选择图片数
+ * @param mode 图库模式【单选】【多选】
+ * @param enableCamera 是否启用摄像头
+ * @param enablePreview 是否打开预览
+ * @param enableCrop 是否进行裁剪【单选可用】
+ */
+ImagePicker.getInstance().pickImage(activity, needNumber, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
 ```
+
 
 2.直接拍张
 ```java
-ImagePicker.getInstance().takePhoto(MainActivity.this, true);
+/**
+ * 参数解释
+ *
+ * @param activity
+ * @param enableCrop 是否启用裁剪
+ */
+ImagePicker.getInstance().takePhoto(activity, true);
 ```
 
 接收结果信息
