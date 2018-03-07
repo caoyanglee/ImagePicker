@@ -7,7 +7,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 
+import com.weimu.library.R;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.model.LocalMediaFolder;
 
@@ -70,11 +72,14 @@ public class LocalMediaLoader {
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                if (data==null||data.isClosed())return;
+
                 ArrayList<LocalMediaFolder> imageFolders = new ArrayList<LocalMediaFolder>();//一组文件夹
                 LocalMediaFolder allImageFolder = new LocalMediaFolder();//全部图片-文件夹
                 List<LocalMedia> allImages = new ArrayList<LocalMedia>();//图片
+
                 //while循环
-                while (data != null && data.moveToNext()) {
+                while (data.moveToNext()) {
                     String path = data.getString(data.getColumnIndex(MediaStore.Images.Media.DATA));// 图片的路径
                     allImages.add(new LocalMedia(path));
 
@@ -137,7 +142,8 @@ public class LocalMediaLoader {
                 imageFolders.add(allImageFolder);
                 sortFolder(imageFolders);
                 imageLoadListener.loadComplete(imageFolders);
-                if (data != null) data.close();
+
+                data.close();
             }
 
             @Override
@@ -154,6 +160,8 @@ public class LocalMediaLoader {
                 if (lhs.getImages() == null || rhs.getImages() == null) {
                     return 0;
                 }
+                //默认升序
+                if (lhs.getName().equals(activity.getString(R.string.all_image))) return -1;
                 int lsize = lhs.getImageNum();
                 int rsize = rhs.getImageNum();
                 return lsize == rsize ? 0 : (lsize < rsize ? 1 : -1);

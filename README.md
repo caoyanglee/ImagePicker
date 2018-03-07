@@ -22,7 +22,15 @@ allprojects {
 [ ![Download](https://api.bintray.com/packages/yongdongji/android/imagepicker/images/download.svg) ](https://bintray.com/yongdongji/android/imagepicker/_latestVersion)
 
 ```gradle
-compile 'www.weimu.io:imagepicker:{version_code}@aar'
+implementation 'www.weimu.io:imagepicker:{version_code}@aar'
+//此aar所依赖的第三方
+implementation 'com.android.support:appcompat-v7:27.1.0'
+implementation 'com.android.support:recyclerview-v7:27.1.0'
+implementation 'com.android.support:design:27.1.0'
+implementation 'com.github.bumptech.glide:glide:4.6.1'
+annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
+implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+implementation 'com.isseiaoki:simplecropview:1.1.7'
 ```
 
 2.增加权限

@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.Image;
 import android.net.Uri;
 import android.opengl.GLES10;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.isseiaoki.simplecropview.CropImageView;
 import com.weimu.library.R;
 import com.weimu.library.utils.CropUtil;
@@ -32,6 +35,7 @@ public class ImageCropActivity extends SelectorBaseActivity {
     private static final int SIZE_DEFAULT = 2048;
     private static final int SIZE_LIMIT = 4096;
 
+    private ImageView ivBg;
     private TextView doneText;
     private CropImageView cropImageView;
 
@@ -64,7 +68,8 @@ public class ImageCropActivity extends SelectorBaseActivity {
         sourceUri = Uri.fromFile(new File(path));
         //findview
         doneText = (TextView) findViewById(R.id.done_text);
-        cropImageView = (CropImageView) findViewById(R.id.cropImageView);
+        cropImageView =  (CropImageView)findViewById(R.id.cropImageView);
+        ivBg=(ImageView) findViewById(R.id.iv_bg);
         //crop setup
         cropImageView.setHandleSizeInDp(8);//设置裁剪四周小圆球的大小
         cropImageView.setFrameStrokeWeightInDp(1);
@@ -74,6 +79,9 @@ public class ImageCropActivity extends SelectorBaseActivity {
     }
 
     public void initView() {
+        toolbar.setTitle(R.string.crop_picture);
+
+        Glide.with(this).asBitmap().load(sourceUri).into(ivBg);
         //获取源图片的旋转角度
         int exifRotation = CropUtil.getExifRotation(CropUtil.getFromMediaUri(this, getContentResolver(), sourceUri));
 

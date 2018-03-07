@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.weimu.library.R;
@@ -43,16 +45,18 @@ public class ImagePreviewFragment extends Fragment {
     private void initView(ViewGroup container, View contentView) {
         photo_view = (PhotoView) contentView.findViewById(R.id.photo_view);
 
-
         Glide.with(container.getContext())
-                .load(new File(getArguments().getString(PATH)))
                 .asBitmap()
+                .load(getArguments().getString(PATH))
+                .apply(new RequestOptions().centerCrop())
+                .transition(BitmapTransitionOptions.withCrossFade())
                 .into(new SimpleTarget<Bitmap>(480, 800) {
                     @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                         photo_view.setImageBitmap(resource);
                     }
                 });
+
         photo_view.setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override
             public void onPhotoTap(ImageView view, float x, float y) {

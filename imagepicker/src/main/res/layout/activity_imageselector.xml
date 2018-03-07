@@ -34,10 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingBottom="48dp"
-            android:paddingLeft="2dp"
             android:fadingEdge="none"
             android:overScrollMode="never"
+            android:paddingBottom="48dp"
+            android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:scrollbars="vertical" />
 
@@ -88,6 +88,5 @@
                 android:textSize="@dimen/middle_text_size" />
         </RelativeLayout>
     </RelativeLayout>
-
 
 </LinearLayout>

@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.AddListenter(new ImageGridadapter.AddListenter() {
             @Override
             public void onAddClick(int needNumber) {
+//                ImagePicker.getInstance().pickAvatar(MainActivity.this);
                 ImagePicker.getInstance().pickImage(MainActivity.this);
                 //ImagePicker.getInstance().takePhoto(MainActivity.this,true);//使用摄像头
             }

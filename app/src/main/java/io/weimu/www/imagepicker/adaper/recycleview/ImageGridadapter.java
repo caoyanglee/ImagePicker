@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -68,7 +69,7 @@ public class ImageGridadapter extends BaseRecycerAdapter<String> {
     protected void ItemVIewChange(BaseRecyclerViewHolder recyclerholder, final int position) {
         ViewHolder holder = (ViewHolder) recyclerholder;
         final String imgURL = getItem(position);
-        Glide.with(mContext).load(imgURL).asBitmap().into(holder.iv_cover);
+        Glide.with(mContext).asBitmap().load(imgURL).into(holder.iv_cover);
         //点击事件
         if (addListenter != null) {
             holder.iv_cover.setOnClickListener(new View.OnClickListener() {

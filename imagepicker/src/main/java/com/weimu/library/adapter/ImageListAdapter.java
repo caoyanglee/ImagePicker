@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.weimu.library.R;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.view.ImageSelectorActivity;
@@ -94,12 +96,11 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             final LocalMedia image = images.get(showCamera ? position - 1 : position);
 
             Glide.with(context)
+                    .asBitmap()
                     .load(new File(image.getPath()))
-                    .centerCrop()
+                    .apply(new RequestOptions().centerCrop().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
+                    .transition(BitmapTransitionOptions.withCrossFade())
                     .thumbnail(0.5f)
-                    .placeholder(R.drawable.image_placeholder)
-                    .error(R.drawable.image_placeholder)
-                    .dontAnimate()
                     .into(contentHolder.picture);
 
             if (selectMode == ImageSelectorActivity.MODE_SINGLE) {

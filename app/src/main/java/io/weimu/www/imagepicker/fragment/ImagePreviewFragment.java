@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -44,11 +46,13 @@ public class ImagePreviewFragment extends BaseFragment {
     protected void onGenerate() {
 
         Glide.with(mContext)
-                .load(getArguments().getString(PATH))
                 .asBitmap()
+                .load(getArguments().getString(PATH))
+                .apply(new RequestOptions().centerCrop())
+                .transition(BitmapTransitionOptions.withCrossFade())
                 .into(new SimpleTarget<Bitmap>(480, 800) {
                     @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                         photo_view.setImageBitmap(resource);
                     }
                 });

@@ -1,6 +1,7 @@
 package com.weimu.library.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.weimu.library.R;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.model.LocalMediaFolder;
@@ -42,12 +47,14 @@ public class ImageFolderAdapter extends RecyclerView.Adapter<ImageFolderAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final LocalMediaFolder folder = folders.get(position);
+
         Glide.with(context)
+                .asBitmap()
                 .load(new File(folder.getFirstImagePath()))
-                .placeholder(R.mipmap.ic_placeholder)
-                .error(R.mipmap.ic_placeholder)
-                .centerCrop()
+                .apply(new RequestOptions().centerCrop())
+                .transition(BitmapTransitionOptions.withCrossFade())
                 .into(holder.firstImage);
+
         holder.folderName.setText(folder.getName());
         holder.imageNum.setText(context.getString(R.string.num_postfix,folder.getImageNum()));
 

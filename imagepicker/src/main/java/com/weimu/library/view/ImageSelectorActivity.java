@@ -1,6 +1,8 @@
 package com.weimu.library.view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -102,6 +105,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         registerListener();
 
         ///load data
+        Log.e("weimu","load media");
         new LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage(new LocalMediaLoader.LocalMediaLoadListener() {
 
             @Override
@@ -174,17 +178,21 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
             }
 
             @Override
-            public void onPictureClick(LocalMedia media, int position,View view) {
+            public void onPictureClick(LocalMedia media, int position, View view) {
                 if (enablePreview) {
 
-                    if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
-                        startPreviewWithAnim(imageAdapter.getImages(),position,view);
-                    }else{
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        startPreviewWithAnim(imageAdapter.getImages(), position, view);
+                    } else {
                         startPreview(imageAdapter.getImages(), position);
                     }
 
                 } else if (enableCrop) {
-                    startCrop(media.getPath());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        startCropWithAnim(media.getPath(), view);
+                    } else {
+                        startCrop(media.getPath());
+                    }
                 } else {
                     onSelectDone(media.getPath());
                 }
@@ -247,6 +255,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putString(BUNDLE_CAMERA_PATH, cameraPath);
     }
 
@@ -266,6 +275,13 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     public void startPreview(List<LocalMedia> previewImages, int position) {
         ImagePreviewActivity.startPreview(this, previewImages, imageAdapter.getSelectedImages(), maxSelectNum, position);
+    }
+
+    @SuppressLint("RestrictedApi")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void startCropWithAnim(String path, View view) {
+        startActivityForResult(ImageCropActivity.newIntent(this, path), ImageCropActivity.REQUEST_CROP,
+                ActivityOptions.makeSceneTransitionAnimation(this, view, "share_image").toBundle());
     }
 
     public void startCrop(String path) {
@@ -293,6 +309,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     public void onResult(ArrayList<String> images) {
         setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, images));
-        onBackPressed();
+       finish();
     }
 }
