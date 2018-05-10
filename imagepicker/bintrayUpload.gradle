@@ -34,6 +34,7 @@ def javadocName = properties.getProperty("javadoc.name")
 
 group = projectGroupId
 
+
 // This generates POM.xml with proper parameters
 install {
     repositories.mavenInstaller {

@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".ImageAppData"
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true">
@@ -21,7 +22,7 @@
             android:name="com.weimu.library.view.ImageCropActivity"
             android:theme="@style/MainAppTheme" />
 
-        <activity android:name="com.weimu.library.view.CameraSelectorActivity"/>
+        <activity android:name="com.weimu.library.view.CameraSelectorActivity" />
     </application>
 
 </manifest>

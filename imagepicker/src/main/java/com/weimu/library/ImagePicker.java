@@ -33,6 +33,10 @@ public class ImagePicker {
         ImageSelectorActivity.start(activity, 9, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
     }
 
+    public void pickImage(Activity activity, int selectNum) {
+        ImageSelectorActivity.start(activity, selectNum, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
+    }
+
     /**
      * 打开图库
      *

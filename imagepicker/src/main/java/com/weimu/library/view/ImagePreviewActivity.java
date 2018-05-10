@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.weimu.library.ImageAppData;
 import com.weimu.library.R;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.widget.PreviewViewPager;
@@ -28,7 +29,6 @@ import java.util.List;
 
 public class ImagePreviewActivity extends SelectorBaseActivity {
     public static final int REQUEST_PREVIEW = 68;
-    public static final String EXTRA_PREVIEW_LIST = "previewList";
     public static final String EXTRA_PREVIEW_SELECT_LIST = "previewSelectList";
     public static final String EXTRA_MAX_SELECT_NUM = "maxSelectNum";
     public static final String EXTRA_POSITION = "position";
@@ -54,8 +54,8 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
 
     public static void startPreview(Activity context, List<LocalMedia> images, List<LocalMedia> selectImages, int maxSelectNum, int position) {
         Intent intent = new Intent(context, ImagePreviewActivity.class);
-        intent.putExtra(EXTRA_PREVIEW_LIST, (ArrayList) images);
-        intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, (ArrayList) selectImages);
+        intent.putParcelableArrayListExtra(EXTRA_PREVIEW_SELECT_LIST, (ArrayList) selectImages);
+
         intent.putExtra(EXTRA_POSITION, position);
         intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum);
         context.startActivityForResult(intent, REQUEST_PREVIEW);
@@ -65,11 +65,11 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static void startPreviewWithAnim(Activity context, List<LocalMedia> images, List<LocalMedia> selectImages, int maxSelectNum, int position, View view) {
         Intent intent = new Intent(context, ImagePreviewActivity.class);
-        intent.putExtra(EXTRA_PREVIEW_LIST, (ArrayList) images);
-        intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, (ArrayList) selectImages);
+        intent.putParcelableArrayListExtra(EXTRA_PREVIEW_SELECT_LIST, (ArrayList) selectImages);
+
         intent.putExtra(EXTRA_POSITION, position);
         intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(context, view, "share_image").toBundle());
+        context.startActivityForResult(intent, REQUEST_PREVIEW, ActivityOptions.makeSceneTransitionAnimation(context, view, "share_image").toBundle());
     }
 
 
@@ -82,8 +82,9 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
     }
 
     public void initView() {
-        images = (List<LocalMedia>) getIntent().getSerializableExtra(EXTRA_PREVIEW_LIST);
-        selectImages = (List<LocalMedia>) getIntent().getSerializableExtra(EXTRA_PREVIEW_SELECT_LIST);
+        //images = getIntent().getParcelableArrayListExtra(EXTRA_PREVIEW_LIST);
+        images = ((ImageAppData) getApplication()).getChooseImages();
+        selectImages = getIntent().getParcelableArrayListExtra(EXTRA_PREVIEW_SELECT_LIST);
         maxSelectNum = getIntent().getIntExtra(EXTRA_MAX_SELECT_NUM, 9);
         position = getIntent().getIntExtra(EXTRA_POSITION, 1);
 

@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.weimu.library.ImageAppData;
 import com.weimu.library.R;
 import com.weimu.library.adapter.ImageFolderAdapter;
 import com.weimu.library.adapter.ImageListAdapter;
@@ -105,16 +106,18 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         registerListener();
 
         ///load data
-        Log.e("weimu","load media");
+        Log.e("weimu", "load media");
         new LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage(new LocalMediaLoader.LocalMediaLoadListener() {
 
             @Override
             public void loadComplete(List<LocalMediaFolder> folders) {
                 allFolders = folders;
                 folderWindow.bindFolder(allFolders);
+                //load all images first
                 imageAdapter.bindImages(allFolders.get(0).getImages());
             }
         });
+
     }
 
     public void initView() {
@@ -309,6 +312,13 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     public void onResult(ArrayList<String> images) {
         setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, images));
-       finish();
+        finish();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ((ImageAppData) getApplication()).clearImages();
     }
 }

@@ -77,7 +77,7 @@ public class FileUtils {
         }
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            String auth = context.getPackageName() + "fileprovider";
+            String auth = context.getPackageName() + ".fileprovider";
             uri = FileProvider.getUriForFile(context.getApplicationContext(), auth, file);
         } else {
             uri = Uri.fromFile(file);

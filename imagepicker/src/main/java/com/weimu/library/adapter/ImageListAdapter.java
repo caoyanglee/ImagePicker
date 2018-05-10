@@ -1,6 +1,7 @@
 package com.weimu.library.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.weimu.library.ImageAppData;
 import com.weimu.library.R;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.view.ImageSelectorActivity;
@@ -47,6 +49,8 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void bindImages(List<LocalMedia> images) {
+        //讲选中的集合引用 给到appData
+        ((ImageAppData) ((Activity) context).getApplication()).setChooseImages(images);
         this.images = images;
         notifyDataSetChanged();
     }
@@ -122,7 +126,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 @Override
                 public void onClick(View v) {
                     if ((selectMode == ImageSelectorActivity.MODE_SINGLE || enablePreview) && imageSelectChangedListener != null) {
-                        imageSelectChangedListener.onPictureClick(image, showCamera ? position - 1 : position,((ViewHolder) holder).picture);
+                        imageSelectChangedListener.onPictureClick(image, showCamera ? position - 1 : position, ((ViewHolder) holder).picture);
                     } else {
                         changeCheckboxState(contentHolder, image);
                     }
@@ -180,9 +184,9 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.check.setSelected(isChecked);
         if (isChecked) {
 
-            holder.picture.setColorFilter(ContextCompat.getColor(context,R.color.image_overlay2), PorterDuff.Mode.SRC_ATOP);
+            holder.picture.setColorFilter(ContextCompat.getColor(context, R.color.image_overlay2), PorterDuff.Mode.SRC_ATOP);
         } else {
-            holder.picture.setColorFilter(ContextCompat.getColor(context,R.color.image_overlay), PorterDuff.Mode.SRC_ATOP);
+            holder.picture.setColorFilter(ContextCompat.getColor(context, R.color.image_overlay), PorterDuff.Mode.SRC_ATOP);
         }
     }
 
@@ -215,7 +219,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         void onTakePhoto();
 
-        void onPictureClick(LocalMedia media, int position,View view);
+        void onPictureClick(LocalMedia media, int position, View view);
     }
 
     public void setOnImageSelectChangedListener(OnImageSelectChangedListener imageSelectChangedListener) {

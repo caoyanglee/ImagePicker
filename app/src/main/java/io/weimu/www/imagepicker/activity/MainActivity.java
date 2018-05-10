@@ -1,11 +1,13 @@
 package io.weimu.www.imagepicker.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.weimu.library.ImagePicker;
 import com.weimu.library.utils.GridSpacingItemDecoration;
 import com.weimu.library.utils.ScreenUtils;
@@ -13,6 +15,7 @@ import com.weimu.library.view.ImageSelectorActivity;
 
 import java.util.ArrayList;
 
+import io.reactivex.functions.Consumer;
 import io.weimu.www.imagepicker.R;
 import io.weimu.www.imagepicker.adaper.recycleview.ImageGridadapter;
 
@@ -31,7 +34,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initRecyclerVIew();
+        new RxPermissions(this)
+                .request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean granted) throws Exception {
+                        if (granted)
+                            initRecyclerVIew();
+
+                    }
+                });
+
+
     }
 
     private void initRecyclerVIew() {
@@ -47,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.AddListenter(new ImageGridadapter.AddListenter() {
             @Override
             public void onAddClick(int needNumber) {
-//                ImagePicker.getInstance().pickAvatar(MainActivity.this);
-                ImagePicker.getInstance().pickImage(MainActivity.this);
+                //ImagePicker.getInstance().pickAvatar(MainActivity.this);
+                ImagePicker.getInstance().pickImage(MainActivity.this, 3);
                 //ImagePicker.getInstance().takePhoto(MainActivity.this,true);//使用摄像头
             }
 
