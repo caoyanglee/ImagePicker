@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.weimu.library.ImageAppData;
+import com.weimu.library.ImageHolder;
 import com.weimu.library.R;
 import com.weimu.library.adapter.ImageFolderAdapter;
 import com.weimu.library.adapter.ImageListAdapter;
@@ -319,6 +319,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((ImageAppData) getApplication()).clearImages();
+        ImageHolder.clearImages();
     }
 }

@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.weimu.library.ImageAppData;
+import com.weimu.library.ImageHolder;
 import com.weimu.library.R;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.widget.PreviewViewPager;
@@ -83,7 +83,7 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
 
     public void initView() {
         //images = getIntent().getParcelableArrayListExtra(EXTRA_PREVIEW_LIST);
-        images = ((ImageAppData) getApplication()).getChooseImages();
+        images = ImageHolder.getChooseImages();
         selectImages = getIntent().getParcelableArrayListExtra(EXTRA_PREVIEW_SELECT_LIST);
         maxSelectNum = getIntent().getIntExtra(EXTRA_MAX_SELECT_NUM, 9);
         position = getIntent().getIntExtra(EXTRA_POSITION, 1);
