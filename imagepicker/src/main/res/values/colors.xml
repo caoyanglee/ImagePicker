@@ -17,6 +17,7 @@
     <color name="black">#000000</color>
     <color name="black_alpha10">#19000000</color>
     <color name="black_alpha20">#33000000</color>
+    <color name="black_alpha50">#7f000000</color>
     <color name="black_alpha80">#CC000000</color>
 
 </resources>

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center_vertical"
-    android:background="@color/content_grey">
+    android:background="@color/black_alpha50">
     <ImageView
         android:id="@+id/camera"
         android:layout_width="wrap_content"
