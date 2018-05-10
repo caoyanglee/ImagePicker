@@ -32,9 +32,4 @@ public class ImageAppData extends Application {
 
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.e("weimu", "ImageAppData");
-    }
 }
