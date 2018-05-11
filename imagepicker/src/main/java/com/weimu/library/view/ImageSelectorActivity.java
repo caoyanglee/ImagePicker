@@ -20,6 +20,8 @@ import com.weimu.library.ImageHolder;
 import com.weimu.library.R;
 import com.weimu.library.adapter.ImageFolderAdapter;
 import com.weimu.library.adapter.ImageListAdapter;
+import com.weimu.library.core.StatusManager;
+import com.weimu.library.core.ToolBarManager;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.model.LocalMediaFolder;
 import com.weimu.library.utils.FileUtils;
@@ -59,7 +61,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     private int spanCount = 4;
     //ui
-    private TextView doneText;
     private TextView previewText;
     private RecyclerView recyclerView;
     private ImageListAdapter imageAdapter;
@@ -81,6 +82,9 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         intent.putExtra(EXTRA_ENABLE_CROP, enableCrop);
         activity.startActivityForResult(intent, REQUEST_IMAGE);
     }
+
+    private ToolBarManager toolBarManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,13 +125,31 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     }
 
     public void initView() {
+        StatusManager.getInstance().setColor(this,R.color.white);
+        toolBarManager = ToolBarManager.with(this, getContentView())
+                .setBackgroundColor(R.color.white)
+                .setTitle("选择图片")
+                .setNavigationIcon(R.drawable.toolbar_arrow_back_black)
+                .setMenuTextContent(getString(R.string.done))
+                .setMenuTextColors(R.color.black_text_selector)
+                .setMenuTextEnable(false)
+                .setMenuTextClick(new ToolBarManager.OnMenuTextClickListener() {
+                    @Override
+                    public void onMenuTextClick() {
+                        //点击完成
+                        onSelectDone(imageAdapter.getSelectedImages());
+                    }
+                });
+
+
         folderWindow = new FolderWindow(this);
 
-        toolbar.setTitle(R.string.picture);
-
-        doneText = (TextView) findViewById(R.id.done_text);
-        doneText.setVisibility(selectMode == MODE_MULTIPLE ? View.VISIBLE : View.GONE);
-
+        //todo 完成按钮
+        if (selectMode == MODE_MULTIPLE) {
+            toolBarManager.setMenuTextContent(getString(R.string.done));
+        } else {
+            toolBarManager.setMenuTextContent("");
+        }
         previewText = (TextView) findViewById(R.id.preview_text);
         previewText.setVisibility(enablePreview ? View.VISIBLE : View.GONE);
 
@@ -164,13 +186,13 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
             @Override
             public void onChange(List<LocalMedia> selectImages) {
                 boolean enable = selectImages.size() != 0;
-                doneText.setEnabled(enable ? true : false);
-                previewText.setEnabled(enable ? true : false);
+                toolBarManager.setMenuTextEnable(enable);
+                previewText.setEnabled(enable);
                 if (enable) {
-                    doneText.setText(getString(R.string.done_num, selectImages.size() + "", maxSelectNum + ""));
+                    toolBarManager.setMenuTextContent(getString(R.string.done_num, selectImages.size() + "", maxSelectNum + ""));
                     previewText.setText(getString(R.string.preview_num, selectImages.size() + ""));
                 } else {
-                    doneText.setText(R.string.done);
+                    toolBarManager.setMenuTextContent(getString(R.string.done));
                     previewText.setText(R.string.preview);
                 }
             }
@@ -199,12 +221,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
                 } else {
                     onSelectDone(media.getPath());
                 }
-            }
-        });
-        doneText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSelectDone(imageAdapter.getSelectedImages());
             }
         });
         //点击某个文件件
@@ -310,6 +326,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         onResult(images);
     }
 
+    //返回图片
     public void onResult(ArrayList<String> images) {
         setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, images));
         finish();

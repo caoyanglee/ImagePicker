@@ -9,13 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.weimu.library.R;
 
 
-public class SelectorBaseActivity extends AppCompatActivity {
+public class SelectorBaseActivity extends AppCompatActivity implements BaseView {
     protected Toolbar toolbar;
-
+    private ViewGroup contentView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,9 +27,9 @@ public class SelectorBaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-
+        contentView = getWindow().getDecorView().findViewById(android.R.id.content);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar==null) return;
+        if (toolbar == null) return;
         //setup
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -44,9 +45,6 @@ public class SelectorBaseActivity extends AppCompatActivity {
     }
 
 
-
-
-
     /**
      * TollBar】默认左上角为返回，若有特殊需求请覆盖此方法
      */
@@ -58,5 +56,11 @@ public class SelectorBaseActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //获取内容视图
+    @Override
+    public ViewGroup getContentView() {
+        return contentView;
     }
 }

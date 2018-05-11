@@ -13,7 +13,7 @@
         android:supportsRtl="true">
         <activity
             android:name="com.weimu.library.view.ImageSelectorActivity"
-            android:theme="@style/MainAppTheme" />
+            android:theme="@style/BasePageTheme" />
         <activity
             android:name="com.weimu.library.view.ImagePreviewActivity"
             android:theme="@style/MainAppTheme" />

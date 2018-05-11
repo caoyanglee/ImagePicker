@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="all_image">所有图片</string>
-    <string name="picture">选择图片</string>
     <string name="take_picture">拍摄照片</string>
     <string name="preview">预览</string>
     <string name="preview_num">预览(%1$s)</string>
