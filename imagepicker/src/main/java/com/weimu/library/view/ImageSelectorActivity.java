@@ -3,6 +3,8 @@ package com.weimu.library.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -12,7 +14,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +37,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
+
 
 public class ImageSelectorActivity extends SelectorBaseActivity {
     public final static int REQUEST_IMAGE = 66;
@@ -49,7 +56,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     public final static String EXTRA_ENABLE_PREVIEW = "EnablePreview";//是否需要预览
     public final static String EXTRA_ENABLE_CROP = "EnableCrop";//是否需要裁剪
 
-
     public final static int MODE_MULTIPLE = 1;
     public final static int MODE_SINGLE = 2;
 
@@ -61,17 +67,20 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     private int spanCount = 4;
     //ui
-    private TextView previewText;
     private RecyclerView recyclerView;
     private ImageListAdapter imageAdapter;
     private LinearLayout folderLayout;
     private TextView folderName;
     private FolderWindow folderWindow;
-
+    private CheckBox cbOrigin;
+    private ToolBarManager toolBarManager;
 
     private String cameraPath;
 
     private List<LocalMediaFolder> allFolders;//所有图片文件夹
+
+    private boolean needCompress = true;//是否要压缩
+
 
     public static void start(Activity activity, int maxSelectNum, int mode, boolean enableCamera, boolean enablePreview, boolean enableCrop) {
         Intent intent = new Intent(activity, ImageSelectorActivity.class);
@@ -82,8 +91,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         intent.putExtra(EXTRA_ENABLE_CROP, enableCrop);
         activity.startActivityForResult(intent, REQUEST_IMAGE);
     }
-
-    private ToolBarManager toolBarManager;
 
 
     @Override
@@ -125,7 +132,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     }
 
     public void initView() {
-        StatusManager.getInstance().setColor(this,R.color.white);
+        StatusManager.getInstance().setColor(this, R.color.white);
         toolBarManager = ToolBarManager.with(this, getContentView())
                 .setBackgroundColor(R.color.white)
                 .setTitle("选择图片")
@@ -150,8 +157,14 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         } else {
             toolBarManager.setMenuTextContent("");
         }
-        previewText = (TextView) findViewById(R.id.preview_text);
-        previewText.setVisibility(enablePreview ? View.VISIBLE : View.GONE);
+        //是否使用原图
+        cbOrigin = findViewById(R.id.cb_origin);
+        cbOrigin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                needCompress = !cbOrigin.isChecked();
+            }
+        });
 
         folderLayout = (LinearLayout) findViewById(R.id.folder_layout);
         folderName = (TextView) findViewById(R.id.folder_name);
@@ -177,7 +190,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
                 if (folderWindow.isShowing()) {
                     folderWindow.dismiss();
                 } else {
-                    folderWindow.showAsDropDown(toolbar);
+                    folderWindow.showAsDropDown(toolBarManager.getToolBarView());
                 }
             }
         });
@@ -187,13 +200,10 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
             public void onChange(List<LocalMedia> selectImages) {
                 boolean enable = selectImages.size() != 0;
                 toolBarManager.setMenuTextEnable(enable);
-                previewText.setEnabled(enable);
                 if (enable) {
                     toolBarManager.setMenuTextContent(getString(R.string.done_num, selectImages.size() + "", maxSelectNum + ""));
-                    previewText.setText(getString(R.string.preview_num, selectImages.size() + ""));
                 } else {
                     toolBarManager.setMenuTextContent(getString(R.string.done));
-                    previewText.setText(R.string.preview);
                 }
             }
 
@@ -231,12 +241,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
                 imageAdapter.bindImages(images);
                 folderName.setText(name);
                 recyclerView.smoothScrollToPosition(0);
-            }
-        });
-        previewText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startPreview(imageAdapter.getSelectedImages(), 0);
             }
         });
     }
@@ -328,8 +332,43 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     //返回图片
     public void onResult(ArrayList<String> images) {
-        setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, images));
-        finish();
+        if (needCompress){
+            compressImage(images);
+        }else{
+            setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, images));
+            finish();
+        }
+    }
+
+    //压缩图片
+    private void compressImage(final ArrayList<String> photos) {
+        Toast.makeText(this, "压缩中...", Toast.LENGTH_SHORT).show();
+        final List<String> newImageList = new ArrayList<>();
+        Luban.with(this)
+                .load(photos)                                   // 传人要压缩的图片列表
+                .ignoreBy(100)                                  // 忽略不压缩图片的大小
+                .setCompressListener(new OnCompressListener() { //设置回调
+                    @Override
+                    public void onStart() {
+                        Log.d("weimu", "开始压缩");
+                    }
+
+                    @Override
+                    public void onSuccess(File file) {
+                        Log.d("weimu", "压缩成功 地址为：" + file.toString());
+                        newImageList.add(file.toString());
+                        //所有图片压缩成功
+                        if (newImageList.size() == photos.size()) {
+                            setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, photos));
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+                }).launch();    //启动压缩
     }
 
 

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.isseiaoki.simplecropview.CropImageView;
 import com.weimu.library.R;
+import com.weimu.library.core.StatusManager;
+import com.weimu.library.core.ToolBarManager;
 import com.weimu.library.utils.CropUtil;
 import com.weimu.library.utils.FileUtils;
 
@@ -36,7 +38,6 @@ public class ImageCropActivity extends SelectorBaseActivity {
     private static final int SIZE_LIMIT = 4096;
 
     private ImageView ivBg;
-    private TextView doneText;
     private CropImageView cropImageView;
 
 
@@ -45,6 +46,7 @@ public class ImageCropActivity extends SelectorBaseActivity {
 
     private final Handler handler = new Handler();
 
+    private ToolBarManager toolBarManager;
 
     public static Intent newIntent(Context context, String path) {
         Intent intent = new Intent(context, ImageCropActivity.class);
@@ -59,15 +61,12 @@ public class ImageCropActivity extends SelectorBaseActivity {
         setContentView(R.layout.activity_image_crop);
         initBase();
         initView();
-        registerListener();
     }
 
     private void initBase() {
         //data
         String path = getIntent().getStringExtra(DATA_EXTRA_PATH);
         sourceUri = Uri.fromFile(new File(path));
-        //findview
-        doneText = (TextView) findViewById(R.id.done_text);
         cropImageView =  (CropImageView)findViewById(R.id.cropImageView);
         ivBg=(ImageView) findViewById(R.id.iv_bg);
         //crop setup
@@ -79,7 +78,25 @@ public class ImageCropActivity extends SelectorBaseActivity {
     }
 
     public void initView() {
-        toolbar.setTitle(R.string.crop_picture);
+
+
+        StatusManager.getInstance().setColor(this, R.color.white);
+        toolBarManager = ToolBarManager.with(this, getContentView())
+                .setBackgroundColor(R.color.white)
+                .setTitle(getString(R.string.crop_picture))
+                .setNavigationIcon(R.drawable.toolbar_arrow_back_black)
+                .setMenuTextContent(getString(R.string.use))
+                .setMenuTextColors(R.color.black_text_selector)
+                .setMenuTextEnable(true)
+                .setMenuTextClick(new ToolBarManager.OnMenuTextClickListener() {
+                    @Override
+                    public void onMenuTextClick() {
+                        //点击完成
+                        //ProgressDialog.show(ImageCropActivity.this, null, getString(R.string.save_ing), true, false);
+                        saveUri = Uri.fromFile(FileUtils.createCropFile(ImageCropActivity.this));
+                        saveOutput(cropImageView.getCroppedBitmap());
+                    }
+                });
 
         Glide.with(this).asBitmap().load(sourceUri).into(ivBg);
         //获取源图片的旋转角度
@@ -106,16 +123,7 @@ public class ImageCropActivity extends SelectorBaseActivity {
     }
 
 
-    public void registerListener() {
-        doneText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //ProgressDialog.show(ImageCropActivity.this, null, getString(R.string.save_ing), true, false);
-                saveUri = Uri.fromFile(FileUtils.createCropFile(ImageCropActivity.this));
-                saveOutput(cropImageView.getCroppedBitmap());
-            }
-        });
-    }
+
 
     public Matrix getRotateMatrix(Bitmap bitmap, int rotation) {
         Matrix matrix = new Matrix();

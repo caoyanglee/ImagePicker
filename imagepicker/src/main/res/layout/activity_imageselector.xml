@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/bar_height"
             android:layout_alignParentBottom="true"
-            android:background="@color/white"
+            android:background="@color/bar_grey_50"
             android:gravity="center_vertical">
 
             <LinearLayout
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/all_image"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/middle_text_size" />
 
                 <ImageView
@@ -56,18 +56,24 @@
                     android:src="@mipmap/ic_arrow" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/preview_text"
+            <CheckBox
+                android:id="@+id/cb_origin"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:enabled="false"
+                android:button="@drawable/image_preview_check_circle_selector"
                 android:gravity="center"
-                android:paddingLeft="@dimen/margin_layout"
-                android:paddingRight="@dimen/margin_layout"
-                android:text="@string/preview"
-                android:textColor="@color/black_text_selector"
+                android:paddingLeft="8dp"
+                android:paddingRight="16dp"
+                android:text="@string/origin_image"
+                android:textColor="@color/white"
                 android:textSize="@dimen/middle_text_size" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/black_alpha20" />
         </RelativeLayout>
     </RelativeLayout>
 

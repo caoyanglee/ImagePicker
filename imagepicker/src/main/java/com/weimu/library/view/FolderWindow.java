@@ -35,14 +35,23 @@ public class FolderWindow extends PopupWindow {
     public FolderWindow(Context context) {
         this.context = context;
         window = LayoutInflater.from(context).inflate(R.layout.window_folder, null);
+        View view = window.findViewById(R.id.lin_parent);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         this.setContentView(window);
         this.setWidth(ScreenUtils.getScreenWidth(context));
         this.setHeight(ScreenUtils.getScreenHeight(context) - ScreenUtils.dip2px(context, 96));
         this.setAnimationStyle(R.style.WindowStyle);
         this.setFocusable(true);
         this.setOutsideTouchable(true);
+        this.setClippingEnabled(false);
         this.update();
         this.setBackgroundDrawable(new ColorDrawable(Color.argb(153, 0, 0, 0)));
+
 
         initView();
         registerListener();

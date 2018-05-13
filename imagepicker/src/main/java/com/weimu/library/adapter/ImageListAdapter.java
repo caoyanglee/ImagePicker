@@ -108,13 +108,13 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     .into(contentHolder.picture);
 
             if (selectMode == ImageSelectorActivity.MODE_SINGLE) {
-                contentHolder.check.setVisibility(View.GONE);
+                contentHolder.ivCheckCircle.setVisibility(View.GONE);
             }
 
             selectImage(contentHolder, isSelected(image));
 
             if (enablePreview) {
-                contentHolder.check.setOnClickListener(new View.OnClickListener() {
+                contentHolder.ivCheckCircle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         changeCheckboxState(contentHolder, image);
@@ -142,7 +142,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @SuppressLint("StringFormatMatches")
     private void changeCheckboxState(ViewHolder contentHolder, LocalMedia image) {
-        boolean isChecked = contentHolder.check.isSelected();
+        boolean isChecked = contentHolder.ivCheckCircle.isSelected();
         if (selectImages.size() >= maxSelectNum && !isChecked) {
             Toast.makeText(context, context.getString(R.string.message_max_num, maxSelectNum), Toast.LENGTH_LONG).show();
             return;
@@ -181,7 +181,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void selectImage(ViewHolder holder, boolean isChecked) {
-        holder.check.setSelected(isChecked);
+        holder.ivCheckCircle.setSelected(isChecked);
         if (isChecked) {
 
             holder.picture.setColorFilter(ContextCompat.getColor(context, R.color.image_overlay2), PorterDuff.Mode.SRC_ATOP);
@@ -201,15 +201,15 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView picture;
-        ImageView check;
+        ImageView ivCheckCircle;
 
         View contentView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             contentView = itemView;
-            picture = (ImageView) itemView.findViewById(R.id.picture);
-            check = (ImageView) itemView.findViewById(R.id.check);
+            picture = itemView.findViewById(R.id.picture);
+            ivCheckCircle = itemView.findViewById(R.id.iv_check_circle);
         }
 
     }

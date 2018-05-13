@@ -2,33 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/ToolBarTheme">
+    <include layout="@layout/toolbar_primary" />
 
-        <TextView
-            android:id="@+id/done_text"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/btn_height"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/margin_text"
-            android:layout_marginRight="@dimen/margin_text"
-            android:background="@drawable/btn_round_green_selector"
-            android:enabled="false"
-            android:gravity="center"
-            android:text="@string/done"
-            android:textColor="@color/white_text_selector"
-            android:textSize="@dimen/middle_text_size" />
-    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
 
         <com.weimu.library.widget.PreviewViewPager
@@ -52,10 +33,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:button="@drawable/checkbox_checktor"
+                android:button="@drawable/image_preview_check_circle_selector"
                 android:gravity="center"
-                android:paddingLeft="@dimen/margin_text"
-                android:paddingRight="@dimen/margin_layout"
+                android:paddingLeft="8dp"
+                android:paddingRight="16dp"
                 android:text="@string/choose"
                 android:textColor="@color/white"
                 android:textSize="@dimen/middle_text_size" />

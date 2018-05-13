@@ -1,43 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/ToolBarTheme">
+    <include layout="@layout/toolbar_primary" />
 
-        <TextView
-            android:id="@+id/done_text"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/btn_height"
-            android:layout_gravity="right"
-            android:layout_marginRight="@dimen/margin_text"
-            android:background="@drawable/btn_round_green_selector"
-            android:gravity="center"
-            android:minWidth="@dimen/min_button_width"
-            android:text="@string/use"
-            android:textColor="@color/white_text_selector"
-            android:textSize="@dimen/middle_text_size" />
-
-    </android.support.v7.widget.Toolbar>
-
-    <ImageView
-        android:id="@+id/iv_bg"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:transitionName="share_image" />
+        android:layout_height="match_parent">
 
-    <com.isseiaoki.simplecropview.CropImageView
-        android:id="@+id/cropImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:background="@color/white" />
+        <ImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:transitionName="share_image" />
 
-</RelativeLayout>
+        <com.isseiaoki.simplecropview.CropImageView
+            android:id="@+id/cropImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
@@ -11,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8"
-        android:overScrollMode="never"
-        android:fadingEdge="none"
         android:background="@color/white"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
         android:scrollbars="none" />
 </LinearLayout>

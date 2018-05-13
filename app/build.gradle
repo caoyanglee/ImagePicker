@@ -39,15 +39,14 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    //implementation 'www.weimu.io:imagepicker:0.0.92'
-    //implementation ('www.weimu.io:imagepicker:0.0.92@aar'){ transitive = true }
+    //implementation ('www.weimu.io:imagepicker:0.1.0@aar'){ transitive = true }
     compile project(':imagepicker')
 
 
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.github.bumptech.glide:glide:4.6.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
-    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
-    implementation 'com.isseiaoki:simplecropview:1.1.7@aar'
+//    implementation 'com.android.support:recyclerview-v7:27.1.1'
+//    implementation 'com.android.support:design:27.1.1'
+//    implementation 'com.github.bumptech.glide:glide:4.6.1'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
+//    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+//    implementation 'com.isseiaoki:simplecropview:1.1.7@aar'
 }

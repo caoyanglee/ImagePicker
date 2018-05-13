@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.weimu.library.ImageHolder;
 import com.weimu.library.R;
+import com.weimu.library.core.StatusManager;
+import com.weimu.library.core.ToolBarManager;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.widget.PreviewViewPager;
 
@@ -37,19 +39,19 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
     public static final String OUTPUT_ISDONE = "isDone";
 
     private RelativeLayout selectBarLayout;
-    private Toolbar toolbar;
-    private TextView doneText;
     private CheckBox checkboxSelect;
     private PreviewViewPager viewPager;
 
 
     private int position;
-    private int maxSelectNum;
+    private int maxSelectNum=1;
     private List<LocalMedia> images = new ArrayList<>();//所有图片
     private List<LocalMedia> selectImages = new ArrayList<>();//选择的图片
 
 
     private boolean isShowBar = true;
+
+    private ToolBarManager toolBarManager;
 
 
     public static void startPreview(Activity context, List<LocalMedia> images, List<LocalMedia> selectImages, int maxSelectNum, int position) {
@@ -82,6 +84,7 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
     }
 
     public void initView() {
+
         //images = getIntent().getParcelableArrayListExtra(EXTRA_PREVIEW_LIST);
         images = ImageHolder.getChooseImages();
         selectImages = getIntent().getParcelableArrayListExtra(EXTRA_PREVIEW_SELECT_LIST);
@@ -90,13 +93,31 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
 
         selectBarLayout = (RelativeLayout) findViewById(R.id.select_bar_layout);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle((position + 1) + "/" + images.size());
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.mipmap.ic_back);
+        //状态栏和Toolbar
+        StatusManager.getInstance().setColor(this,R.color.white);
+        toolBarManager = ToolBarManager.with(this, getContentView())
+                .setBackgroundColor(R.color.white)
+                .setTitle((position + 1) + "/" + images.size())
+                .setNavigationIcon(R.drawable.toolbar_arrow_back_black)
+                .setOnNavigationClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onDoneClick(false);
+                    }
+                })
+                .setMenuTextContent(getString(R.string.done))
+                .setMenuTextColors(R.color.black_text_selector)
+                .setMenuTextEnable(false)
+                .setMenuTextClick(new ToolBarManager.OnMenuTextClickListener() {
+                    @Override
+                    public void onMenuTextClick() {
+                        //点击完成
+                        onDoneClick(true);
+                    }
+                });
 
 
-        doneText = (TextView) findViewById(R.id.done_text);
+
         onSelectNumChange();
 
         checkboxSelect = (CheckBox) findViewById(R.id.checkbox_select);
@@ -116,18 +137,12 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                toolbar.setTitle(position + 1 + "/" + images.size());
+                 toolBarManager.setTitle((position + 1) + "/" + images.size());
                 onImageSwitch(position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-            }
-        });
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onDoneClick(false);
             }
         });
         checkboxSelect.setOnClickListener(new View.OnClickListener() {
@@ -153,12 +168,6 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
                 onSelectNumChange();
             }
         });
-        doneText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onDoneClick(true);
-            }
-        });
     }
 
     public class SimpleFragmentAdapter extends FragmentPagerAdapter {
@@ -179,11 +188,12 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
 
     public void onSelectNumChange() {
         boolean enable = selectImages.size() != 0;
-        doneText.setEnabled(enable);
+        toolBarManager.setMenuTextEnable(enable);
+
         if (enable) {
-            doneText.setText(getString(R.string.done_num, selectImages.size(), maxSelectNum));
+            toolBarManager.setMenuTextContent(getString(R.string.done_num, selectImages.size(), maxSelectNum));
         } else {
-            doneText.setText(R.string.done);
+            toolBarManager.setMenuTextContent(getString(R.string.done));
         }
     }
 
@@ -213,7 +223,12 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
     }
 
     public void switchBarVisibility() {
-        toolbar.setVisibility(isShowBar ? View.GONE : View.VISIBLE);
+        //todo是否显示
+        if (isShowBar){
+            toolBarManager.hideToolBar();
+        }else{
+            toolBarManager.showToolBar();
+        }
         selectBarLayout.setVisibility(isShowBar ? View.GONE : View.VISIBLE);
         if (isShowBar) {
             hideStatusBar();

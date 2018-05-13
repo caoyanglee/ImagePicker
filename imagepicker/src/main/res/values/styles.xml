@@ -2,21 +2,18 @@
 <resources>
 
 
-    <style name="WindowStyle">
-        <item name="android:windowEnterAnimation">@anim/fade_in</item>
-        <item name="android:windowExitAnimation">@anim/fade_out</item>
-    </style>
-
-
-    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!--所有主题的基类-->
+    <style name="BasePageTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:actionMenuTextColor">@android:color/white</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
-
-
-    <!--沉浸式主题-->
-    <style name="MainAppTheme" parent="BaseAppTheme"></style>
 
 
     <style name="ToolBarTheme" parent="Base.Widget.AppCompat.Toolbar">
@@ -28,17 +25,10 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
-
-    <!--所有主题的基类-->
-    <style name="BasePageTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorPrimary</item>
-
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="android:actionMenuTextColor">@android:color/white</item>
-        <item name="android:windowContentTransitions">true</item>
+    <style name="WindowStyle">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
+
+
 </resources>

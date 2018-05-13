@@ -98,7 +98,10 @@ public class ToolBarManager {
         mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mActivity.onBackPressed();
+                if (onNavigationClickListener != null)
+                    onNavigationClickListener.onClick(v);
+                else
+                    mActivity.onBackPressed();
             }
         });
 
@@ -106,6 +109,12 @@ public class ToolBarManager {
 
     }
 
+    private View.OnClickListener onNavigationClickListener;
+
+    public ToolBarManager setOnNavigationClickListener(View.OnClickListener onNavigationClickListener) {
+        this.onNavigationClickListener = onNavigationClickListener;
+        return this;
+    }
 
     /**
      * 设置Toolbar的背景颜色--资源文件
@@ -171,7 +180,7 @@ public class ToolBarManager {
     /**
      * 获取标题视图
      *
-     * @备注 若有特殊处理，请获取此视图进行修改
+     *  若有特殊处理，请获取此视图进行修改
      */
     public TextView getTitle() {
         return mTitleTextView;
@@ -268,10 +277,8 @@ public class ToolBarManager {
 
 
     /**
-     * @param resId
      * @return ToolBarManager
-     * @description 设置右侧icon
-     * @remark
+     * 设置右侧icon
      */
     public ToolBarManager setRightMenuIconRes(@DrawableRes int resId) {
         mMenuIconRight.setVisibility(View.VISIBLE);
@@ -282,8 +289,7 @@ public class ToolBarManager {
     /**
      * @param listener
      * @return ToolBarManager
-     * @description 设置右侧icon点击事件
-     * @remark
+     * 设置右侧icon点击事件
      */
     public ToolBarManager setRightMenuIconClickListener(View.OnClickListener listener) {
         mMenuIconRight.setOnClickListener(listener);
@@ -291,10 +297,8 @@ public class ToolBarManager {
     }
 
     /**
-     * @param resId
      * @return ToolBarManager
-     * @description 设置左侧icon
-     * @remark
+     * 设置左侧icon
      */
     public ToolBarManager setLeftMenuIconRes(@DrawableRes int resId) {
         mMenuIconLeft.setVisibility(View.VISIBLE);
@@ -309,8 +313,7 @@ public class ToolBarManager {
     /**
      * @param listener
      * @return ToolBarManager
-     * @description 设置左侧icon点击事件
-     * @remark
+     * 设置左侧icon点击事件
      */
     public ToolBarManager setLeftMenuIconClickListener(View.OnClickListener listener) {
         mMenuIconLeft.setOnClickListener(listener);
@@ -327,8 +330,8 @@ public class ToolBarManager {
 
     /**
      * 获取【右侧文本菜单】视图
-     *
-     * @备注 若有特殊处理，请获取此视图进行修改
+     * <p>
+     * 若有特殊处理，请获取此视图进行修改
      */
     public TextView getmMenuTextView() {
         return mMenuTextView;
@@ -359,6 +362,19 @@ public class ToolBarManager {
      */
     public void setOnclickListener(@Nullable View.OnClickListener l) {
         mToolBar.setOnClickListener(l);
+    }
+
+
+    public void showToolBar() {
+        mParent.setVisibility(View.VISIBLE);
+    }
+
+    public void hideToolBar() {
+        mParent.setVisibility(View.GONE);
+    }
+
+    public View getToolBarView() {
+        return mToolBar;
     }
 
 

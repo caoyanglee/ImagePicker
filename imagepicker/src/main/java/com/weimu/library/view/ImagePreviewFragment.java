@@ -48,14 +48,15 @@ public class ImagePreviewFragment extends Fragment {
         Glide.with(container.getContext())
                 .asBitmap()
                 .load(getArguments().getString(PATH))
-                .apply(new RequestOptions().centerCrop())
+                //.apply(new RequestOptions().centerCrop())
                 .transition(BitmapTransitionOptions.withCrossFade())
-                .into(new SimpleTarget<Bitmap>(480, 800) {
-                    @Override
-                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                        photo_view.setImageBitmap(resource);
-                    }
-                });
+                .into(photo_view);
+//                .into(new SimpleTarget<Bitmap>(480, 800) {
+//                    @Override
+//                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+//                        photo_view.setImageBitmap(resource);
+//                    }
+//                });
 
         photo_view.setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override

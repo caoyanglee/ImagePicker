@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAddClick(int needNumber) {
                 //ImagePicker.getInstance().pickAvatar(MainActivity.this);
-                ImagePicker.getInstance().pickImage(MainActivity.this, 3);
+                ImagePicker.getInstance().pickImage(MainActivity.this, 9);
                 //ImagePicker.getInstance().takePhoto(MainActivity.this,true);//使用摄像头
             }
 
