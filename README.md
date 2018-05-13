@@ -23,15 +23,20 @@ allprojects {
 [ ![Download](https://api.bintray.com/packages/yongdongji/android/imagepicker/images/download.svg) ](https://bintray.com/yongdongji/android/imagepicker/_latestVersion)
 
 ```gradle
-implementation 'www.weimu.io:imagepicker:{version_code}@aar'
-//此aar所依赖的第三方
-implementation 'com.android.support:appcompat-v7:27.1.0'
-implementation 'com.android.support:recyclerview-v7:27.1.0'
-implementation 'com.android.support:design:27.1.0'
+implementation ('www.weimu.io:imagepicker:0.1.0@aar'){ transitive = true }
+
+```
+
+```gradle
+//以下为此aar所依赖的第三方
+implementation 'com.android.support:appcompat-v7:27.1.1'
+implementation 'com.android.support:recyclerview-v7:27.1.1'
+implementation 'com.android.support:design:27.1.1'
 implementation 'com.github.bumptech.glide:glide:4.6.1'
 annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
 implementation 'com.github.chrisbanes:PhotoView:2.0.0'
-implementation 'com.isseiaoki:simplecropview:1.1.7'
+implementation 'com.isseiaoki:simplecropview:1.1.7@aar'
+implementation 'top.zibin:Luban:1.1.3'
 ```
 
 2.增加权限
@@ -104,12 +109,4 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 }
 ```
-## 自定义配置
-1.主题设置
 
-主题由主项目color文件中的3个颜色进行定义
-```xml
-<color name="colorPrimary">#52A6FF</color>
-<color name="colorPrimaryDark">#52A6FF</color>
-<color name="colorAccent">#52A6FF</color>
-```  
