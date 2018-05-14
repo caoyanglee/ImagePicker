@@ -14,7 +14,8 @@
 ```
 allprojects {
     repositories {
-        ......        
+        ......       
+        maven { url "https://jitpack.io" } 
         maven { url  "https://dl.bintray.com/yongdongji/android" }
     }
 }
@@ -23,7 +24,7 @@ allprojects {
 [ ![Download](https://api.bintray.com/packages/yongdongji/android/imagepicker/images/download.svg) ](https://bintray.com/yongdongji/android/imagepicker/_latestVersion)
 
 ```gradle
- maven { url "https://jitpack.io" }
+ 
 implementation ('www.weimu.io:imagepicker:0.1.0@aar'){ transitive = true }
 
 ```
