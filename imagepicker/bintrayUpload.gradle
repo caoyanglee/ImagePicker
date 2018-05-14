@@ -124,7 +124,6 @@ bintray {
         licenses = ["Apache-2.0"]
         labels = ['android', 'library']
         publicDownloadNumbers = true
-        publish = true
         version {
             name = projectVersionName
             released = new Date()
