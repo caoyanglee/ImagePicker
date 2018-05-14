@@ -30,11 +30,11 @@ public class ImagePicker {
      * @param activity
      */
     public void pickImage(Activity activity) {
-        ImageSelectorActivity.start(activity, 9, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
+        ImageSelectorActivity.start(activity, 9, ImageSelectorActivity.MODE_MULTIPLE, true, true, false, false);
     }
 
     public void pickImage(Activity activity, int selectNum) {
-        ImageSelectorActivity.start(activity, selectNum, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
+        ImageSelectorActivity.start(activity, selectNum, ImageSelectorActivity.MODE_MULTIPLE, true, true, false, false);
     }
 
     /**
@@ -48,7 +48,7 @@ public class ImagePicker {
      * @param enableCrop    是否进行裁剪【单选可用】
      */
     public void pickImage(Activity activity, int maxSelectNum, int mode, boolean enableCamera, boolean enablePreview, boolean enableCrop) {
-        ImageSelectorActivity.start(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop);
+        ImageSelectorActivity.start(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop, false);
     }
 
     /**
@@ -57,7 +57,7 @@ public class ImagePicker {
      * @param activity
      */
     public void pickAvatar(Activity activity) {
-        ImageSelectorActivity.start(activity, 1, ImageSelectorActivity.MODE_SINGLE, true, true, true);
+        ImageSelectorActivity.start(activity, 1, ImageSelectorActivity.MODE_SINGLE, true, true, true, false);
     }
 
     /**

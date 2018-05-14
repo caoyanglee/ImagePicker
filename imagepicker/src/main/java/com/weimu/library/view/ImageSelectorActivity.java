@@ -55,6 +55,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     public final static String EXTRA_SHOW_CAMERA = "ShowCamera";//是否显示摄像头
     public final static String EXTRA_ENABLE_PREVIEW = "EnablePreview";//是否需要预览
     public final static String EXTRA_ENABLE_CROP = "EnableCrop";//是否需要裁剪
+    public final static String EXTRA_ENABLE_COMPRESS = "EnableCompress";//是否需要压缩
 
     public final static int MODE_MULTIPLE = 1;
     public final static int MODE_SINGLE = 2;
@@ -64,6 +65,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     private boolean enableCamera = true;
     private boolean enablePreview = true;
     private boolean enableCrop = false;
+    private boolean enableCompress = false;//是否显示原图按钮
 
     private int spanCount = 4;
     //ui
@@ -79,16 +81,16 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     private List<LocalMediaFolder> allFolders;//所有图片文件夹
 
-    private boolean needCompress = true;//是否要压缩
+    private boolean needCompress = false;//是否要压缩
 
-
-    public static void start(Activity activity, int maxSelectNum, int mode, boolean enableCamera, boolean enablePreview, boolean enableCrop) {
+    public static void start(Activity activity, int maxSelectNum, int mode, boolean enableCamera, boolean enablePreview, boolean enableCrop, boolean enableCompress) {
         Intent intent = new Intent(activity, ImageSelectorActivity.class);
         intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum);
         intent.putExtra(EXTRA_SELECT_MODE, mode);
         intent.putExtra(EXTRA_SHOW_CAMERA, enableCamera);
         intent.putExtra(EXTRA_ENABLE_PREVIEW, enablePreview);
         intent.putExtra(EXTRA_ENABLE_CROP, enableCrop);
+        intent.putExtra(EXTRA_ENABLE_COMPRESS, enableCompress);
         activity.startActivityForResult(intent, REQUEST_IMAGE);
     }
 
@@ -98,12 +100,13 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imageselector);
 
-
         maxSelectNum = getIntent().getIntExtra(EXTRA_MAX_SELECT_NUM, 9);
         selectMode = getIntent().getIntExtra(EXTRA_SELECT_MODE, MODE_MULTIPLE);
         enableCamera = getIntent().getBooleanExtra(EXTRA_SHOW_CAMERA, true);
         enablePreview = getIntent().getBooleanExtra(EXTRA_ENABLE_PREVIEW, true);
         enableCrop = getIntent().getBooleanExtra(EXTRA_ENABLE_CROP, false);
+        enableCompress = getIntent().getBooleanExtra(EXTRA_ENABLE_COMPRESS, false);
+
 
         if (selectMode == MODE_MULTIPLE) {
             enableCrop = false;
@@ -157,8 +160,16 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         } else {
             toolBarManager.setMenuTextContent("");
         }
+
+
         //是否使用原图
         cbOrigin = findViewById(R.id.cb_origin);
+
+        if (!enableCompress) {
+            cbOrigin.setVisibility(View.GONE);
+        }
+
+        cbOrigin.setChecked(needCompress);
         cbOrigin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -332,9 +343,9 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     //返回图片
     public void onResult(ArrayList<String> images) {
-        if (needCompress){
+        if (needCompress) {
             compressImage(images);
-        }else{
+        } else {
             setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, images));
             finish();
         }
@@ -342,7 +353,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     //压缩图片
     private void compressImage(final ArrayList<String> photos) {
-        Toast.makeText(this, "压缩中...", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "压缩中...", Toast.LENGTH_SHORT).show();
         final List<String> newImageList = new ArrayList<>();
         Luban.with(this)
                 .load(photos)                                   // 传人要压缩的图片列表
