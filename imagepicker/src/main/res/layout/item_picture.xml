@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.weimu.library.widget.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:transitionName="share_image" />
+
+
+    <ImageView
+        android:id="@+id/iv_check_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="6dp"
+        android:src="@drawable/image_selector_check_circle_selector" />
+</com.weimu.library.widget.SquareRelativeLayout>
