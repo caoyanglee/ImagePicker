@@ -25,7 +25,7 @@ allprojects {
 
 ```gradle
  
-implementation ('www.weimu.io:imagepicker:0.1.0@aar'){ transitive = true }
+implementation ('www.weimu.io:imagepicker:{latest}@aar'){ transitive = true }
 
 ```
 
