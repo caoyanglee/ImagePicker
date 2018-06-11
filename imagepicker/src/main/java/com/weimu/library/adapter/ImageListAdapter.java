@@ -1,7 +1,6 @@
 package com.weimu.library.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +14,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
-import com.weimu.library.ImageHolder;
+import com.weimu.library.ImageStaticHolder;
 import com.weimu.library.R;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.view.ImageSelectorActivity;
@@ -50,7 +49,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void bindImages(List<LocalMedia> images) {
         //讲选中的集合引用 给到appData
-        ImageHolder.setChooseImages(images);
+        ImageStaticHolder.setChooseImages(images);
         this.images = images;
         notifyDataSetChanged();
     }

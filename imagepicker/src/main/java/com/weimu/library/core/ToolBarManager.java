@@ -1,6 +1,5 @@
 package com.weimu.library.core;
 
-import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -69,13 +68,14 @@ public class ToolBarManager {
 
         //status cover
         mStatusCover = myFindViewsById(mContent, R.id.view_cover);
+
         //auto set height
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            mStatusCover.setMinimumHeight(0);
             mStatusCover.setVisibility(View.GONE);
         } else {
-            int statusBarHight = ScreenUtils.getStatusBarHeight(mActivity);
-            mStatusCover.setMinimumHeight(statusBarHight);
+            ViewGroup.LayoutParams layoutParams = mStatusCover.getLayoutParams();
+            layoutParams.height = ScreenUtils.dip2px(mActivity, 24);
+            mStatusCover.setLayoutParams(layoutParams);
         }
 
         //title
@@ -179,8 +179,8 @@ public class ToolBarManager {
 
     /**
      * 获取标题视图
-     *
-     *  若有特殊处理，请获取此视图进行修改
+     * <p>
+     * 若有特殊处理，请获取此视图进行修改
      */
     public TextView getTitle() {
         return mTitleTextView;
@@ -346,16 +346,6 @@ public class ToolBarManager {
         return (T) view;
     }
 
-
-    /**
-     * 设置兼容系统窗口
-     *
-     * @param activity
-     */
-    public void fitSystemWindow(Activity activity) {
-        mStatusCover.setMinimumHeight(0);
-        mStatusCover.setVisibility(View.GONE);
-    }
 
     /**
      * toolbar本身的点击事件

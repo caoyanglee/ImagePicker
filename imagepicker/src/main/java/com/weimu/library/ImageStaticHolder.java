@@ -1,8 +1,5 @@
 package com.weimu.library;
 
-import android.app.Application;
-import android.util.Log;
-
 import com.weimu.library.model.LocalMedia;
 
 import java.util.List;
@@ -12,7 +9,7 @@ import java.util.List;
  * Date:2018/5/10 11:38
  * Description:
  */
-public class ImageHolder {
+public class ImageStaticHolder {
     //共享选择图片列表
     private static List<LocalMedia> chooseImages;
 
@@ -21,7 +18,7 @@ public class ImageHolder {
     }
 
     public static void setChooseImages(List<LocalMedia> chooseImages) {
-        ImageHolder.chooseImages = chooseImages;
+        ImageStaticHolder.chooseImages = chooseImages;
     }
 
     public static void clearImages() {

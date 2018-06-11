@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class FileUtils {
+public class FileUtilsIP {
     public static final String POSTFIX = ".JPEG";
     public static final String APP_NAME = "ImageSelector";
     public static final String CAMERA_PATH = "/" + APP_NAME + "/CameraImage/";

@@ -10,15 +10,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.weimu.library.ImageHolder;
+import com.weimu.library.ImageStaticHolder;
 import com.weimu.library.R;
 import com.weimu.library.core.StatusManager;
 import com.weimu.library.core.ToolBarManager;
@@ -86,7 +84,7 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
     public void initView() {
 
         //images = getIntent().getParcelableArrayListExtra(EXTRA_PREVIEW_LIST);
-        images = ImageHolder.getChooseImages();
+        images = ImageStaticHolder.getChooseImages();
         selectImages = getIntent().getParcelableArrayListExtra(EXTRA_PREVIEW_SELECT_LIST);
         maxSelectNum = getIntent().getIntExtra(EXTRA_MAX_SELECT_NUM, 9);
         position = getIntent().getIntExtra(EXTRA_POSITION, 1);

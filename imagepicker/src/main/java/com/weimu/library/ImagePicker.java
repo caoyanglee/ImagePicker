@@ -30,12 +30,19 @@ public class ImagePicker {
      * @param activity
      */
     public void pickImage(Activity activity) {
-        ImageSelectorActivity.start(activity, 9, ImageSelectorActivity.MODE_MULTIPLE, true, true, false, false);
+        pickImage(activity, 9, true);
     }
 
+
     public void pickImage(Activity activity, int selectNum) {
-        ImageSelectorActivity.start(activity, selectNum, ImageSelectorActivity.MODE_MULTIPLE, true, true, false, false);
+        pickImage(activity, selectNum, true);
     }
+
+
+    public void pickImage(Activity activity, int selectNum, boolean enableCompress) {
+        ImageSelectorActivity.start(activity, selectNum, ImageSelectorActivity.MODE_MULTIPLE, true, true, false, enableCompress);
+    }
+
 
     /**
      * 打开图库
@@ -47,9 +54,10 @@ public class ImagePicker {
      * @param enablePreview 是否打开预览
      * @param enableCrop    是否进行裁剪【单选可用】
      */
-    public void pickImage(Activity activity, int maxSelectNum, int mode, boolean enableCamera, boolean enablePreview, boolean enableCrop) {
-        ImageSelectorActivity.start(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop, false);
+    public void pickImage(Activity activity, int maxSelectNum, int mode, boolean enableCamera, boolean enablePreview, boolean enableCrop, boolean enableCompress) {
+        ImageSelectorActivity.start(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop, enableCompress);
     }
+
 
     /**
      * 选择头像

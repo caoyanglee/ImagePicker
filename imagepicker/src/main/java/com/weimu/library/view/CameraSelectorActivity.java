@@ -8,11 +8,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.weimu.library.R;
-import com.weimu.library.utils.FileUtils;
+import com.weimu.library.utils.FileUtilsIP;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -60,9 +59,9 @@ public class CameraSelectorActivity extends SelectorBaseActivity {
      * start to camera、preview、crop
      */
     public void startCamera() {
-        File cameraFile = FileUtils.createCameraFile(this);
+        File cameraFile = FileUtilsIP.createCameraFile(this);
         cameraPath = cameraFile.getAbsolutePath();
-        FileUtils.startActionCapture(this, cameraFile, REQUEST_CAMERA);
+        FileUtilsIP.startActionCapture(this, cameraFile, REQUEST_CAMERA);
     }
 
     @Override
@@ -101,7 +100,7 @@ public class CameraSelectorActivity extends SelectorBaseActivity {
     //压缩图片
     private void compressImage(final ArrayList<String> photos) {
         Toast.makeText(this, "压缩中...", Toast.LENGTH_SHORT).show();
-        final List<String> newImageList = new ArrayList<>();
+        final ArrayList<String> newImageList = new ArrayList<>();
         Luban.with(this)
                 .load(photos)                                   // 传人要压缩的图片列表
                 .ignoreBy(100)                                  // 忽略不压缩图片的大小
@@ -117,7 +116,7 @@ public class CameraSelectorActivity extends SelectorBaseActivity {
                         newImageList.add(file.toString());
                         //所有图片压缩成功
                         if (newImageList.size() == photos.size()) {
-                            setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, photos));
+                            setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, newImageList));
                             onBackPressed();
                         }
                     }

@@ -3,8 +3,6 @@ package com.weimu.library.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -16,11 +14,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.weimu.library.ImageHolder;
+import com.weimu.library.ImageStaticHolder;
 import com.weimu.library.R;
 import com.weimu.library.adapter.ImageFolderAdapter;
 import com.weimu.library.adapter.ImageListAdapter;
@@ -28,7 +25,7 @@ import com.weimu.library.core.StatusManager;
 import com.weimu.library.core.ToolBarManager;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.model.LocalMediaFolder;
-import com.weimu.library.utils.FileUtils;
+import com.weimu.library.utils.FileUtilsIP;
 import com.weimu.library.utils.GridSpacingItemDecoration;
 import com.weimu.library.utils.LocalMediaLoader;
 import com.weimu.library.utils.ScreenUtils;
@@ -81,7 +78,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     private List<LocalMediaFolder> allFolders;//所有图片文件夹
 
-    private boolean needCompress = false;//是否要压缩
+    private boolean isUseOrigin = false;//是否使用原图
 
     public static void start(Activity activity, int maxSelectNum, int mode, boolean enableCamera, boolean enablePreview, boolean enableCrop, boolean enableCompress) {
         Intent intent = new Intent(activity, ImageSelectorActivity.class);
@@ -120,7 +117,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         registerListener();
 
         ///load data
-        Log.e("weimu", "load media");
         new LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage(new LocalMediaLoader.LocalMediaLoadListener() {
 
             @Override
@@ -169,11 +165,11 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
             cbOrigin.setVisibility(View.GONE);
         }
 
-        cbOrigin.setChecked(needCompress);
+        cbOrigin.setChecked(isUseOrigin);
         cbOrigin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                needCompress = !cbOrigin.isChecked();
+                isUseOrigin = !cbOrigin.isChecked();
             }
         });
 
@@ -297,9 +293,9 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
      * start to camera、preview、crop
      */
     public void startCamera() {
-        File cameraFile = FileUtils.createCameraFile(this);
+        File cameraFile = FileUtilsIP.createCameraFile(this);
         cameraPath = cameraFile.getAbsolutePath();
-        FileUtils.startActionCapture(this, cameraFile, REQUEST_CAMERA);
+        FileUtilsIP.startActionCapture(this, cameraFile, REQUEST_CAMERA);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -343,11 +339,12 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
 
     //返回图片
     public void onResult(ArrayList<String> images) {
-        if (needCompress) {
-            compressImage(images);
-        } else {
+        if (isUseOrigin) {
             setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, images));
             finish();
+        } else {
+            compressImage(images);
+
         }
     }
 
@@ -386,6 +383,6 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ImageHolder.clearImages();
+        ImageStaticHolder.clearImages();
     }
 }

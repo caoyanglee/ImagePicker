@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.Image;
 import android.net.Uri;
 import android.opengl.GLES10;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.isseiaoki.simplecropview.CropImageView;
@@ -20,7 +17,7 @@ import com.weimu.library.R;
 import com.weimu.library.core.StatusManager;
 import com.weimu.library.core.ToolBarManager;
 import com.weimu.library.utils.CropUtil;
-import com.weimu.library.utils.FileUtils;
+import com.weimu.library.utils.FileUtilsIP;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,8 +64,8 @@ public class ImageCropActivity extends SelectorBaseActivity {
         //data
         String path = getIntent().getStringExtra(DATA_EXTRA_PATH);
         sourceUri = Uri.fromFile(new File(path));
-        cropImageView =  (CropImageView)findViewById(R.id.cropImageView);
-        ivBg=(ImageView) findViewById(R.id.iv_bg);
+        cropImageView = (CropImageView) findViewById(R.id.cropImageView);
+        ivBg = (ImageView) findViewById(R.id.iv_bg);
         //crop setup
         cropImageView.setHandleSizeInDp(8);//设置裁剪四周小圆球的大小
         cropImageView.setFrameStrokeWeightInDp(1);
@@ -93,7 +90,7 @@ public class ImageCropActivity extends SelectorBaseActivity {
                     public void onMenuTextClick() {
                         //点击完成
                         //ProgressDialog.show(ImageCropActivity.this, null, getString(R.string.save_ing), true, false);
-                        saveUri = Uri.fromFile(FileUtils.createCropFile(ImageCropActivity.this));
+                        saveUri = Uri.fromFile(FileUtilsIP.createCropFile(ImageCropActivity.this));
                         saveOutput(cropImageView.getCroppedBitmap());
                     }
                 });
@@ -121,8 +118,6 @@ public class ImageCropActivity extends SelectorBaseActivity {
             CropUtil.closeSilently(is);
         }
     }
-
-
 
 
     public Matrix getRotateMatrix(Bitmap bitmap, int rotation) {
