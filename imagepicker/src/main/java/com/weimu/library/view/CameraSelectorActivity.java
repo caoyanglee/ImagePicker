@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
+/**
+ * 相机选择
+ */
 public class CameraSelectorActivity extends SelectorBaseActivity {
     public final static int REQUEST_IMAGE = 66;
     public final static int REQUEST_CAMERA = 67;
