@@ -102,7 +102,7 @@ public class CameraSelectorActivity extends SelectorBaseActivity {
 
     //压缩图片
     private void compressImage(final ArrayList<String> photos) {
-        Toast.makeText(this, "压缩中...", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "压缩中...", Toast.LENGTH_SHORT).show();
         final ArrayList<String> newImageList = new ArrayList<>();
         Luban.with(this)
                 .load(photos)                                   // 传人要压缩的图片列表
