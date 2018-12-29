@@ -6,11 +6,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/view_cover"
-        android:layout_width="match_parent"
-        android:layout_height="24dp" />
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="48dp">

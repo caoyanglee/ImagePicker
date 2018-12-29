@@ -29,7 +29,6 @@ public class ToolBarManager {
     private ViewGroup mContent;
 
     private ViewGroup mParent;
-    private View mStatusCover;//状态栏遮罩
     private Toolbar mToolBar;
     private TextView mTitleTextView;
 
@@ -66,17 +65,6 @@ public class ToolBarManager {
         //mParent
         mParent = myFindViewsById(mContent, R.id.toolbar_parent);
 
-        //status cover
-        mStatusCover = myFindViewsById(mContent, R.id.view_cover);
-
-        //auto set height
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            mStatusCover.setVisibility(View.GONE);
-        } else {
-            ViewGroup.LayoutParams layoutParams = mStatusCover.getLayoutParams();
-            layoutParams.height = ScreenUtils.dip2px(mActivity, 24);
-            mStatusCover.setLayoutParams(layoutParams);
-        }
 
         //title
         mTitleTextView = myFindViewsById(mContent, R.id.toolbar_title);

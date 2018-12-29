@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.isseiaoki.simplecropview.CropImageView;
 import com.weimu.library.R;
-import com.weimu.library.core.StatusManager;
 import com.weimu.library.core.ToolBarManager;
 import com.weimu.library.utils.CropUtil;
 import com.weimu.library.utils.FileUtilsIP;
+import com.weimu.universalib.origin.view.toolbar.StatusBarManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,7 +77,7 @@ public class ImageCropActivity extends SelectorBaseActivity {
     public void initView() {
 
 
-        StatusManager.getInstance().setColor(this, R.color.white);
+        StatusBarManager.INSTANCE.setColorPro(this, R.color.white);
         toolBarManager = ToolBarManager.with(this, getContentView())
                 .setBackgroundColor(R.color.white)
                 .setTitle(getString(R.string.crop_picture))

@@ -8,8 +8,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -21,7 +23,6 @@ import com.weimu.library.ImageStaticHolder;
 import com.weimu.library.R;
 import com.weimu.library.adapter.ImageFolderAdapter;
 import com.weimu.library.adapter.ImageListAdapter;
-import com.weimu.library.core.StatusManager;
 import com.weimu.library.core.ToolBarManager;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.model.LocalMediaFolder;
@@ -29,6 +30,7 @@ import com.weimu.library.utils.FileUtilsIP;
 import com.weimu.library.utils.GridSpacingItemDecoration;
 import com.weimu.library.utils.LocalMediaLoader;
 import com.weimu.library.utils.ScreenUtils;
+import com.weimu.universalib.origin.view.toolbar.StatusBarManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -131,7 +133,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     }
 
     public void initView() {
-        StatusManager.getInstance().setColor(this, R.color.white);
+        StatusBarManager.INSTANCE.setColorPro(this,R.color.white);
         toolBarManager = ToolBarManager.with(this, getContentView())
                 .setBackgroundColor(R.color.white)
                 .setTitle("选择图片")
@@ -180,6 +182,9 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, ScreenUtils.dip2px(this, 2), false));
         recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        ((SimpleItemAnimator)(recyclerView.getItemAnimator())).setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator)(recyclerView.getItemAnimator())).setChangeDuration(0);
 
         imageAdapter = new ImageListAdapter(this, maxSelectNum, selectMode, enableCamera, enablePreview);
         recyclerView.setAdapter(imageAdapter);
@@ -351,7 +356,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     //压缩图片
     private void compressImage(final ArrayList<String> photos) {
         //Toast.makeText(this, "压缩中...", Toast.LENGTH_SHORT).show();
-        final List<String> newImageList = new ArrayList<>();
+        final ArrayList<String> newImageList = new ArrayList<>();
         Luban.with(this)
                 .load(photos)                                   // 传人要压缩的图片列表
                 .ignoreBy(100)                                  // 忽略不压缩图片的大小
@@ -367,7 +372,7 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
                         newImageList.add(file.toString());
                         //所有图片压缩成功
                         if (newImageList.size() == photos.size()) {
-                            setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, photos));
+                            setResult(RESULT_OK, new Intent().putStringArrayListExtra(REQUEST_OUTPUT, newImageList));
                             finish();
                         }
                     }

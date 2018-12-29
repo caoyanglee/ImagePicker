@@ -101,8 +101,8 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Glide.with(context)
                     .asBitmap()
                     .load(new File(image.getPath()))
-                    .apply(new RequestOptions().centerCrop().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
-                    .transition(BitmapTransitionOptions.withCrossFade())
+                    .apply(new RequestOptions().centerCrop().placeholder(R.drawable.image_placeholder))
+                    //.transition(BitmapTransitionOptions.withCrossFade())
                     .thumbnail(0.5f)
                     .into(contentHolder.picture);
 
