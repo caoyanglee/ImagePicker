@@ -18,10 +18,9 @@ import android.widget.Toast;
 
 import com.weimu.library.ImageStaticHolder;
 import com.weimu.library.R;
-import com.weimu.library.core.ToolBarManager;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.widget.PreviewViewPager;
-import com.weimu.universalib.origin.view.toolbar.StatusBarManager;
+import com.weimu.universalview.core.toolbar.StatusBarManager;
 
 import java.util.ArrayList;
 import java.util.List;

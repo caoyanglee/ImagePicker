@@ -23,14 +23,14 @@ import com.weimu.library.ImageStaticHolder;
 import com.weimu.library.R;
 import com.weimu.library.adapter.ImageFolderAdapter;
 import com.weimu.library.adapter.ImageListAdapter;
-import com.weimu.library.core.ToolBarManager;
 import com.weimu.library.model.LocalMedia;
 import com.weimu.library.model.LocalMediaFolder;
 import com.weimu.library.utils.FileUtilsIP;
 import com.weimu.library.utils.GridSpacingItemDecoration;
 import com.weimu.library.utils.LocalMediaLoader;
 import com.weimu.library.utils.ScreenUtils;
-import com.weimu.universalib.origin.view.toolbar.StatusBarManager;
+import com.weimu.universalview.core.toolbar.StatusBarManager;
+
 
 import java.io.File;
 import java.util.ArrayList;

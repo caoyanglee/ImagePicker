@@ -1,8 +1,7 @@
-package com.weimu.library.core;
+package com.weimu.library.view;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
@@ -17,14 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.weimu.library.R;
-import com.weimu.library.utils.ScreenUtils;
 
 
 /**
  * Created by 艹羊 on 2017/5/26.
  */
-
-public class ToolBarManager {
+@Deprecated
+class ToolBarManager {
     private AppCompatActivity mActivity;
     private ViewGroup mContent;
 
