@@ -42,5 +42,5 @@ ext{
 
     //App dependencies
     universal_lib='1.1.6'
-    universal_view='0.0.5'
+    universal_view='0.0.6'
 }
