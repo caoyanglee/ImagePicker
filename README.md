@@ -24,7 +24,7 @@ allprojects {
 
 ```gradle
 
-implementation 'com.github.caoyanglee:ImagePicker:0.0.1'
+implementation 'com.github.caoyanglee:ImagePicker:{latestVersion}'
 
 ```
 
