@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.opengl.GLES10;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -74,9 +75,8 @@ public class ImageCropActivity extends SelectorBaseActivity {
     }
 
     public void initView() {
-
-
-        StatusBarManager.INSTANCE.setColorPro(this, R.color.white);
+        StatusBarManager.INSTANCE.setColor(this.getWindow(),  ContextCompat.getColor(this,R.color.white));
+        StatusBarManager.INSTANCE.setLightMode(this.getWindow());
         toolBarManager = ToolBarManager.with(this, getContentView())
                 .setBackgroundColor(R.color.white)
                 .setTitle(getString(R.string.crop_picture))

@@ -41,6 +41,6 @@ ext{
     compileSdkVersion = 27
 
     //App dependencies
-    universal_lib='1.1.6'
-    universal_view='0.0.6'
+    universal_lib='1.1.7'
+    universal_view='0.0.14'
 }

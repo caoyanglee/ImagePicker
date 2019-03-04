@@ -3,11 +3,13 @@ package com.weimu.library.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -133,7 +135,8 @@ public class ImageSelectorActivity extends SelectorBaseActivity {
     }
 
     public void initView() {
-        StatusBarManager.INSTANCE.setColorPro(this,R.color.white);
+        StatusBarManager.INSTANCE.setColor(this.getWindow(), ContextCompat.getColor(this,R.color.white));
+        StatusBarManager.INSTANCE.setLightMode(this.getWindow());
         toolBarManager = ToolBarManager.with(this, getContentView())
                 .setBackgroundColor(R.color.white)
                 .setTitle("选择图片")

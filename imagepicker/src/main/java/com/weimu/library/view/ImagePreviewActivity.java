@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
@@ -91,7 +92,8 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
         selectBarLayout = (RelativeLayout) findViewById(R.id.select_bar_layout);
 
         //状态栏和Toolbar
-        StatusBarManager.INSTANCE.setColorPro(this,R.color.white);
+        StatusBarManager.INSTANCE.setColor(this.getWindow(), ContextCompat.getColor(this,R.color.white));
+        StatusBarManager.INSTANCE.setLightMode(this.getWindow());
         toolBarManager = ToolBarManager.with(this, getContentView())
                 .setBackgroundColor(R.color.white)
                 .setTitle((position + 1) + "/" + images.size())
