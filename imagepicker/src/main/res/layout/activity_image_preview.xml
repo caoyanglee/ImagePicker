@@ -22,7 +22,7 @@
         <RelativeLayout
             android:id="@+id/select_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/bar_height"
+            android:layout_height="48dp"
             android:layout_gravity="bottom"
             android:background="@color/bar_grey_50"
             android:gravity="center_vertical">
@@ -39,7 +39,7 @@
                 android:paddingRight="16dp"
                 android:text="@string/choose"
                 android:textColor="@color/white"
-                android:textSize="@dimen/middle_text_size" />
+                android:textSize="17sp" />
         </RelativeLayout>
     </FrameLayout>
 </LinearLayout>
