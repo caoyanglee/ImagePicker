@@ -76,7 +76,7 @@ public class ImageCropActivity extends SelectorBaseActivity {
 
     public void initView() {
         StatusBarManager.INSTANCE.setColor(this.getWindow(),  ContextCompat.getColor(this,R.color.white));
-        StatusBarManager.INSTANCE.setLightMode(this.getWindow());
+        StatusBarManager.INSTANCE.setLightMode(this.getWindow(),false);
         toolBarManager = ToolBarManager.with(this, getContentView())
                 .setBackgroundColor(R.color.white)
                 .setTitle(getString(R.string.crop_picture))

@@ -93,7 +93,7 @@ public class ImagePreviewActivity extends SelectorBaseActivity {
 
         //状态栏和Toolbar
         StatusBarManager.INSTANCE.setColor(this.getWindow(), ContextCompat.getColor(this,R.color.white));
-        StatusBarManager.INSTANCE.setLightMode(this.getWindow());
+        StatusBarManager.INSTANCE.setLightMode(this.getWindow(),false);
         toolBarManager = ToolBarManager.with(this, getContentView())
                 .setBackgroundColor(R.color.white)
                 .setTitle((position + 1) + "/" + images.size())
