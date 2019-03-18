@@ -97,26 +97,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
-    protected TextView getTitleView() {
-        if (tv_title != null) {
-            return tv_title;
-        } else {
-            return null;
-        }
-    }
-
-
-    public void setTitle(String title) {
-        if (title != null && tv_title != null)
-            tv_title.setText(title);
-    }
-
-    /**
-     * fragment中的开启activity
-     */
-    protected void myStartActivity(Intent intent) {
-        getActivity().startActivity(intent);
-    }
 
 
     //左上角返回

@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/imagepicker_toolbar" />
-
+    <include layout="@layout/include_toolbar_primary" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,9 +17,9 @@
             android:clipToPadding="false"
             android:fadingEdge="none"
             android:overScrollMode="never"
-            android:paddingBottom="48dp"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
+            android:paddingBottom="48dp"
             android:scrollbars="vertical" />
 
         <RelativeLayout

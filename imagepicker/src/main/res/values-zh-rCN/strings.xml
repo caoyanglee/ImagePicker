@@ -6,7 +6,7 @@
     <string name="choose">选择</string>
     <string name="done">完成</string>
     <string name="use">使用</string>
-    <string name="done_num">完成(%1$s/%2$s)</string>
+    <string name="done_num">完成</string>
     <string name="num_postfix">%1$s张</string>
     <string name="message_max_num">你最多可以选择%1$s张图片</string>
     <string name="save_ing">保存图片中…</string>
