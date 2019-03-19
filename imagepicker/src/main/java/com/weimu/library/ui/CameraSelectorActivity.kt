@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import com.weimu.library.ImagePicker
 
 import com.weimu.library.R
 import com.weimu.library.utils.FileUtilsIP
@@ -47,13 +48,13 @@ internal class CameraSelectorActivity : BaseActivity() {
     fun startCamera() {
         val cameraFile = FileUtilsIP.createCameraFile(this)
         cameraPath = cameraFile.absolutePath
-        FileUtilsIP.startActionCapture(this, cameraFile, REQUEST_CAMERA)
+        FileUtilsIP.startActionCapture(this, cameraFile, ImagePicker.REQUEST_CAMERA)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             // on take photo success
-            if (requestCode == REQUEST_CAMERA) {
+            if (requestCode == ImagePicker.REQUEST_CAMERA) {
                 sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(cameraPath))))
                 if (enableCrop) {
                     startCrop(cameraPath)
@@ -116,8 +117,6 @@ internal class CameraSelectorActivity : BaseActivity() {
     }
 
     companion object {
-        val REQUEST_IMAGE = 66
-        val REQUEST_CAMERA = 67
         val REQUEST_OUTPUT = "outputList"
 
         val BUNDLE_CAMERA_PATH = "CameraPath"
@@ -129,7 +128,7 @@ internal class CameraSelectorActivity : BaseActivity() {
         fun start(activity: Activity, enableCrop: Boolean) {
             val intent = Intent(activity, CameraSelectorActivity::class.java)
             intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
-            activity.startActivityForResult(intent, REQUEST_IMAGE)
+            activity.startActivityForResult(intent, ImagePicker.REQUEST_IMAGE)
         }
     }
 }

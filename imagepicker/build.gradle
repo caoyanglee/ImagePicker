@@ -34,7 +34,7 @@ dependencies {
     //鲁班压缩
     compile 'top.zibin:Luban:1.1.3'
     //显示大图
-    api 'com.shizhefei:LargeImageView:1.1.0'
+    compile 'com.shizhefei:LargeImageView:1.1.0'
 }
 repositories {
     mavenCentral()

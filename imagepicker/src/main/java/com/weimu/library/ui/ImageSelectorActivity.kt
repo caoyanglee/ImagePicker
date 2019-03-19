@@ -19,6 +19,7 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.weimu.library.ImagePicker
 import com.weimu.library.ImageStaticHolder
 import com.weimu.library.R
 import com.weimu.library.adapter.ImageFolderAdapter
@@ -42,7 +43,7 @@ import java.io.File
 import java.util.*
 
 
-class ImageSelectorActivity : BaseActivity() {
+internal class ImageSelectorActivity : BaseActivity() {
 
     private var maxSelectNum = 9
     private var selectMode = MODE_MULTIPLE
@@ -215,7 +216,7 @@ class ImageSelectorActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             // on take photo success
-            if (requestCode == REQUEST_CAMERA) {
+            if (requestCode == ImagePicker.REQUEST_CAMERA) {
                 sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(cameraPath))))
                 if (enableCrop) {
                     startCrop(cameraPath)
@@ -251,7 +252,7 @@ class ImageSelectorActivity : BaseActivity() {
     fun startCamera() {
         val cameraFile = FileUtilsIP.createCameraFile(this)
         cameraPath = cameraFile.absolutePath
-        FileUtilsIP.startActionCapture(this, cameraFile, REQUEST_CAMERA)
+        FileUtilsIP.startActionCapture(this, cameraFile, ImagePicker.REQUEST_CAMERA)
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -296,7 +297,7 @@ class ImageSelectorActivity : BaseActivity() {
     //返回图片
     fun onResult(images: ArrayList<String>) {
         if (isUseOrigin) {
-            setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(REQUEST_OUTPUT, images))
+            setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, images))
             finish()
         } else {
             compressImage(images)
@@ -321,7 +322,7 @@ class ImageSelectorActivity : BaseActivity() {
                         newImageList.add(file.toString())
                         //所有图片压缩成功
                         if (newImageList.size == photos.size) {
-                            setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(REQUEST_OUTPUT, newImageList))
+                            setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, newImageList))
                             finish()
                         }
                     }
@@ -339,13 +340,8 @@ class ImageSelectorActivity : BaseActivity() {
     }
 
     companion object {
-        val REQUEST_IMAGE = 66
-        val REQUEST_CAMERA = 67
 
         val BUNDLE_CAMERA_PATH = "CameraPath"
-
-        val REQUEST_OUTPUT = "outputList"
-
 
         val EXTRA_MAX_SELECT_NUM = "MaxSelectNum"//最大选择数
         val EXTRA_SELECT_MODE = "SelectMode"//选择模式
@@ -365,7 +361,7 @@ class ImageSelectorActivity : BaseActivity() {
             intent.putExtra(EXTRA_ENABLE_PREVIEW, enablePreview)
             intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
             intent.putExtra(EXTRA_ENABLE_COMPRESS, enableCompress)
-            activity.startActivityForResult(intent, REQUEST_IMAGE)
+            activity.startActivityForResult(intent, ImagePicker.REQUEST_IMAGE)
         }
     }
 }

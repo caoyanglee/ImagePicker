@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import com.weimu.library.ImagePicker
-import com.weimu.library.ui.ImageSelectorActivity
 import com.weimu.universalib.ktx.dip2px
 import com.weimu.universalib.ktx.getColorPro
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
@@ -69,8 +68,8 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE) {
-            val pics = data!!.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT) as ArrayList<String>
+        if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_IMAGE) {
+            val pics = data!!.getSerializableExtra(ImagePicker.REQUEST_OUTPUT) as ArrayList<String>
             mAdapter.addData(pics)
         }
     }

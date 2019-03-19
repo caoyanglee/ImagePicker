@@ -13,6 +13,10 @@ import com.weimu.library.ui.ImageSelectorActivity
 
 object ImagePicker {
 
+    val REQUEST_IMAGE = 66
+    val REQUEST_CAMERA = 67
+    val REQUEST_OUTPUT = "outputList"
+
 
     /**
      * 打开图库
