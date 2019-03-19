@@ -68,12 +68,12 @@ implementation 'top.zibin:Luban:1.1.3'
 ## 用法
 
 1.1.打开图库
-```java
+```kotlin
 ImagePicker.pickImage(activity);
 ```
 
 **多参数调用**
-```java
+```kotlin
 /**
  * @param activity
  * @param maxSelectNum 最大选择图片数          default=9
@@ -87,12 +87,12 @@ ImagePicker.pickImage(activity, 9, ImageSelectorActivity.MODE_MULTIPLE, true, tr
 
 
 1.2.直接拍张
-```java
+```kotlin
 ImagePicker.takePhoto(activity);
 ```
 
 **多参数调用**
-```java
+```kotlin
 /**
  * @param activity
  * @param enableCrop 是否启用裁剪 default=false
@@ -101,12 +101,13 @@ ImagePicker.takePhoto(activity,false);
 ```
 
 2.接收结果信息
-``` java
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if(resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_IMAGE){
-        ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImagePicker.REQUEST_OUTPUT);
-        // do something
+``` kotlin
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (data==null)return
+    if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_IMAGE) {
+        val pics = data?.getSerializableExtra(ImagePicker.REQUEST_OUTPUT) as ArrayList<String>
+       // do something
     }
 }
 ```
