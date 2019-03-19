@@ -17,7 +17,7 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <io.weimu.www.imagepicker.adaper.pageradapter.PreviewViewPager
+    <com.weimu.library.widget.PreviewViewPager
         android:id="@+id/id_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -6,17 +6,14 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-
 import com.weimu.library.ImagePicker
 import com.weimu.library.view.ImageSelectorActivity
 import com.weimu.universalib.ktx.dip2px
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.ktx.requestPermission
-
-import java.util.ArrayList
-
 import io.weimu.www.imagepicker.R
 import io.weimu.www.imagepicker.adaper.recycleview.ImageGridadapter
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 

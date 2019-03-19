@@ -13,7 +13,6 @@ import com.weimu.universalview.core.toolbar.ToolBarManager
 import java.util.ArrayList
 
 import io.weimu.www.imagepicker.R
-import io.weimu.www.imagepicker.adaper.pageradapter.PreviewViewPager
 import io.weimu.www.imagepicker.adaper.pageradapter.base.BaseFragmentPagerAdapter
 import io.weimu.www.imagepicker.fragment.ImagePreviewFragment
 import io.weimu.www.imagepicker.fragment.base.BaseFragment
