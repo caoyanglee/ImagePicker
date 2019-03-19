@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_photo_view_pager"
     android:layout_width="match_parent"
@@ -8,14 +7,7 @@
     android:orientation="vertical"
     tools:context="io.weimu.www.imagepicker.activity.PhotoViewPagerActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/colorPrimary"
-        app:titleTextColor="@color/white">
-
-    </android.support.v7.widget.Toolbar>
+    <include layout="@layout/include_toolbar_primary" />
 
     <com.weimu.library.widget.PreviewViewPager
         android:id="@+id/id_vp"

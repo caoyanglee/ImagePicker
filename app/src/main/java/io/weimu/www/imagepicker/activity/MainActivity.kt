@@ -9,17 +9,19 @@ import android.support.v7.widget.RecyclerView
 import com.weimu.library.ImagePicker
 import com.weimu.library.view.ImageSelectorActivity
 import com.weimu.universalib.ktx.dip2px
+import com.weimu.universalib.ktx.getColorPro
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
+import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.requestPermission
 import io.weimu.www.imagepicker.R
-import io.weimu.www.imagepicker.adaper.recycleview.ImageGridadapter
+import io.weimu.www.imagepicker.fragment.adapter.ImageGridAdapter
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
 
     private var recyclerView: RecyclerView? = null
-    private var mAdapter: ImageGridadapter? = null
+    private var mAdapter: ImageGridAdapter? = null
     private var gridManager: GridLayoutManager? = null
 
 
@@ -30,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        StatusBarManager.setColor(window, getColorPro(R.color.white))
+        StatusBarManager.setLightMode(window)
+
         requestPermission(
                 permissions = *arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
                 granted = { initRecyclerVIew() },
@@ -39,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecyclerVIew() {
         recyclerView = findViewById(R.id.id_RecyclerView)
-        mAdapter = ImageGridadapter(this, maxImageNumber)
+        mAdapter = ImageGridAdapter(this, maxImageNumber)
         gridManager = GridLayoutManager(this, spanCount)
         recyclerView!!.layoutManager = gridManager
         recyclerView?.addItemDecoration(GridItemDecoration(spanCount, dip2px(8f), dip2px(8f)))
@@ -47,21 +52,22 @@ class MainActivity : AppCompatActivity() {
         //recyclerView.setItemAnimator(new NoAlphaItemAnimator());
         recyclerView!!.adapter = mAdapter
 
-        mAdapter!!.AddListenter(object : ImageGridadapter.AddListenter {
-            override fun onAddClick(needNumber: Int) {
-//                ImagePicker.pickAvatar(this@MainActivity);
-                ImagePicker.pickImage(this@MainActivity, 9)
-//                ImagePicker.takePhoto(this@MainActivity,true);//使用摄像头
-            }
+
+        mAdapter?.imageActionListener = object : ImageGridAdapter.ImageActionListener {
 
             override fun onItemClick(position: Int) {
                 startActivity(PhotoViewPagerActivity.newInstance(this@MainActivity, position, mAdapter!!.dataList as ArrayList<String>))
             }
 
             override fun onItemDeleteClick(position: Int) {
-                mAdapter!!.deleteData(position)
+                mAdapter!!.removeItem(position)
             }
-        })
+        }
+        mAdapter?.onFooterClick={
+            //                ImagePicker.pickAvatar(this@MainActivity);
+            ImagePicker.pickImage(this@MainActivity, 9)
+//                ImagePicker.takePhoto(this@MainActivity,true);//使用摄像头
+        }
     }
 
 

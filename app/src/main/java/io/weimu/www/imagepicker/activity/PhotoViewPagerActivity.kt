@@ -8,18 +8,18 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.WindowManager
 import com.weimu.library.view.SelectorBaseActivity
+import com.weimu.library.widget.PreviewViewPager
+import com.weimu.universalib.ktx.getColorPro
+import com.weimu.universalview.core.fragment.BaseFragment
+import com.weimu.universalview.core.pager.BaseFragmentPagerAdapter
+import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
-
-import java.util.ArrayList
-
 import io.weimu.www.imagepicker.R
-import io.weimu.www.imagepicker.adaper.pageradapter.base.BaseFragmentPagerAdapter
 import io.weimu.www.imagepicker.fragment.ImagePreviewFragment
-import io.weimu.www.imagepicker.fragment.base.BaseFragment
+import java.util.*
 
 class PhotoViewPagerActivity : SelectorBaseActivity() {
     private var mViewPager: PreviewViewPager? = null
-    private var toolbar: Toolbar? = null
 
 
     private var isShowBar = true
@@ -27,7 +27,7 @@ class PhotoViewPagerActivity : SelectorBaseActivity() {
     private var imagList: List<String> = ArrayList()
     private val fragments = ArrayList<BaseFragment>()
     private var position = 0
-    private var mAdapter: BaseFragmentPagerAdapter? = null
+    private lateinit var mAdapter: BaseFragmentPagerAdapter
 
     private lateinit var toolBarManager: ToolBarManager
 
@@ -49,6 +49,8 @@ class PhotoViewPagerActivity : SelectorBaseActivity() {
 
 
     private fun initToolBar() {
+        StatusBarManager.setColor(window, getColorPro(R.color.white))
+        StatusBarManager.setLightMode(window)
         toolBarManager = ToolBarManager.with(this, contentView)
                 .bg {
                     this.setBackgroundResource(com.weimu.library.R.color.white)
@@ -68,7 +70,8 @@ class PhotoViewPagerActivity : SelectorBaseActivity() {
         for (i in imagList.indices) {
             fragments.add(ImagePreviewFragment.newInstance(imagList[i]))
         }
-        mAdapter = BaseFragmentPagerAdapter(supportFragmentManager, fragments)
+        mAdapter = BaseFragmentPagerAdapter(supportFragmentManager)
+        mAdapter.setFragments(fragments)
         mViewPager!!.adapter = mAdapter
         mViewPager!!.currentItem = position
         mViewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -77,7 +80,9 @@ class PhotoViewPagerActivity : SelectorBaseActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                toolbar!!.title = (position + 1).toString() + "/" + imagList.size
+                toolBarManager.title {
+                    this.text = (position + 1).toString() + "/" + imagList.size
+                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -102,7 +107,9 @@ class PhotoViewPagerActivity : SelectorBaseActivity() {
     }
 
     fun switchBarVisibility() {
-        toolbar!!.visibility = if (isShowBar) View.GONE else View.VISIBLE
+        toolBarManager.bg {
+            this.visibility = if (isShowBar) View.GONE else View.VISIBLE
+        }
         if (isShowBar) {
             hideStatusBar()
         } else {
