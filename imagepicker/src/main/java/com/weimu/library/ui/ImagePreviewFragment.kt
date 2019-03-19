@@ -1,23 +1,15 @@
-package com.weimu.library.view
+package com.weimu.library.ui
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
-import com.github.chrisbanes.photoview.OnPhotoTapListener
 import com.github.chrisbanes.photoview.PhotoView
 import com.weimu.library.R
-
-import java.io.File
 
 
 class ImagePreviewFragment : Fragment() {

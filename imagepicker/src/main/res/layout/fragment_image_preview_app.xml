@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.shizhefei.view.largeimage.LargeImageView
+        android:id="@+id/iv_large_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical|horizontal"
+        android:visibility="gone"
+        />
+
+    <com.shizhefei.view.largeimage.LargeImageView
+        android:id="@+id/iv_large"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical|horizontal"
+        />
+
+    <ProgressBar
+        android:id="@+id/crv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/CustomProgressBar"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

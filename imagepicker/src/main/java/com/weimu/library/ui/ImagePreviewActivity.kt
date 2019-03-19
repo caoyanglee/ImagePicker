@@ -1,4 +1,4 @@
-package com.weimu.library.view
+package com.weimu.library.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity

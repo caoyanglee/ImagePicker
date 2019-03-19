@@ -27,12 +27,13 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    //universal-lib
-    compile "com.github.caoyanglee:universal:$rootProject.universal_lib"
     //universal-view
     compile "com.github.caoyanglee:universalui:$rootProject.universal_view"
+    //图片预览
     compile 'com.github.chrisbanes:PhotoView:2.1.3'
+    //裁剪图
     compile 'com.isseiaoki:simplecropview:1.1.7@aar'
+    //鲁班压缩
     compile 'top.zibin:Luban:1.1.3'
 }
 repositories {

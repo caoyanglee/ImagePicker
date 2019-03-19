@@ -1,11 +1,10 @@
-package com.weimu.library.view
+package com.weimu.library.ui
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 
 import com.weimu.library.R
 import com.weimu.library.utils.FileUtilsIP

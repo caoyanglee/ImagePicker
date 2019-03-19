@@ -2,8 +2,8 @@ package com.weimu.library
 
 import android.app.Activity
 
-import com.weimu.library.view.CameraSelectorActivity
-import com.weimu.library.view.ImageSelectorActivity
+import com.weimu.library.ui.CameraSelectorActivity
+import com.weimu.library.ui.ImageSelectorActivity
 
 /**
  * Author:你需要一台永动机
@@ -12,11 +12,6 @@ import com.weimu.library.view.ImageSelectorActivity
  */
 
 object ImagePicker {
-
-
-    fun pickImage(activity: Activity, selectNum: Int = 9, enableCompress: Boolean = true) {
-        ImageSelectorActivity.start(activity, selectNum, ImageSelectorActivity.MODE_MULTIPLE, true, true, false, enableCompress)
-    }
 
 
     /**
@@ -29,7 +24,14 @@ object ImagePicker {
      * @param enablePreview 是否打开预览
      * @param enableCrop    是否进行裁剪【单选可用】
      */
-    fun pickImage(activity: Activity, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean) {
+    fun pickImage(
+            activity: Activity,
+            maxSelectNum: Int = 9,
+            mode: Int = ImageSelectorActivity.MODE_MULTIPLE,
+            enableCamera: Boolean = true,
+            enablePreview: Boolean = true,
+            enableCrop: Boolean = false,
+            enableCompress: Boolean = true) {
         ImageSelectorActivity.start(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop, enableCompress)
     }
 
@@ -43,14 +45,6 @@ object ImagePicker {
         ImageSelectorActivity.start(activity, 1, ImageSelectorActivity.MODE_SINGLE, true, true, true, false)
     }
 
-    /**
-     * 使用摄像头【默认模式】
-     *
-     * @param activity
-     */
-    fun takePhoto(activity: Activity) {
-        CameraSelectorActivity.start(activity, false)
-    }
 
     /**
      * 使用摄像头
@@ -58,7 +52,7 @@ object ImagePicker {
      * @param activity
      * @param enableCrop 是否启用裁剪
      */
-    fun takePhoto(activity: Activity, enableCrop: Boolean) {
+    fun takePhoto(activity: Activity, enableCrop: Boolean = false) {
         CameraSelectorActivity.start(activity, enableCrop)
     }
 

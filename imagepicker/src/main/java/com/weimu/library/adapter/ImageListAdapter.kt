@@ -11,14 +11,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
-import com.bumptech.glide.request.RequestOptions
 import com.weimu.library.ImageStaticHolder
 import com.weimu.library.R
 import com.weimu.library.model.LocalMedia
-import com.weimu.library.view.ImageSelectorActivity
-import com.weimu.universalview.ktx.load
+import com.weimu.library.ui.ImageSelectorActivity
 import com.weimu.universalview.ktx.load4CenterCrop
 
 import java.io.File

@@ -12,16 +12,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:name="com.weimu.library.view.ImageSelectorActivity"
+            android:name="com.weimu.library.ui.ImageSelectorActivity"
             android:theme="@style/BasePageTheme" />
         <activity
-            android:name="com.weimu.library.view.ImagePreviewActivity"
+            android:name="com.weimu.library.ui.ImagePreviewActivity"
             android:theme="@style/BasePageTheme" />
         <activity
-            android:name="com.weimu.library.view.ImageCropActivity"
+            android:name="com.weimu.library.ui.ImageCropActivity"
             android:theme="@style/BasePageTheme" />
 
-        <activity android:name="com.weimu.library.view.CameraSelectorActivity" />
+        <activity android:name="com.weimu.library.ui.CameraSelectorActivity" />
     </application>
 
 </manifest>

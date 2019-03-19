@@ -1,4 +1,4 @@
-package com.weimu.library.view
+package com.weimu.library.ui
 
 import android.content.Context
 import android.content.Intent
@@ -17,7 +17,6 @@ import com.isseiaoki.simplecropview.CropImageView
 import com.weimu.library.R
 import com.weimu.library.utils.CropUtil
 import com.weimu.library.utils.FileUtilsIP
-import com.weimu.universalib.ktx.getColorPro
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
 import com.weimu.universalview.ktx.setOnClickListenerPro

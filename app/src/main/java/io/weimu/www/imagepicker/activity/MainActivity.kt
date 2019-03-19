@@ -5,13 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import com.weimu.library.ImagePicker
-import com.weimu.library.view.ImageSelectorActivity
+import com.weimu.library.ui.ImageSelectorActivity
 import com.weimu.universalib.ktx.dip2px
 import com.weimu.universalib.ktx.getColorPro
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
-import com.weimu.universalview.core.recyclerview.decoration.LinearItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.requestPermission
 import io.weimu.www.imagepicker.R
