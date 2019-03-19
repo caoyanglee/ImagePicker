@@ -30,12 +30,12 @@ implementation 'com.github.caoyanglee:ImagePicker:{latestVersion}'
 
 ```gradle
 //以下为此aar所依赖的第三方
-implementation 'com.android.support:appcompat-v7:27.1.1'
-implementation 'com.android.support:recyclerview-v7:27.1.1'
-implementation 'com.android.support:design:27.1.1'
-implementation 'com.github.bumptech.glide:glide:4.6.1'
-annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
-implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+implementation 'com.android.support:appcompat-v7:28.0.0'
+implementation 'com.android.support:recyclerview-v7:28.0.0'
+implementation 'com.android.support:design:28.0.0'
+implementation 'com.github.bumptech.glide:glide:4.8.0'
+annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+implementation 'com.shizhefei:LargeImageView:1.1.0'
 implementation 'com.isseiaoki:simplecropview:1.1.7@aar'
 implementation 'top.zibin:Luban:1.1.3'
 ```
@@ -69,7 +69,7 @@ implementation 'top.zibin:Luban:1.1.3'
 
 1.1.打开图库
 ```java
-ImagePicker.getInstance().pickImage(activity);
+ImagePicker.pickImage(activity);
 ```
 
 **多参数调用**
@@ -82,13 +82,13 @@ ImagePicker.getInstance().pickImage(activity);
  * @param enablePreview 是否打开预览           default=true
  * @param enableCrop 是否进行裁剪【单选可用】   default=false
  */
-ImagePicker.getInstance().pickImage(activity, 9, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
+ImagePicker.pickImage(activity, 9, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
 ```
 
 
 1.2.直接拍张
 ```java
-ImagePicker.getInstance().takePhoto(activity);
+ImagePicker.takePhoto(activity);
 ```
 
 **多参数调用**
@@ -97,7 +97,7 @@ ImagePicker.getInstance().takePhoto(activity);
  * @param activity
  * @param enableCrop 是否启用裁剪 default=false
  */
-ImagePicker.getInstance().takePhoto(activity,false);
+ImagePicker.takePhoto(activity,false);
 ```
 
 2.接收结果信息
