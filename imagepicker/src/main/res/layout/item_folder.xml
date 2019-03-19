@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12 张"
-            android:textColor="@color/grey"
+            android:textColor="#999999"
             android:textSize="13sp" />
     </LinearLayout>
 

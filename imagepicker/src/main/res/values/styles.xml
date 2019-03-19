@@ -10,19 +10,10 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:windowBackground">@color/colorBg</item>
         <item name="android:actionMenuTextColor">@android:color/white</item>
     </style>
 
-
-    <style name="ToolBarTheme" parent="Base.Widget.AppCompat.Toolbar">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="titleTextColor">@color/white</item>
-        <item name="navigationIcon">@mipmap/ic_back</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-    </style>
 
     <style name="WindowStyle">
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
