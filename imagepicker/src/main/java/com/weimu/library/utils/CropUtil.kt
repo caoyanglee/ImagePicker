@@ -12,7 +12,7 @@ import java.io.*
 /*
  * Modified from original in AOSP.
  */
-object CropUtil {
+internal object CropUtil {
 
     private val SCHEME_FILE = "file"
     private val SCHEME_CONTENT = "content"

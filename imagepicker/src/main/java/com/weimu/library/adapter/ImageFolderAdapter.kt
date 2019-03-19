@@ -23,7 +23,7 @@ import java.io.File
 import java.util.ArrayList
 
 
-class ImageFolderAdapter(private val context: Context) : RecyclerView.Adapter<ImageFolderAdapter.ViewHolder>() {
+internal class ImageFolderAdapter(private val context: Context) : RecyclerView.Adapter<ImageFolderAdapter.ViewHolder>() {
     private var folders: List<LocalMediaFolder> = ArrayList()
     private var checkedIndex = 0
 

@@ -18,7 +18,7 @@ import java.util.Date
 import java.util.Locale
 
 
-object FileUtilsIP {
+internal object FileUtilsIP {
     val POSTFIX = ".JPEG"
     val APP_NAME = "ImageSelector"
     val CAMERA_PATH = "/$APP_NAME/CameraImage/"

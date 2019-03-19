@@ -25,7 +25,7 @@ import com.weimu.universalib.ktx.getScreenWidth
 import java.lang.reflect.Method
 
 
-class FolderWindow(private val context: Context) : PopupWindow() {
+internal class FolderWindow(private val context: Context) : PopupWindow() {
     private val window: View
     private var recyclerView: RecyclerView? = null
     private var adapter: ImageFolderAdapter? = null

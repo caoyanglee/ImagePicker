@@ -17,6 +17,7 @@ import com.isseiaoki.simplecropview.CropImageView
 import com.weimu.library.R
 import com.weimu.library.utils.CropUtil
 import com.weimu.library.utils.FileUtilsIP
+import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
 import com.weimu.universalview.ktx.setOnClickListenerPro
@@ -27,7 +28,8 @@ import java.io.InputStream
 import java.io.OutputStream
 
 
-class ImageCropActivity : SelectorBaseActivity() {
+internal class ImageCropActivity : BaseActivity() {
+
 
     private var ivBg: ImageView? = null
     private var cropImageView: CropImageView? = null
@@ -58,9 +60,10 @@ class ImageCropActivity : SelectorBaseActivity() {
         }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image_crop)
+    override fun getLayoutResID(): Int = R.layout.activity_image_crop
+
+
+    override fun afterViewAttach(savedInstanceState: Bundle?) {
         initBase()
         initView()
     }
@@ -82,7 +85,7 @@ class ImageCropActivity : SelectorBaseActivity() {
     fun initView() {
         StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
         StatusBarManager.setLightMode(this.window, false)
-        toolBarManager = ToolBarManager.with(this, contentView)
+        toolBarManager = ToolBarManager.with(this, getContentView())
                 .bg {
                     this.setBackgroundResource(R.color.white)
                 }

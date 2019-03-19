@@ -14,7 +14,7 @@ import java.io.File
 import java.util.*
 
 
-class LocalMediaLoader(private val activity: FragmentActivity, var type: Int = TYPE_IMAGE) {
+internal class LocalMediaLoader(private val activity: FragmentActivity, var type: Int = TYPE_IMAGE) {
 
     private val mDirPaths = HashSet<String>()//文件夹路径
 

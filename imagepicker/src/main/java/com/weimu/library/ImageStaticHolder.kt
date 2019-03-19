@@ -7,7 +7,7 @@ import com.weimu.library.model.LocalMedia
  * Date:2018/5/10 11:38
  * Description:
  */
-object ImageStaticHolder {
+internal object ImageStaticHolder {
     //共享选择图片列表
     private var chooseImages: MutableList<LocalMedia> = arrayListOf()
 

@@ -21,7 +21,7 @@ import java.io.File
 import java.util.ArrayList
 
 
-class ImageListAdapter(
+internal class ImageListAdapter(
         private var context: Context,
         val maxSelectNum: Int,
         var selectMode: Int = ImageSelectorActivity.MODE_MULTIPLE,

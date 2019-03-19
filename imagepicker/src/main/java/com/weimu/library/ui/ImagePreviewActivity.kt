@@ -21,13 +21,14 @@ import com.weimu.library.ImageStaticHolder
 import com.weimu.library.R
 import com.weimu.library.model.LocalMedia
 import com.weimu.library.widget.PreviewViewPager
+import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
 import com.weimu.universalview.ktx.setOnClickListenerPro
 import java.util.*
 
 
-class ImagePreviewActivity : SelectorBaseActivity() {
+internal class ImagePreviewActivity : BaseActivity() {
 
     private var selectBarLayout: RelativeLayout? = null
     private var checkboxSelect: CheckBox? = null
@@ -45,9 +46,9 @@ class ImagePreviewActivity : SelectorBaseActivity() {
     private lateinit var toolBarManager: ToolBarManager
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image_preview)
+    override fun getLayoutResID(): Int = R.layout.activity_image_preview
+
+    override fun afterViewAttach(savedInstanceState: Bundle?) {
         initData()
         initView()
         registerListener()
@@ -67,7 +68,7 @@ class ImagePreviewActivity : SelectorBaseActivity() {
         //状态栏和Toolbar
         StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
         StatusBarManager.setLightMode(this.window, false)
-        toolBarManager = ToolBarManager.with(this, contentView)
+        toolBarManager = ToolBarManager.with(this, getContentView())
                 .bg {
                     this.setBackgroundResource(R.color.white)
                 }

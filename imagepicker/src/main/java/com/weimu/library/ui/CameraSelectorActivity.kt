@@ -8,6 +8,7 @@ import android.util.Log
 
 import com.weimu.library.R
 import com.weimu.library.utils.FileUtilsIP
+import com.weimu.universalview.core.activity.BaseActivity
 
 import java.io.File
 import java.util.ArrayList
@@ -18,7 +19,8 @@ import top.zibin.luban.OnCompressListener
 /**
  * 相机选择
  */
-class CameraSelectorActivity : SelectorBaseActivity() {
+internal class CameraSelectorActivity : BaseActivity() {
+
 
     private var cameraPath: String? = null
 
@@ -29,16 +31,15 @@ class CameraSelectorActivity : SelectorBaseActivity() {
         outState.putString(BUNDLE_CAMERA_PATH, cameraPath)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera_selector)
+    override fun getLayoutResID(): Int = R.layout.activity_camera_selector
+
+    override fun afterViewAttach(savedInstanceState: Bundle?) {
         enableCrop = intent.getBooleanExtra(EXTRA_ENABLE_CROP, false)
         if (savedInstanceState != null) {
             cameraPath = savedInstanceState.getString(BUNDLE_CAMERA_PATH)
         }
         startCamera()
     }
-
 
     /**
      * start to camera、preview、crop

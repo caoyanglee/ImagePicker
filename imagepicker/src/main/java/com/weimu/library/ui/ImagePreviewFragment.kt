@@ -12,7 +12,7 @@ import com.github.chrisbanes.photoview.PhotoView
 import com.weimu.library.R
 
 
-class ImagePreviewFragment : Fragment() {
+internal class ImagePreviewFragment : Fragment() {
     private var photo_view: PhotoView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

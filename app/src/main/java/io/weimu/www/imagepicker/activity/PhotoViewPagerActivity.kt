@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.WindowManager
-import com.weimu.library.ui.SelectorBaseActivity
 import com.weimu.library.widget.PreviewViewPager
 import com.weimu.universalib.ktx.getColorPro
+import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.fragment.BaseFragment
 import com.weimu.universalview.core.pager.BaseFragmentPagerAdapter
 import com.weimu.universalview.core.toolbar.StatusBarManager
@@ -17,7 +17,9 @@ import io.weimu.www.imagepicker.R
 import io.weimu.www.imagepicker.fragment.ImagePreviewFragment
 import java.util.*
 
-class PhotoViewPagerActivity : SelectorBaseActivity() {
+class PhotoViewPagerActivity : BaseActivity() {
+
+
     private var mViewPager: PreviewViewPager? = null
 
 
@@ -31,10 +33,9 @@ class PhotoViewPagerActivity : SelectorBaseActivity() {
     private lateinit var toolBarManager: ToolBarManager
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_photo_view_pager)
+    override fun getLayoutResID(): Int =R.layout.activity_photo_view_pager
 
+    override fun afterViewAttach(savedInstanceState: Bundle?) {
         initData()
         initToolBar()
         initViewPager()
@@ -50,7 +51,7 @@ class PhotoViewPagerActivity : SelectorBaseActivity() {
     private fun initToolBar() {
         StatusBarManager.setColor(window, getColorPro(R.color.white))
         StatusBarManager.setLightMode(window)
-        toolBarManager = ToolBarManager.with(this, contentView)
+        toolBarManager = ToolBarManager.with(this, getContentView())
                 .bg {
                     this.setBackgroundResource(com.weimu.library.R.color.white)
                 }

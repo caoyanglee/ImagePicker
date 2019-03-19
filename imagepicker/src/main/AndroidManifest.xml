@@ -20,8 +20,9 @@
         <activity
             android:name="com.weimu.library.ui.ImageCropActivity"
             android:theme="@style/BasePageTheme" />
-
-        <activity android:name="com.weimu.library.ui.CameraSelectorActivity" />
+        <activity
+            android:name="com.weimu.library.ui.CameraSelectorActivity"
+            android:theme="@style/BasePageTheme" />
     </application>
 
 </manifest>

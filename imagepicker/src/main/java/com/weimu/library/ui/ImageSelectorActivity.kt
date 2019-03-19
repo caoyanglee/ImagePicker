@@ -28,6 +28,7 @@ import com.weimu.library.model.LocalMediaFolder
 import com.weimu.library.utils.FileUtilsIP
 import com.weimu.library.utils.LocalMediaLoader
 import com.weimu.universalib.ktx.dip2px
+import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
@@ -40,7 +41,7 @@ import java.io.File
 import java.util.*
 
 
-class ImageSelectorActivity : SelectorBaseActivity() {
+class ImageSelectorActivity : BaseActivity() {
 
     private var maxSelectNum = 9
     private var selectMode = MODE_MULTIPLE
@@ -52,7 +53,7 @@ class ImageSelectorActivity : SelectorBaseActivity() {
     private val spanCount = 4
     //ui
     private var recyclerView: RecyclerView? = null
-    private var imageAdapter: ImageListAdapter? = null
+    private val imageAdapter: ImageListAdapter by lazy { ImageListAdapter(this, maxSelectNum, selectMode, enableCamera, enablePreview) }
     private var folderLayout: LinearLayout? = null
     private var folderName: TextView? = null
     private var folderWindow: FolderWindow? = null
@@ -65,11 +66,10 @@ class ImageSelectorActivity : SelectorBaseActivity() {
 
     private var isUseOrigin = false//是否使用原图
 
+    override fun getLayoutResID(): Int = R.layout.activity_imageselector
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_imageselector)
 
+    override fun afterViewAttach(savedInstanceState: Bundle?) {
         maxSelectNum = intent.getIntExtra(EXTRA_MAX_SELECT_NUM, 9)
         selectMode = intent.getIntExtra(EXTRA_SELECT_MODE, MODE_MULTIPLE)
         enableCamera = intent.getBooleanExtra(EXTRA_SHOW_CAMERA, true)
@@ -101,10 +101,11 @@ class ImageSelectorActivity : SelectorBaseActivity() {
         })
     }
 
+
     fun initView() {
         StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
         StatusBarManager.setLightMode(this.window, false)
-        toolBarManager = ToolBarManager.with(this, contentView)
+        toolBarManager = ToolBarManager.with(this, getContentView())
                 .bg {
                     this.setBackgroundResource(R.color.white)
                 }
@@ -147,7 +148,6 @@ class ImageSelectorActivity : SelectorBaseActivity() {
         recyclerView?.addItemDecoration(GridItemDecoration(spanCount, dip2px(2f), dip2px(2f)))
 
 
-        imageAdapter = ImageListAdapter(this, maxSelectNum, selectMode, enableCamera, enablePreview)
         recyclerView!!.adapter = imageAdapter
     }
 
@@ -235,6 +235,7 @@ class ImageSelectorActivity : SelectorBaseActivity() {
                 if (isDone) {
                     onSelectDone(images)
                 } else {
+                    if (images.isEmpty()) return
                     imageAdapter!!.bindSelectImages(images as ArrayList<LocalMedia>)
                 }
             } else if (requestCode == ImageCropActivity.REQUEST_CROP) {
