@@ -8,6 +8,8 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.weimu.universalview.ktx.load
+import com.weimu.universalview.ktx.load4CenterCrop
 import io.weimu.www.imagepicker.R
 import io.weimu.www.imagepicker.activity.PhotoViewPagerActivity
 import io.weimu.www.imagepicker.base.BaseViewFragment
@@ -33,17 +35,7 @@ class ImagePreviewFragment : BaseViewFragment() {
 
 
     override fun afterViewAttach(savedInstanceState: Bundle?) {
-        Glide.with(this)
-                .asBitmap()
-                .load(arguments!!.getString(PATH))
-                .apply(RequestOptions().centerCrop())
-                .transition(BitmapTransitionOptions.withCrossFade())
-                .into(object : SimpleTarget<Bitmap>(480, 800) {
-                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                        photo_view!!.setImageBitmap(resource)
-                    }
-                })
-
+        photo_view.load("${arguments!!.getString(PATH)}")
         photo_view!!.setOnPhotoTapListener { view, x, y ->
             val activity = activity as PhotoViewPagerActivity?
             activity!!.switchBarVisibility()

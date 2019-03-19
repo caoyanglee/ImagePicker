@@ -26,11 +26,12 @@ import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
 import com.weimu.universalview.ktx.setOnClickListenerPro
 import java.util.*
+import kotlin.properties.Delegates
 
 
 internal class ImagePreviewActivity : BaseActivity() {
 
-    private var selectBarLayout: RelativeLayout? = null
+    private val selectBarLayout: RelativeLayout by lazy { findViewById<RelativeLayout>(R.id.select_bar_layout) }
     private var checkboxSelect: CheckBox? = null
     private var viewPager: PreviewViewPager? = null
 
@@ -41,7 +42,21 @@ internal class ImagePreviewActivity : BaseActivity() {
     private var selectImages: ArrayList<LocalMedia> = ArrayList()//选择的图片
 
 
-    private var isShowBar = true
+    var isShowBar by Delegates.observable(false) { property, oldValue, newValue ->
+        //todo是否显示
+        if (newValue) {
+            showStatusBar()
+        } else {
+            hideStatusBar()
+        }
+        if (newValue) {
+            toolBarManager.showToolBar()
+        } else {
+            toolBarManager.hideToolBar()
+        }
+        selectBarLayout.visibility = if (newValue) View.VISIBLE else View.GONE
+
+    }
 
     private lateinit var toolBarManager: ToolBarManager
 
@@ -60,8 +75,6 @@ internal class ImagePreviewActivity : BaseActivity() {
         selectImages = intent.getSerializableExtra(EXTRA_PREVIEW_SELECT_LIST) as ArrayList<LocalMedia>
         maxSelectNum = intent.getIntExtra(EXTRA_MAX_SELECT_NUM, 9)
         position = intent.getIntExtra(EXTRA_POSITION, 1)
-
-        selectBarLayout = findViewById<View>(R.id.select_bar_layout) as RelativeLayout
     }
 
     private fun initView() {
@@ -185,21 +198,6 @@ internal class ImagePreviewActivity : BaseActivity() {
         window.attributes = attrs
     }
 
-    fun switchBarVisibility() {
-        //todo是否显示
-        if (isShowBar) {
-            toolBarManager!!.hideToolBar()
-        } else {
-            toolBarManager!!.showToolBar()
-        }
-        selectBarLayout!!.visibility = if (isShowBar) View.GONE else View.VISIBLE
-        if (isShowBar) {
-            hideStatusBar()
-        } else {
-            showStatusBar()
-        }
-        isShowBar = !isShowBar
-    }
 
     fun onDoneClick(isDone: Boolean) {
         val intent = Intent()

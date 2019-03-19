@@ -52,12 +52,12 @@ class ImageSelectorActivity : BaseActivity() {
 
     private val spanCount = 4
     //ui
-    private var recyclerView: RecyclerView? = null
+    private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.folder_list) }
     private val imageAdapter: ImageListAdapter by lazy { ImageListAdapter(this, maxSelectNum, selectMode, enableCamera, enablePreview) }
-    private var folderLayout: LinearLayout? = null
-    private var folderName: TextView? = null
-    private var folderWindow: FolderWindow? = null
-    private var cbOrigin: CheckBox? = null
+    private val folderLayout: LinearLayout by lazy { findViewById<LinearLayout>(R.id.folder_layout) }
+    private val folderName: TextView by lazy { findViewById<TextView>(R.id.folder_name) }
+    private val folderWindow: FolderWindow by lazy { FolderWindow(this) }
+    private val cbOrigin: CheckBox by lazy { findViewById<CheckBox>(R.id.cb_origin) }
     private lateinit var toolBarManager: ToolBarManager
 
     private var cameraPath: String? = null
@@ -94,17 +94,19 @@ class ImageSelectorActivity : BaseActivity() {
         LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage(object : LocalMediaLoader.LocalMediaLoadListener {
             override fun loadComplete(folders: List<LocalMediaFolder>) {
                 allFolders = folders
-                folderWindow!!.bindFolder(allFolders)
+                folderWindow.bindFolder(allFolders)
                 //load all images first
-                imageAdapter!!.bindImages(allFolders[0].images as ArrayList<LocalMedia>)
+                imageAdapter.bindImages(allFolders[0].images as ArrayList<LocalMedia>)
             }
         })
     }
 
 
-    fun initView() {
+    private fun initView() {
+
         StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
         StatusBarManager.setLightMode(this.window, false)
+
         toolBarManager = ToolBarManager.with(this, getContentView())
                 .bg {
                     this.setBackgroundResource(R.color.white)
@@ -122,51 +124,41 @@ class ImageSelectorActivity : BaseActivity() {
                     this.isEnabled = false
                     this.setOnClickListenerPro {
                         //点击完成
-                        onSelectDone(imageAdapter!!.selectedImages)
+                        onSelectDone(imageAdapter.selectedImages)
                     }
                 }
 
-        folderWindow = FolderWindow(this)
-
         //是否使用原图
-        cbOrigin = findViewById(R.id.cb_origin)
-
-        if (!enableCompress) {
-            cbOrigin!!.visibility = View.GONE
+        cbOrigin.apply {
+            if (!enableCompress) this.visibility = View.GONE
+            this.isChecked = isUseOrigin
+            this.setOnClickListener { isUseOrigin = !this.isChecked }
         }
-
-        cbOrigin!!.isChecked = isUseOrigin
-        cbOrigin!!.setOnClickListener { isUseOrigin = !cbOrigin!!.isChecked }
-
-        folderLayout = findViewById<View>(R.id.folder_layout) as LinearLayout
-        folderName = findViewById<View>(R.id.folder_name) as TextView
-
-        recyclerView = findViewById<View>(R.id.folder_list) as RecyclerView
-        recyclerView?.init()
-        recyclerView?.layoutManager = GridLayoutManager(this, spanCount)
-        recyclerView?.setHasFixedSize(true)
-        recyclerView?.addItemDecoration(GridItemDecoration(spanCount, dip2px(2f), dip2px(2f)))
-
-
-        recyclerView!!.adapter = imageAdapter
+        recyclerView.apply {
+            this.init()
+            this.layoutManager = GridLayoutManager(this@ImageSelectorActivity, spanCount)
+            this.setHasFixedSize(true)
+            this.addItemDecoration(GridItemDecoration(spanCount, dip2px(2f), dip2px(2f)))
+            this.adapter = imageAdapter
+        }
     }
 
     fun registerListener() {
-        folderLayout!!.setOnClickListener(View.OnClickListener {
+        folderLayout.setOnClickListener(View.OnClickListener {
             //Toast.makeText(ImageSelectorActivity.this, "文件夹长度  " + allFolders.size() + "  内部图片数量  " + allFolders.get(0).getImages().size(), Toast.LENGTH_SHORT).show();
-            if (allFolders!!.size == 0 || allFolders!![0].images.size == 0) {
+            if (allFolders.size == 0 || allFolders[0].images.size == 0) {
                 Toast.makeText(this@ImageSelectorActivity, "没有可选择的图片", Toast.LENGTH_SHORT).show()
                 return@OnClickListener
             }
-            if (folderWindow!!.isShowing) {
-                folderWindow!!.dismiss()
+            if (folderWindow.isShowing) {
+                folderWindow.dismiss()
             } else {
 
-                folderWindow!!.showAsDropDown(findViewById<ConstraintLayout>(R.id.cl_toolbar))
+                folderWindow.showAsDropDown(findViewById<ConstraintLayout>(R.id.cl_toolbar))
             }
         })
         //recyclerView点击事件
-        imageAdapter?.setOnImageSelectChangedListener(object : ImageListAdapter.OnImageSelectChangedListener {
+        imageAdapter.setOnImageSelectChangedListener(object : ImageListAdapter.OnImageSelectChangedListener {
             override fun onChange(selectImages: List<LocalMedia>) {
                 val enable = selectImages.isNotEmpty()
                 if (enable) {
@@ -190,14 +182,14 @@ class ImageSelectorActivity : BaseActivity() {
                 if (enablePreview) {
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        startPreviewWithAnim(imageAdapter!!.images, position, view)
+                        startPreviewWithAnim(imageAdapter.images, position, view)
                     } else {
-                        startPreview(imageAdapter!!.images, position)
+                        startPreview(imageAdapter.images, position)
                     }
 
                 } else if (enableCrop) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        startCropWithAnim(media.path!!, view)
+                        startCropWithAnim("${media.path}", view)
                     } else {
                         startCrop(media.path)
                     }
@@ -207,12 +199,12 @@ class ImageSelectorActivity : BaseActivity() {
             }
         })
         //点击某个文件件
-        folderWindow?.setOnItemClickListener(object : ImageFolderAdapter.OnItemClickListener {
+        folderWindow.setOnItemClickListener(object : ImageFolderAdapter.OnItemClickListener {
             override fun onItemClick(folderName: String?, images: List<LocalMedia>) {
-                folderWindow!!.dismiss()
-                imageAdapter!!.bindImages(images as ArrayList<LocalMedia>)
-                this@ImageSelectorActivity.folderName!!.text = folderName
-                recyclerView!!.smoothScrollToPosition(0)
+                folderWindow.dismiss()
+                imageAdapter.bindImages(images as ArrayList<LocalMedia>)
+                this@ImageSelectorActivity.folderName.text = folderName
+                recyclerView.smoothScrollToPosition(0)
             }
 
         })
@@ -230,16 +222,17 @@ class ImageSelectorActivity : BaseActivity() {
                     onSelectDone(cameraPath)
                 }
             } else if (requestCode == ImagePreviewActivity.REQUEST_PREVIEW) {
-                val isDone = data!!.getBooleanExtra(ImagePreviewActivity.OUTPUT_ISDONE, false)
-                val images = data.getSerializableExtra(ImagePreviewActivity.OUTPUT_LIST) as List<LocalMedia>
+                val isDone = data?.getBooleanExtra(ImagePreviewActivity.OUTPUT_ISDONE, false)
+                        ?: false
+                val images = data?.getSerializableExtra(ImagePreviewActivity.OUTPUT_LIST) as List<LocalMedia>
                 if (isDone) {
                     onSelectDone(images)
                 } else {
                     if (images.isEmpty()) return
-                    imageAdapter!!.bindSelectImages(images as ArrayList<LocalMedia>)
+                    imageAdapter.bindSelectImages(images as ArrayList<LocalMedia>)
                 }
             } else if (requestCode == ImageCropActivity.REQUEST_CROP) {
-                val path = data!!.getStringExtra(ImageCropActivity.OUTPUT_PATH)
+                val path = data?.getStringExtra(ImageCropActivity.OUTPUT_PATH) ?: ""
                 onSelectDone(path)
             }// on crop success
             //on preview select change
@@ -262,11 +255,11 @@ class ImageSelectorActivity : BaseActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     fun startPreviewWithAnim(previewImages: List<LocalMedia>, position: Int, view: View) {
-        ImagePreviewActivity.startPreviewWithAnim(this, imageAdapter!!.selectedImages, maxSelectNum, position, view)
+        ImagePreviewActivity.startPreviewWithAnim(this, imageAdapter.selectedImages, maxSelectNum, position, view)
     }
 
     fun startPreview(previewImages: List<LocalMedia>, position: Int) {
-        ImagePreviewActivity.startPreview(this, imageAdapter!!.selectedImages, maxSelectNum, position)
+        ImagePreviewActivity.startPreview(this, imageAdapter.selectedImages, maxSelectNum, position)
     }
 
     @SuppressLint("RestrictedApi")
@@ -277,7 +270,7 @@ class ImageSelectorActivity : BaseActivity() {
     }
 
     fun startCrop(path: String?) {
-        startActivityForResult(ImageCropActivity.newIntent(this, path!!), ImageCropActivity.REQUEST_CROP)
+        startActivityForResult(ImageCropActivity.newIntent(this, "$path"), ImageCropActivity.REQUEST_CROP)
     }
 
     /**
@@ -288,14 +281,14 @@ class ImageSelectorActivity : BaseActivity() {
     fun onSelectDone(medias: List<LocalMedia>) {
         val images = ArrayList<String>()
         for (media in medias) {
-            images.add(media.path!!)
+            images.add("${media.path}")
         }
         onResult(images)
     }
 
     fun onSelectDone(path: String?) {
         val images = ArrayList<String>()
-        images.add(path!!)
+        images.add("$path")
         onResult(images)
     }
 

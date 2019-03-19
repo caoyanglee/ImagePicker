@@ -1,48 +1,28 @@
 package com.weimu.library.ui
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
-import com.github.chrisbanes.photoview.PhotoView
 import com.weimu.library.R
+import com.weimu.universalview.core.fragment.BaseFragment
+import com.weimu.universalview.ktx.load
+import com.weimu.universalview.ktx.load4CenterCrop
+import kotlinx.android.synthetic.main.fragment_image_preview.*
 
 
-internal class ImagePreviewFragment : Fragment() {
-    private var photo_view: PhotoView? = null
+internal class ImagePreviewFragment : BaseFragment() {
+    override fun afterViewAttachBaseViewAction(savedInstanceState: Bundle?) {}
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val contentView = inflater.inflate(R.layout.fragment_image_preview, container, false)
-        initView(container!!, contentView)
-        return contentView
-    }
+    override fun beforeViewAttachBaseViewAction(savedInstanceState: Bundle?) {}
 
-    private fun initView(container: ViewGroup, contentView: View) {
-        photo_view = contentView.findViewById<View>(R.id.photo_view) as PhotoView
+    override fun getLayoutResID(): Int = R.layout.fragment_image_preview
 
-        Glide.with(container.context)
-                .asBitmap()
-                .load(arguments!!.getString(PATH))
-                //.apply(new RequestOptions().centerCrop())
-                .transition(BitmapTransitionOptions.withCrossFade())
-                .into(photo_view!!)
-        //                .into(new SimpleTarget<Bitmap>(480, 800) {
-        //                    @Override
-        //                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-        //                        photo_view.setImageBitmap(resource);
-        //                    }
-        //                });
-
-        photo_view!!.setOnPhotoTapListener { view, x, y ->
-            val activity = activity as ImagePreviewActivity?
-            activity!!.switchBarVisibility()
+    override fun afterViewAttach(savedInstanceState: Bundle?) {
+        photo_view.load("${arguments!!.getString(PATH)}")
+        photo_view.setOnPhotoTapListener { view, x, y ->
+            val activity = activity as ImagePreviewActivity
+            activity.isShowBar = !activity.isShowBar
         }
-
     }
+
 
     companion object {
 
