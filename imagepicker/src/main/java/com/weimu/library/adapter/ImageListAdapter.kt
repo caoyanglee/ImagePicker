@@ -10,17 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import com.shizhefei.view.largeimage.LargeImageView
-
 import com.weimu.library.ImageStaticHolder
 import com.weimu.library.R
 import com.weimu.library.model.LocalMedia
 import com.weimu.library.ui.ImageSelectorActivity
-import com.weimu.library.widget.DragViewPager
 import com.weimu.universalview.ktx.load4CenterCrop
-
 import java.io.File
-import java.util.ArrayList
+import java.util.*
 
 
 internal class ImageListAdapter(

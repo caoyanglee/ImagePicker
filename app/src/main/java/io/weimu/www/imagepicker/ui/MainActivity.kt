@@ -1,4 +1,4 @@
-package io.weimu.www.imagepicker.activity
+package io.weimu.www.imagepicker.ui
 
 import android.Manifest
 import android.content.Intent
@@ -14,6 +14,7 @@ import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.requestPermission
 import io.weimu.www.imagepicker.R
 import io.weimu.www.imagepicker.fragment.adapter.ImageGridAdapter
+import io.weimu.www.imagepicker.ui.preview.ImagePreviewActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             this.imageActionListener = object : ImageGridAdapter.ImageActionListener {
 
                 override fun onItemClick(position: Int) {
-                    startActivity(PhotoViewPagerActivity.newInstance(this@MainActivity, position, this@apply.dataList))
+                    ImagePreviewActivity.start(this@MainActivity, this@apply.dataList, position)
                 }
 
                 override fun onItemDeleteClick(position: Int) {

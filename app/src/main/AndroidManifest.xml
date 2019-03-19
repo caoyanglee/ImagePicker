@@ -9,9 +9,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.PhotoViewPagerActivity"
+            android:name=".ui.preview.ImagePreviewActivity"
             android:theme="@style/ImagePreviewTheme" />
 
         <!--如果项目已有FileProvider，则不用重复导入-->

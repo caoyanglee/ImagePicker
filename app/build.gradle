@@ -36,6 +36,12 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':imagepicker')
+    //downloader
+    api 'com.liulishuo.filedownloader:library:1.7.4'
+    //viewPager底部圆圈指示器
+    api 'com.romandanylyk:pageindicatorview:1.0.1@aar'
+    //nineold 配合下拉图片
+    api 'com.nineoldandroids:library:2.4.0'
 }
 repositories {
     mavenCentral()

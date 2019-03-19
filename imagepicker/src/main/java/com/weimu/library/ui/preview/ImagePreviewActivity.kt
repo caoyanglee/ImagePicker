@@ -13,17 +13,13 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
-import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.RelativeLayout
 import android.widget.Toast
-import com.shizhefei.view.largeimage.LargeImageView
 import com.weimu.library.ImageStaticHolder
 import com.weimu.library.R
 import com.weimu.library.model.LocalMedia
-import com.weimu.library.widget.DragViewPager
 import com.weimu.universalview.core.activity.BaseActivity
-import com.weimu.universalview.core.pager.BaseFragmentStatePagerAdapter
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
 import com.weimu.universalview.ktx.setOnClickListenerPro
@@ -66,7 +62,7 @@ internal class ImagePreviewActivity : BaseActivity() {
 
     private val selectBarLayout: RelativeLayout by lazy { findViewById<RelativeLayout>(R.id.select_bar_layout) }
     private var checkboxSelect: CheckBox? = null
-    private val viewPager: DragViewPager by lazy { findViewById<DragViewPager>(R.id.drag_viewPager) }
+    private val viewPager: ViewPager by lazy { findViewById<ViewPager>(R.id.drag_viewPager) }
 
     private var position: Int = 0
     private var maxSelectNum = 1
@@ -77,13 +73,10 @@ internal class ImagePreviewActivity : BaseActivity() {
     var isShowBar by Delegates.observable(false) { property, oldValue, newValue ->
         //todo是否显示
         if (newValue) {
-            showStatusBar()
-        } else {
-            hideStatusBar()
-        }
-        if (newValue) {
+            StatusBarManager.showStatusBar(window)
             toolBarManager.showToolBar()
         } else {
+            StatusBarManager.hideStatusBar(window)
             toolBarManager.hideToolBar()
         }
         selectBarLayout.visibility = if (newValue) View.VISIBLE else View.GONE
@@ -138,23 +131,28 @@ internal class ImagePreviewActivity : BaseActivity() {
         onImageSwitch(position)
 
 
-        viewPager.adapter = SimpleFragmentAdapter(supportFragmentManager)
-        viewPager.currentItem = position
+        viewPager.apply {
+            viewPager.adapter = SimpleFragmentAdapter(supportFragmentManager)
+            viewPager.currentItem = position
+            //触发接口
+            viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+                override fun onPageSelected(position: Int) {
+                    toolBarManager.title { this.text = ((position + 1).toString() + "/" + images.size) }
+                    onImageSwitch(position)
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {}
+            })
+        }
+
 
     }
 
     @SuppressLint("StringFormatMatches")
     fun registerListener() {
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
-            override fun onPageSelected(position: Int) {
-                toolBarManager.title { this.text = ((position + 1).toString() + "/" + images.size) }
-                onImageSwitch(position)
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {}
-        })
         checkboxSelect!!.setOnClickListener(View.OnClickListener {
             val isChecked = checkboxSelect!!.isChecked
             if (selectImages.size >= maxSelectNum && isChecked) {
@@ -210,18 +208,6 @@ internal class ImagePreviewActivity : BaseActivity() {
             }
         }
         return false
-    }
-
-    private fun hideStatusBar() {
-        val attrs = window.attributes
-        attrs.flags = attrs.flags or WindowManager.LayoutParams.FLAG_FULLSCREEN
-        window.attributes = attrs
-    }
-
-    private fun showStatusBar() {
-        val attrs = window.attributes
-        attrs.flags = attrs.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN.inv()
-        window.attributes = attrs
     }
 
 

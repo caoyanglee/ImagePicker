@@ -35,8 +35,6 @@ dependencies {
     compile 'top.zibin:Luban:1.1.3'
     //显示大图
     api 'com.shizhefei:LargeImageView:1.1.0'
-    //nineold 配合下拉图片
-    api 'com.nineoldandroids:library:2.4.0'
 }
 repositories {
     mavenCentral()
