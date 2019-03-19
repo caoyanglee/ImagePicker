@@ -90,13 +90,15 @@ class ImageSelectorActivity : SelectorBaseActivity() {
         registerListener()
 
         ///load data
-        LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage { folders ->
-            allFolders = folders
-            folderWindow!!.bindFolder(allFolders)
-            //load all images first
-            imageAdapter!!.bindImages(allFolders!![0].images as ArrayList<LocalMedia>)
-        }
 
+        LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage(object : LocalMediaLoader.LocalMediaLoadListener {
+            override fun loadComplete(folders: List<LocalMediaFolder>) {
+                allFolders = folders
+                folderWindow!!.bindFolder(allFolders)
+                //load all images first
+                imageAdapter!!.bindImages(allFolders[0].images as ArrayList<LocalMedia>)
+            }
+        })
     }
 
     fun initView() {
