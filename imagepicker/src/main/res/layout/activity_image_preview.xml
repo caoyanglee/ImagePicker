@@ -12,8 +12,8 @@
         android:layout_height="match_parent">
 
 
-        <com.weimu.library.widget.PreviewViewPager
-            android:id="@+id/preview_pager"
+        <com.weimu.library.widget.DragViewPager
+            android:id="@+id/drag_viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:transitionName="share_image" />

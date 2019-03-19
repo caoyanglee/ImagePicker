@@ -41,5 +41,5 @@ ext{
     compileSdkVersion = 28
 
     //App dependencies
-    universal_view='0.1.8'
+    universal_view='0.1.9'
 }

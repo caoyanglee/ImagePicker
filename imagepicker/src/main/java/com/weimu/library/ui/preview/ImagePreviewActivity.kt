@@ -1,4 +1,4 @@
-package com.weimu.library.ui
+package com.weimu.library.ui.preview
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -17,11 +17,13 @@ import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.RelativeLayout
 import android.widget.Toast
+import com.shizhefei.view.largeimage.LargeImageView
 import com.weimu.library.ImageStaticHolder
 import com.weimu.library.R
 import com.weimu.library.model.LocalMedia
-import com.weimu.library.widget.PreviewViewPager
+import com.weimu.library.widget.DragViewPager
 import com.weimu.universalview.core.activity.BaseActivity
+import com.weimu.universalview.core.pager.BaseFragmentStatePagerAdapter
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
 import com.weimu.universalview.ktx.setOnClickListenerPro
@@ -31,10 +33,40 @@ import kotlin.properties.Delegates
 
 internal class ImagePreviewActivity : BaseActivity() {
 
+    companion object {
+        val REQUEST_PREVIEW = 68
+        val EXTRA_PREVIEW_SELECT_LIST = "previewSelectList"
+        val EXTRA_MAX_SELECT_NUM = "maxSelectNum"
+        val EXTRA_POSITION = "position"
+
+        val OUTPUT_LIST = "outputList"
+        val OUTPUT_ISDONE = "isDone"
+
+
+        fun startPreview(context: Activity, selectImages: List<LocalMedia>, maxSelectNum: Int, position: Int) {
+            val intent = Intent(context, ImagePreviewActivity::class.java)
+            intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, selectImages as ArrayList<LocalMedia>)
+
+            intent.putExtra(EXTRA_POSITION, position)
+            intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
+            context.startActivityForResult(intent, REQUEST_PREVIEW)
+        }
+
+
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        fun startPreviewWithAnim(context: Activity, selectImages: List<LocalMedia>, maxSelectNum: Int, position: Int, view: View) {
+            val intent = Intent(context, ImagePreviewActivity::class.java)
+            intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, selectImages as ArrayList<LocalMedia>)
+
+            intent.putExtra(EXTRA_POSITION, position)
+            intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
+            context.startActivityForResult(intent, REQUEST_PREVIEW, ActivityOptions.makeSceneTransitionAnimation(context, view, "share_image").toBundle())
+        }
+    }
+
     private val selectBarLayout: RelativeLayout by lazy { findViewById<RelativeLayout>(R.id.select_bar_layout) }
     private var checkboxSelect: CheckBox? = null
-    private var viewPager: PreviewViewPager? = null
-
+    private val viewPager: DragViewPager by lazy { findViewById<DragViewPager>(R.id.drag_viewPager) }
 
     private var position: Int = 0
     private var maxSelectNum = 1
@@ -59,7 +91,6 @@ internal class ImagePreviewActivity : BaseActivity() {
     }
 
     private lateinit var toolBarManager: ToolBarManager
-
 
     override fun getLayoutResID(): Int = R.layout.activity_image_preview
 
@@ -107,14 +138,14 @@ internal class ImagePreviewActivity : BaseActivity() {
         onImageSwitch(position)
 
 
-        viewPager = findViewById<View>(R.id.preview_pager) as PreviewViewPager
-        viewPager!!.adapter = SimpleFragmentAdapter(supportFragmentManager)
-        viewPager!!.currentItem = position
+        viewPager.adapter = SimpleFragmentAdapter(supportFragmentManager)
+        viewPager.currentItem = position
+
     }
 
     @SuppressLint("StringFormatMatches")
     fun registerListener() {
-        viewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {
@@ -147,15 +178,10 @@ internal class ImagePreviewActivity : BaseActivity() {
     }
 
     inner class SimpleFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-
-        override fun getItem(position: Int): Fragment {
-            return ImagePreviewFragment.getInstance(images[position].path!!)
-        }
-
-        override fun getCount(): Int {
-            return images.size
-        }
+        override fun getItem(position: Int): Fragment = ImagePreviewFragment.newInstance(images[position].path!!)
+        override fun getCount(): Int = images.size
     }
+
 
     @SuppressLint("SetTextI18n")
     fun onSelectNumChange() {
@@ -205,40 +231,11 @@ internal class ImagePreviewActivity : BaseActivity() {
         intent.putExtra(OUTPUT_ISDONE, isDone)
         setResult(Activity.RESULT_OK, intent)
         super.onBackPressed()
+        overridePendingTransition(-1, R.anim.fade_out)
     }
 
     override fun onBackPressed() {
         onDoneClick(false)
     }
 
-    companion object {
-        val REQUEST_PREVIEW = 68
-        val EXTRA_PREVIEW_SELECT_LIST = "previewSelectList"
-        val EXTRA_MAX_SELECT_NUM = "maxSelectNum"
-        val EXTRA_POSITION = "position"
-
-        val OUTPUT_LIST = "outputList"
-        val OUTPUT_ISDONE = "isDone"
-
-
-        fun startPreview(context: Activity, selectImages: List<LocalMedia>, maxSelectNum: Int, position: Int) {
-            val intent = Intent(context, ImagePreviewActivity::class.java)
-            intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, selectImages as ArrayList<LocalMedia>)
-
-            intent.putExtra(EXTRA_POSITION, position)
-            intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
-            context.startActivityForResult(intent, REQUEST_PREVIEW)
-        }
-
-
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        fun startPreviewWithAnim(context: Activity, selectImages: List<LocalMedia>, maxSelectNum: Int, position: Int, view: View) {
-            val intent = Intent(context, ImagePreviewActivity::class.java)
-            intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, selectImages as ArrayList<LocalMedia>)
-
-            intent.putExtra(EXTRA_POSITION, position)
-            intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
-            context.startActivityForResult(intent, REQUEST_PREVIEW, ActivityOptions.makeSceneTransitionAnimation(context, view, "share_image").toBundle())
-        }
-    }
 }

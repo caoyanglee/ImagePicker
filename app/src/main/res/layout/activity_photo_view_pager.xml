@@ -9,7 +9,7 @@
 
     <include layout="@layout/include_toolbar_primary" />
 
-    <com.weimu.library.widget.PreviewViewPager
+    <com.weimu.library.widget.DragViewPager
         android:id="@+id/id_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name=".activity.PhotoViewPagerActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/ImagePreviewTheme" />
 
         <!--如果项目已有FileProvider，则不用重复导入-->
         <!--authorities的名称：{包名.fileprovider}-->

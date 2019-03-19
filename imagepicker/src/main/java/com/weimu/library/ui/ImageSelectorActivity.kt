@@ -25,6 +25,7 @@ import com.weimu.library.adapter.ImageFolderAdapter
 import com.weimu.library.adapter.ImageListAdapter
 import com.weimu.library.model.LocalMedia
 import com.weimu.library.model.LocalMediaFolder
+import com.weimu.library.ui.preview.ImagePreviewActivity
 import com.weimu.library.utils.FileUtilsIP
 import com.weimu.library.utils.LocalMediaLoader
 import com.weimu.universalib.ktx.dip2px
@@ -189,7 +190,7 @@ class ImageSelectorActivity : BaseActivity() {
 
                 } else if (enableCrop) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        startCropWithAnim("${media.path}", view)
+                        startCrop("${media.path}")
                     } else {
                         startCrop(media.path)
                     }
@@ -255,7 +256,7 @@ class ImageSelectorActivity : BaseActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     fun startPreviewWithAnim(previewImages: List<LocalMedia>, position: Int, view: View) {
-        ImagePreviewActivity.startPreviewWithAnim(this, imageAdapter.selectedImages, maxSelectNum, position, view)
+        ImagePreviewActivity.startPreview(this, imageAdapter.selectedImages, maxSelectNum, position)
     }
 
     fun startPreview(previewImages: List<LocalMedia>, position: Int) {

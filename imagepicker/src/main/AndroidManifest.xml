@@ -15,7 +15,7 @@
             android:name="com.weimu.library.ui.ImageSelectorActivity"
             android:theme="@style/BasePageTheme" />
         <activity
-            android:name="com.weimu.library.ui.ImagePreviewActivity"
+            android:name="com.weimu.library.ui.preview.ImagePreviewActivity"
             android:theme="@style/BasePageTheme" />
         <activity
             android:name="com.weimu.library.ui.ImageCropActivity"

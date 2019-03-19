@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/photo_view"
+    <com.shizhefei.view.largeimage.LargeImageView
+        android:id="@+id/iv_large"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scrollbars="vertical|horizontal" />
 </LinearLayout>
