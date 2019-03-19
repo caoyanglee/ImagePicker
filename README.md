@@ -104,8 +104,8 @@ ImagePicker.takePhoto(activity,false);
 ``` java
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if(resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE){
-        ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
+    if(resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_IMAGE){
+        ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImagePicker.REQUEST_OUTPUT);
         // do something
     }
 }
