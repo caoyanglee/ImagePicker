@@ -257,7 +257,7 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     fun startPreviewWithAnim(previewImages: List<LocalMedia>, position: Int, view: View) {
-        ImagePreviewActivity.startPreview(this, imageAdapter.selectedImages, maxSelectNum, position)
+        ImagePreviewActivity.startPreviewWithAnim(this, imageAdapter.selectedImages, maxSelectNum, position,view)
     }
 
     fun startPreview(previewImages: List<LocalMedia>, position: Int) {

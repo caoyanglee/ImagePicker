@@ -42,6 +42,8 @@ dependencies {
     api 'com.romandanylyk:pageindicatorview:1.0.1@aar'
     //nineold 配合下拉图片
     api 'com.nineoldandroids:library:2.4.0'
+    //显示大图
+    compile 'com.shizhefei:LargeImageView:1.1.0'
 }
 repositories {
     mavenCentral()

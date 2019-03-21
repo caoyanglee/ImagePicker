@@ -19,7 +19,6 @@ allprojects {
         jcenter()
         google()
         maven { url "https://jitpack.io" }
-//        maven { url  "https://dl.bintray.com/yongdongji/android" }
     }
     //加上这些
     tasks.withType(Javadoc) {

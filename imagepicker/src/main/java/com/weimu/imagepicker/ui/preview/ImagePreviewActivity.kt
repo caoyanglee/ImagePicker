@@ -217,7 +217,7 @@ internal class ImagePreviewActivity : BaseActivity() {
         intent.putExtra(OUTPUT_ISDONE, isDone)
         setResult(Activity.RESULT_OK, intent)
         super.onBackPressed()
-        overridePendingTransition(-1, R.anim.fade_out)
+        //overridePendingTransition(-1, R.anim.fade_out)
     }
 
     override fun onBackPressed() {
