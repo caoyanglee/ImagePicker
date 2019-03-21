@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide
 import com.isseiaoki.simplecropview.CropImageView
 import com.weimu.imagepicker.R
 import com.weimu.imagepicker.utils.CropUtil
-import com.weimu.imagepicker.utils.FileUtilsIP
+import com.weimu.imagepicker.utils.Helper
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
@@ -31,10 +31,10 @@ import java.io.OutputStream
 internal class ImageCropActivity : BaseActivity() {
 
 
-    private var ivBg: ImageView? = null
-    private var cropImageView: CropImageView? = null
+    private val ivBg: ImageView by lazy { findViewById<ImageView>(R.id.iv_bg) }
+    private val cropImageView: CropImageView by lazy { findViewById<CropImageView>(R.id.cropImageView) }
 
-
+    private var path = ""
     private var sourceUri: Uri? = null//源URI
     private var saveUri: Uri? = null//存储URI
 
@@ -60,27 +60,35 @@ internal class ImageCropActivity : BaseActivity() {
         }
 
 
+    companion object {
+        val REQUEST_CROP = 69
+
+        val DATA_EXTRA_PATH = "data_extra_path"
+        val OUTPUT_PATH = "outputPath"
+
+        private val SIZE_DEFAULT = 2048
+        private val SIZE_LIMIT = 4096
+
+        fun newIntent(context: Context, path: String): Intent {
+            val intent = Intent(context, ImageCropActivity::class.java)
+            intent.putExtra(DATA_EXTRA_PATH, path)
+            return intent
+        }
+    }
+
     override fun getLayoutResID(): Int = R.layout.activity_image_crop
+
+    override fun beforeViewAttach(savedInstanceState: Bundle?) {
+        //data
+        path = intent.getStringExtra(DATA_EXTRA_PATH)
+        sourceUri = Uri.fromFile(File(path))
+    }
 
 
     override fun afterViewAttach(savedInstanceState: Bundle?) {
-        initBase()
         initView()
     }
 
-    private fun initBase() {
-        //data
-        val path = intent.getStringExtra(DATA_EXTRA_PATH)
-        sourceUri = Uri.fromFile(File(path))
-        cropImageView = findViewById(R.id.cropImageView)
-        ivBg = findViewById(R.id.iv_bg)
-        //crop setup
-        cropImageView!!.setHandleSizeInDp(8)//设置裁剪四周小圆球的大小
-        cropImageView!!.setFrameStrokeWeightInDp(1)
-        cropImageView!!.setGuideStrokeWeightInDp(1)
-        cropImageView!!.setInitialFrameScale(0.5f)//裁剪区域为原图的一半
-        cropImageView!!.setCropMode(CropImageView.CropMode.SQUARE)//设置裁剪方式为圆形，可换
-    }
 
     fun initView() {
         StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
@@ -102,31 +110,41 @@ internal class ImageCropActivity : BaseActivity() {
                     this.setOnClickListenerPro {
                         //点击完成
                         //ProgressDialog.show(ImageCropActivity.this, null, getString(R.string.save_ing), true, false);
-                        saveUri = Uri.fromFile(FileUtilsIP.createCropFile(this@ImageCropActivity))
+                        saveUri = Uri.fromFile(Helper.createCropFile(this@ImageCropActivity))
                         saveOutput(cropImageView!!.croppedBitmap)
                     }
                 }
 
-        Glide.with(this).asBitmap().load(sourceUri).into(ivBg!!)
+
+        //crop setup
+        cropImageView.setHandleSizeInDp(8)//设置裁剪四周小圆球的大小
+        cropImageView.setFrameStrokeWeightInDp(1)
+        cropImageView.setGuideStrokeWeightInDp(1)
+        cropImageView.setInitialFrameScale(0.5f)//裁剪区域为原图的一半
+        cropImageView.setCropMode(CropImageView.CropMode.SQUARE)//设置裁剪方式为圆形，可换
+
+
+        Glide.with(this).asBitmap().load(sourceUri).into(ivBg)
+
         //获取源图片的旋转角度
         val exifRotation = CropUtil.getExifRotation(CropUtil.getFromMediaUri(this, contentResolver, sourceUri))
 
-        var `is`: InputStream? = null
+        var inputStream: InputStream? = null
         try {
             val sampleSize = calculateBitmapSampleSize(sourceUri)
-            `is` = contentResolver.openInputStream(sourceUri!!)
+            inputStream = contentResolver.openInputStream(sourceUri!!)
             val option = BitmapFactory.Options()
             option.inSampleSize = sampleSize
-            val sizeBitmap = BitmapFactory.decodeStream(`is`, null, option) ?: return
+            val sizeBitmap = BitmapFactory.decodeStream(inputStream, null, option) ?: return
             val matrix = getRotateMatrix(sizeBitmap, exifRotation % 360)
             val rotated = Bitmap.createBitmap(sizeBitmap, 0, 0, sizeBitmap.width, sizeBitmap.height, matrix, true)
-            cropImageView!!.imageBitmap = rotated
+            cropImageView.imageBitmap = rotated
         } catch (e: IOException) {
             e.printStackTrace()
         } catch (e: OutOfMemoryError) {
             e.printStackTrace()
         } finally {
-            CropUtil.closeSilently(`is`)
+            CropUtil.closeSilently(inputStream)
         }
     }
 
@@ -145,14 +163,14 @@ internal class ImageCropActivity : BaseActivity() {
 
     @Throws(IOException::class)
     private fun calculateBitmapSampleSize(bitmapUri: Uri?): Int {
-        var `is`: InputStream? = null
+        var inputStream: InputStream? = null
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         try {
-            `is` = contentResolver.openInputStream(bitmapUri!!)
-            BitmapFactory.decodeStream(`is`, null, options) // Just get image size
+            inputStream = contentResolver.openInputStream(bitmapUri!!)
+            BitmapFactory.decodeStream(inputStream, null, options) // Just get image size
         } finally {
-            CropUtil.closeSilently(`is`)
+            CropUtil.closeSilently(inputStream)
         }
 
         val maxSize = maxImageSize
@@ -182,19 +200,4 @@ internal class ImageCropActivity : BaseActivity() {
         onBackPressed()
     }
 
-    companion object {
-        val REQUEST_CROP = 69
-
-        val DATA_EXTRA_PATH = "data_extra_path"
-        val OUTPUT_PATH = "outputPath"
-
-        private val SIZE_DEFAULT = 2048
-        private val SIZE_LIMIT = 4096
-
-        fun newIntent(context: Context, path: String): Intent {
-            val intent = Intent(context, ImageCropActivity::class.java)
-            intent.putExtra(DATA_EXTRA_PATH, path)
-            return intent
-        }
-    }
 }

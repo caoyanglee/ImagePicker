@@ -8,7 +8,7 @@ import android.util.Log
 import com.weimu.imagepicker.ImagePicker
 
 import com.weimu.imagepicker.R
-import com.weimu.imagepicker.utils.FileUtilsIP
+import com.weimu.imagepicker.utils.Helper
 import com.weimu.universalview.core.activity.BaseActivity
 
 import java.io.File
@@ -60,9 +60,9 @@ internal class CameraSelectorActivity : BaseActivity() {
      * start to camera、preview、crop
      */
     fun startCamera() {
-        val cameraFile = FileUtilsIP.createCameraFile(this)
+        val cameraFile = Helper.createCameraFile(this)
         cameraPath = cameraFile.absolutePath
-        FileUtilsIP.startActionCapture(this, cameraFile, ImagePicker.REQUEST_CAMERA)
+        Helper.startActionCapture(this, cameraFile, ImagePicker.REQUEST_CAMERA)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

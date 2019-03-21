@@ -27,7 +27,7 @@ import com.weimu.imagepicker.adapter.ImageListAdapter
 import com.weimu.imagepicker.model.LocalMedia
 import com.weimu.imagepicker.model.LocalMediaFolder
 import com.weimu.imagepicker.ui.preview.ImagePreviewActivity
-import com.weimu.imagepicker.utils.FileUtilsIP
+import com.weimu.imagepicker.utils.Helper
 import com.weimu.imagepicker.utils.LocalMediaLoader
 import com.weimu.universalib.ktx.dip2px
 import com.weimu.universalview.core.activity.BaseActivity
@@ -278,9 +278,9 @@ internal class ImageSelectorActivity : BaseActivity() {
      * start to camera、preview、crop
      */
     fun startCamera() {
-        val cameraFile = FileUtilsIP.createCameraFile(this)
+        val cameraFile = Helper.createCameraFile(this)
         cameraPath = cameraFile.absolutePath
-        FileUtilsIP.startActionCapture(this, cameraFile, ImagePicker.REQUEST_CAMERA)
+        Helper.startActionCapture(this, cameraFile, ImagePicker.REQUEST_CAMERA)
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

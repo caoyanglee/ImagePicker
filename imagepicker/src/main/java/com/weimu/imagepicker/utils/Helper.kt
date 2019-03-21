@@ -9,6 +9,8 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
+import com.weimu.universalib.ktx.formatDate
+import com.weimu.universalib.ktx.getCurrentTimeStamp
 import com.weimu.universalib.ktx.getUri4File
 
 
@@ -18,34 +20,21 @@ import java.util.Date
 import java.util.Locale
 
 
-internal object FileUtilsIP {
-    val POSTFIX = ".JPEG"
-    val APP_NAME = "ImageSelector"
-    val CAMERA_PATH = "/$APP_NAME/CameraImage/"
-    val CROP_PATH = "/$APP_NAME/CropImage/"
+internal object Helper {
 
-    fun createCameraFile(context: Context): File {
-        return createMediaFile(context, CAMERA_PATH)
-    }
+    fun createCameraFile(context: Context): File = createMediaFile(context, "Camera")
 
-    fun createCropFile(context: Context): File {
-        return createMediaFile(context, CROP_PATH)
-    }
+    fun createCropFile(context: Context): File = createMediaFile(context, "Crop")
 
-    private fun createMediaFile(context: Context, parentPath: String): File {
+    private fun createMediaFile(context: Context, childFoldName: String): File {
         val state = Environment.getExternalStorageState()
-        val rootDir = if (state == Environment.MEDIA_MOUNTED) Environment.getExternalStorageDirectory() else context.cacheDir
-
-        val folderDir = File(rootDir.absolutePath + parentPath)
+        val rootDir = if (state == Environment.MEDIA_MOUNTED) Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) else context.cacheDir
+        val folderDir = File("$rootDir/$childFoldName/")
         if (!folderDir.exists() && folderDir.mkdirs()) {
-
         }
-
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(Date())
-        val fileName = APP_NAME + "_" + timeStamp + ""
-        return File(folderDir, fileName + POSTFIX)
+        val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.jpg"
+        return File(folderDir, fileName)
     }
-
 
     /**
      * 打开相机
