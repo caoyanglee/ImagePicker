@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Image Picker</string>
     <string name="all_image">All Images</string>
     <string name="take_picture">Take Photo</string>
     <string name="preview_num">Preview(%1$s)</string>
