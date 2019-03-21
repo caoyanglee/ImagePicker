@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import com.weimu.library.ImagePicker
+import com.weimu.imagepicker.ImagePicker
 import com.weimu.universalib.ktx.dip2px
 import com.weimu.universalib.ktx.getColorPro
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration

@@ -1,4 +1,4 @@
-package com.weimu.library.ui
+package com.weimu.imagepicker.ui
 
 import android.content.Context
 import android.content.Intent
@@ -14,9 +14,9 @@ import android.widget.ImageView
 
 import com.bumptech.glide.Glide
 import com.isseiaoki.simplecropview.CropImageView
-import com.weimu.library.R
-import com.weimu.library.utils.CropUtil
-import com.weimu.library.utils.FileUtilsIP
+import com.weimu.imagepicker.R
+import com.weimu.imagepicker.utils.CropUtil
+import com.weimu.imagepicker.utils.FileUtilsIP
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager

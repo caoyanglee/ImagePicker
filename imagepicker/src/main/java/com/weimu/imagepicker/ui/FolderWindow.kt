@@ -1,4 +1,4 @@
-package com.weimu.library.ui
+package com.weimu.imagepicker.ui
 
 import android.content.Context
 import android.graphics.Canvas
@@ -15,9 +15,9 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.PopupWindow
 
-import com.weimu.library.R
-import com.weimu.library.adapter.ImageFolderAdapter
-import com.weimu.library.model.LocalMediaFolder
+import com.weimu.imagepicker.R
+import com.weimu.imagepicker.adapter.ImageFolderAdapter
+import com.weimu.imagepicker.model.LocalMediaFolder
 import com.weimu.universalib.ktx.dip2px
 import com.weimu.universalib.ktx.getScreenHeight
 import com.weimu.universalib.ktx.getScreenWidth

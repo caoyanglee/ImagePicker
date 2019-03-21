@@ -1,9 +1,9 @@
-package com.weimu.library.ui.preview
+package com.weimu.imagepicker.ui.preview
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import com.shizhefei.view.largeimage.factory.FileBitmapDecoderFactory
-import com.weimu.library.R
+import com.weimu.imagepicker.R
 import com.weimu.universalview.core.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_image_preview.*
 import java.io.File

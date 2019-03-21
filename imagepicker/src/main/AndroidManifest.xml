@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.weimu.library">
+    package="com.weimu.imagepicker">
 
     <!-- 相机权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
@@ -12,16 +12,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:name="com.weimu.library.ui.ImageSelectorActivity"
+            android:name="com.weimu.imagepicker.ui.ImageSelectorActivity"
             android:theme="@style/BasePageTheme" />
         <activity
-            android:name="com.weimu.library.ui.preview.ImagePreviewActivity"
+            android:name="com.weimu.imagepicker.ui.preview.ImagePreviewActivity"
             android:theme="@style/BasePageTheme" />
         <activity
-            android:name="com.weimu.library.ui.ImageCropActivity"
+            android:name="com.weimu.imagepicker.ui.ImageCropActivity"
             android:theme="@style/BasePageTheme" />
         <activity
-            android:name="com.weimu.library.ui.CameraSelectorActivity"
+            android:name="com.weimu.imagepicker.ui.CameraSelectorActivity"
             android:theme="@style/BasePageTheme" />
     </application>
 

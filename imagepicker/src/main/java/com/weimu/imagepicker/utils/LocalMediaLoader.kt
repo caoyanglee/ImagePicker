@@ -1,4 +1,4 @@
-package com.weimu.library.utils
+package com.weimu.imagepicker.utils
 
 import android.database.Cursor
 import android.os.Bundle
@@ -7,9 +7,9 @@ import android.support.v4.app.FragmentActivity
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
-import com.weimu.library.R
-import com.weimu.library.model.LocalMedia
-import com.weimu.library.model.LocalMediaFolder
+import com.weimu.imagepicker.R
+import com.weimu.imagepicker.model.LocalMedia
+import com.weimu.imagepicker.model.LocalMediaFolder
 import java.io.File
 import java.util.*
 
@@ -98,7 +98,7 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                 if (allImages.size != 0) {
                     allImageFolder.firstImagePath = allImages[0].path
                 }
-                allImageFolder.name = activity.getString(com.weimu.library.R.string.all_image)
+                allImageFolder.name = activity.getString(com.weimu.imagepicker.R.string.all_image)
                 imageFolders.add(allImageFolder)
                 sortFolder(imageFolders)
                 imageLoadListener.loadComplete(imageFolders)

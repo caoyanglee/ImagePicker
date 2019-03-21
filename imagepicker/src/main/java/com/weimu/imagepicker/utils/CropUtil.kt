@@ -1,4 +1,4 @@
-package com.weimu.library.utils
+package com.weimu.imagepicker.utils
 
 import android.content.ContentResolver
 import android.content.Context

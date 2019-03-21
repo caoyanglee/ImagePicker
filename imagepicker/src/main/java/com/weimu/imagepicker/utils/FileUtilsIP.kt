@@ -1,4 +1,4 @@
-package com.weimu.library.utils
+package com.weimu.imagepicker.utils
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
-import com.weimu.library.utils.FileUtilsIP.POSTFIX
 
 
 import java.io.File

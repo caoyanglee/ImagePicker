@@ -1,9 +1,9 @@
-package com.weimu.library
+package com.weimu.imagepicker
 
 import android.app.Activity
 
-import com.weimu.library.ui.CameraSelectorActivity
-import com.weimu.library.ui.ImageSelectorActivity
+import com.weimu.imagepicker.ui.CameraSelectorActivity
+import com.weimu.imagepicker.ui.ImageSelectorActivity
 
 /**
  * Author:你需要一台永动机

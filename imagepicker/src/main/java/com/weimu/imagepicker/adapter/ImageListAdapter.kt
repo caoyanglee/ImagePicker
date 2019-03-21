@@ -1,4 +1,4 @@
-package com.weimu.library.adapter
+package com.weimu.imagepicker.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import com.weimu.library.ImageStaticHolder
-import com.weimu.library.R
-import com.weimu.library.model.LocalMedia
-import com.weimu.library.ui.ImageSelectorActivity
+import com.weimu.imagepicker.ImageStaticHolder
+import com.weimu.imagepicker.R
+import com.weimu.imagepicker.model.LocalMedia
+import com.weimu.imagepicker.ui.ImageSelectorActivity
 import com.weimu.universalview.ktx.load4CenterCrop
 import java.io.File
 import java.util.*

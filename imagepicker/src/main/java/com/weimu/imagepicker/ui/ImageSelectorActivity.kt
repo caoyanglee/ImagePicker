@@ -1,4 +1,4 @@
-package com.weimu.library.ui
+package com.weimu.imagepicker.ui
 
 
 import android.annotation.SuppressLint
@@ -19,16 +19,16 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.weimu.library.ImagePicker
-import com.weimu.library.ImageStaticHolder
-import com.weimu.library.R
-import com.weimu.library.adapter.ImageFolderAdapter
-import com.weimu.library.adapter.ImageListAdapter
-import com.weimu.library.model.LocalMedia
-import com.weimu.library.model.LocalMediaFolder
-import com.weimu.library.ui.preview.ImagePreviewActivity
-import com.weimu.library.utils.FileUtilsIP
-import com.weimu.library.utils.LocalMediaLoader
+import com.weimu.imagepicker.ImagePicker
+import com.weimu.imagepicker.ImageStaticHolder
+import com.weimu.imagepicker.R
+import com.weimu.imagepicker.adapter.ImageFolderAdapter
+import com.weimu.imagepicker.adapter.ImageListAdapter
+import com.weimu.imagepicker.model.LocalMedia
+import com.weimu.imagepicker.model.LocalMediaFolder
+import com.weimu.imagepicker.ui.preview.ImagePreviewActivity
+import com.weimu.imagepicker.utils.FileUtilsIP
+import com.weimu.imagepicker.utils.LocalMediaLoader
 import com.weimu.universalib.ktx.dip2px
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration

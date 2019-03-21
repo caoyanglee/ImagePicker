@@ -1,8 +1,7 @@
-package com.weimu.library.adapter
+package com.weimu.imagepicker.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +12,9 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
-import com.weimu.library.R
-import com.weimu.library.model.LocalMedia
-import com.weimu.library.model.LocalMediaFolder
+import com.weimu.imagepicker.R
+import com.weimu.imagepicker.model.LocalMedia
+import com.weimu.imagepicker.model.LocalMediaFolder
 
 import java.io.File
 import java.util.ArrayList

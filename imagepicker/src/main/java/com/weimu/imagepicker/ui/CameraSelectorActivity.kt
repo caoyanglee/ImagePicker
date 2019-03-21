@@ -1,14 +1,14 @@
-package com.weimu.library.ui
+package com.weimu.imagepicker.ui
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import com.weimu.library.ImagePicker
+import com.weimu.imagepicker.ImagePicker
 
-import com.weimu.library.R
-import com.weimu.library.utils.FileUtilsIP
+import com.weimu.imagepicker.R
+import com.weimu.imagepicker.utils.FileUtilsIP
 import com.weimu.universalview.core.activity.BaseActivity
 
 import java.io.File

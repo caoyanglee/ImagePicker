@@ -1,4 +1,4 @@
-package com.weimu.library.model
+package com.weimu.imagepicker.model
 
 import java.io.Serializable
 import java.util.ArrayList

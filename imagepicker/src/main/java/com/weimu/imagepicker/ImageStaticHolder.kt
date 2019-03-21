@@ -1,6 +1,6 @@
-package com.weimu.library
+package com.weimu.imagepicker
 
-import com.weimu.library.model.LocalMedia
+import com.weimu.imagepicker.model.LocalMedia
 
 /**
  * Author:你需要一台永动机
