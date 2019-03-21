@@ -68,6 +68,34 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     private var isUseOrigin = false//是否使用原图
 
+
+    companion object {
+
+        val BUNDLE_CAMERA_PATH = "CameraPath"
+
+        val EXTRA_MAX_SELECT_NUM = "MaxSelectNum"//最大选择数
+        val EXTRA_SELECT_MODE = "SelectMode"//选择模式
+        val EXTRA_SHOW_CAMERA = "ShowCamera"//是否显示摄像头
+        val EXTRA_ENABLE_PREVIEW = "EnablePreview"//是否需要预览
+        val EXTRA_ENABLE_CROP = "EnableCrop"//是否需要裁剪
+        val EXTRA_ENABLE_COMPRESS = "EnableCompress"//是否需要压缩
+
+        val MODE_MULTIPLE = 1
+        val MODE_SINGLE = 2
+
+        fun start(activity: Activity, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean) {
+            val intent = Intent(activity, ImageSelectorActivity::class.java)
+            intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
+            intent.putExtra(EXTRA_SELECT_MODE, mode)
+            intent.putExtra(EXTRA_SHOW_CAMERA, enableCamera)
+            intent.putExtra(EXTRA_ENABLE_PREVIEW, enablePreview)
+            intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
+            intent.putExtra(EXTRA_ENABLE_COMPRESS, enableCompress)
+            activity.startActivityForResult(intent, ImagePicker.REQUEST_IMAGE)
+        }
+    }
+
+
     override fun getLayoutResID(): Int = R.layout.activity_imageselector
 
 
@@ -257,7 +285,7 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     fun startPreviewWithAnim(previewImages: List<LocalMedia>, position: Int, view: View) {
-        ImagePreviewActivity.startPreviewWithAnim(this, imageAdapter.selectedImages, maxSelectNum, position,view)
+        ImagePreviewActivity.startPreviewWithAnim(this, imageAdapter.selectedImages, maxSelectNum, position, view)
     }
 
     fun startPreview(previewImages: List<LocalMedia>, position: Int) {
@@ -298,10 +326,9 @@ internal class ImageSelectorActivity : BaseActivity() {
     fun onResult(images: ArrayList<String>) {
         if (isUseOrigin) {
             setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, images))
-            finish()
+            onBackPressed()
         } else {
             compressImage(images)
-
         }
     }
 
@@ -310,8 +337,8 @@ internal class ImageSelectorActivity : BaseActivity() {
         //Toast.makeText(this, "压缩中...", Toast.LENGTH_SHORT).show();
         val newImageList = ArrayList<String>()
         Luban.with(this)
-                .load(photos)                                   // 传人要压缩的图片列表
-                .ignoreBy(100)                                  // 忽略不压缩图片的大小
+                .load(photos)                                   // 传入要压缩的图片列表
+                .ignoreBy(100)                            // 忽略不压缩图片的大小
                 .setCompressListener(object : OnCompressListener { //设置回调
                     override fun onStart() {
                         Log.d("weimu", "开始压缩")
@@ -323,7 +350,7 @@ internal class ImageSelectorActivity : BaseActivity() {
                         //所有图片压缩成功
                         if (newImageList.size == photos.size) {
                             setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, newImageList))
-                            finish()
+                            onBackPressed()
                         }
                     }
 
@@ -339,29 +366,5 @@ internal class ImageSelectorActivity : BaseActivity() {
         ImageStaticHolder.clearImages()
     }
 
-    companion object {
 
-        val BUNDLE_CAMERA_PATH = "CameraPath"
-
-        val EXTRA_MAX_SELECT_NUM = "MaxSelectNum"//最大选择数
-        val EXTRA_SELECT_MODE = "SelectMode"//选择模式
-        val EXTRA_SHOW_CAMERA = "ShowCamera"//是否显示摄像头
-        val EXTRA_ENABLE_PREVIEW = "EnablePreview"//是否需要预览
-        val EXTRA_ENABLE_CROP = "EnableCrop"//是否需要裁剪
-        val EXTRA_ENABLE_COMPRESS = "EnableCompress"//是否需要压缩
-
-        val MODE_MULTIPLE = 1
-        val MODE_SINGLE = 2
-
-        fun start(activity: Activity, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean) {
-            val intent = Intent(activity, ImageSelectorActivity::class.java)
-            intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
-            intent.putExtra(EXTRA_SELECT_MODE, mode)
-            intent.putExtra(EXTRA_SHOW_CAMERA, enableCamera)
-            intent.putExtra(EXTRA_ENABLE_PREVIEW, enablePreview)
-            intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
-            intent.putExtra(EXTRA_ENABLE_COMPRESS, enableCompress)
-            activity.startActivityForResult(intent, ImagePicker.REQUEST_IMAGE)
-        }
-    }
 }

@@ -38,4 +38,5 @@ internal class ImagePreviewFragment : BaseFragment() {
         }
     }
 
+
 }

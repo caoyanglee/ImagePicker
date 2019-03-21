@@ -126,7 +126,7 @@ class ImagePreviewActivity : BaseActivity() {
         }
 
         viewpager.apply {
-            this.offscreenPageLimit = 1
+            this.offscreenPageLimit = 3
             this.adapter = mAdapter
             mAdapter.setFragments(fragments)
             this.currentItem = position

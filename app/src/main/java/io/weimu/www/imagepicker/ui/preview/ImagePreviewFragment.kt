@@ -12,6 +12,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
+import com.orhanobut.logger.Logger
 import com.shizhefei.view.largeimage.factory.FileBitmapDecoderFactory
 import com.weimu.universalib.OriginAppData
 import com.weimu.universalib.helper.MediaScanner
@@ -194,7 +195,6 @@ class ImagePreviewFragment : BaseFragment() {
 
     //显示图片
     private fun showImage(file: File) {
-        //Logger.e("目标地址=${file.toString()}")
         if (iv_large_thumbnail == null || iv_large == null) return
         try {
             val options = BitmapFactory.Options()

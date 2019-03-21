@@ -23,6 +23,20 @@ import top.zibin.luban.OnCompressListener
 internal class CameraSelectorActivity : BaseActivity() {
 
 
+    companion object {
+        val REQUEST_OUTPUT = "outputList"
+
+        val BUNDLE_CAMERA_PATH = "CameraPath"
+
+        val EXTRA_ENABLE_CROP = "EnableCrop"//是否需要裁剪
+
+        fun start(activity: Activity, enableCrop: Boolean) {
+            val intent = Intent(activity, CameraSelectorActivity::class.java)
+            intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
+            activity.startActivityForResult(intent, ImagePicker.REQUEST_IMAGE)
+        }
+    }
+
     private var cameraPath: String? = null
 
     private var enableCrop = false
@@ -85,7 +99,6 @@ internal class CameraSelectorActivity : BaseActivity() {
 
     //压缩图片
     private fun compressImage(photos: ArrayList<String>) {
-        //Toast.makeText(this, "压缩中...", Toast.LENGTH_SHORT).show();
         val newImageList = ArrayList<String>()
         Luban.with(this)
                 .load(photos)                                   // 传人要压缩的图片列表
@@ -116,19 +129,5 @@ internal class CameraSelectorActivity : BaseActivity() {
         overridePendingTransition(0, R.anim.transparent)
     }
 
-    companion object {
-        val REQUEST_OUTPUT = "outputList"
 
-        val BUNDLE_CAMERA_PATH = "CameraPath"
-
-
-        val EXTRA_ENABLE_CROP = "EnableCrop"//是否需要裁剪
-
-
-        fun start(activity: Activity, enableCrop: Boolean) {
-            val intent = Intent(activity, CameraSelectorActivity::class.java)
-            intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
-            activity.startActivityForResult(intent, ImagePicker.REQUEST_IMAGE)
-        }
-    }
 }

@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
+import com.weimu.universalib.ktx.getUri4File
 
 
 import java.io.File
@@ -48,63 +49,14 @@ internal object FileUtilsIP {
 
     /**
      * 打开相机
-     * 兼容7.0
      *
      * @param activity    Activity
      * @param file        File
      * @param requestCode result requestCode
      */
-    fun startActionCapture(activity: Activity?, file: File, requestCode: Int) {
-        if (activity == null) {
-            return
-        }
+    fun startActionCapture(activity: Activity, file: File, requestCode: Int) {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, getUriForFile(activity, file))
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, activity.getUri4File(file))
         activity.startActivityForResult(intent, requestCode)
-    }
-
-    /**
-     * @param
-     * @return
-     * @description 兼容7.0的文件操作
-     * @remark
-     */
-    private fun getUriForFile(context: Context?, file: File?): Uri {
-        if (context == null || file == null) {
-            throw NullPointerException()
-        }
-        val uri: Uri
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val auth = context.packageName + ".fileprovider"
-            uri = FileProvider.getUriForFile(context.applicationContext, auth, file)
-        } else {
-            uri = Uri.fromFile(file)
-        }
-        return uri
-    }
-
-
-    /**
-     * 打开文件
-     * 兼容7.0
-     *
-     * @param context     activity
-     * @param file        File
-     * @param contentType 文件类型如：文本（text/html）
-     * 当手机中没有一个app可以打开file时会抛ActivityNotFoundException
-     */
-    @Throws(ActivityNotFoundException::class)
-    fun startActionFile(context: Context?, file: File, contentType: String) {
-        if (context == null) {
-            return
-        }
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.addCategory(Intent.CATEGORY_DEFAULT)
-        intent.setDataAndType(getUriForFile(context, file), contentType)
-        if (context !is Activity) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        context.startActivity(intent)
     }
 }

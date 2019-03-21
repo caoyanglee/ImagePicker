@@ -132,10 +132,11 @@ internal class ImagePreviewActivity : BaseActivity() {
 
 
         viewPager.apply {
-            viewPager.adapter = SimpleFragmentAdapter(supportFragmentManager)
-            viewPager.currentItem = position
+            this.offscreenPageLimit = 3
+            this.adapter = SimpleFragmentAdapter(supportFragmentManager)
+            this.currentItem = position
             //触发接口
-            viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            this.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
                 override fun onPageSelected(position: Int) {
