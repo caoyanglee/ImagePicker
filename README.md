@@ -47,6 +47,7 @@ implementation 'top.zibin:Luban:1.1.3'
 <uses-permission android:name="android.permission.CAMERA" />
 <!-- 存储权限 -->
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```  
 
 3.增加FileProvider【适配7.0】
