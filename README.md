@@ -35,7 +35,7 @@ implementation 'com.android.support:recyclerview-v7:28.0.0'
 implementation 'com.android.support:design:28.0.0'
 implementation 'com.github.bumptech.glide:glide:4.8.0'
 annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-implementation 'com.shizhefei:LargeImageView:1.1.0'
+implementation 'com.github.chrisbanes:PhotoView:2.1.3'
 implementation 'com.isseiaoki:simplecropview:1.1.7@aar'
 implementation 'top.zibin:Luban:1.1.3'
 ```
