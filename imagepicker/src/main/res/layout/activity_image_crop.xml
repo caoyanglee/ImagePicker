@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/include_toolbar_primary" />
 
-    <RelativeLayout
+    <com.isseiaoki.simplecropview.CropImageView
+        android:id="@+id/cropImageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/iv_bg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:transitionName="share_image" />
-
-        <com.isseiaoki.simplecropview.CropImageView
-            android:id="@+id/cropImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white" />
-    </RelativeLayout>
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

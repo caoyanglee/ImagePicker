@@ -3,61 +3,30 @@ package com.weimu.imagepicker.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.net.Uri
-import android.opengl.GLES10
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.content.ContextCompat
-import android.widget.ImageView
-
 import com.bumptech.glide.Glide
 import com.isseiaoki.simplecropview.CropImageView
 import com.weimu.imagepicker.R
-import com.weimu.imagepicker.utils.CropUtil
 import com.weimu.imagepicker.utils.Helper
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
 import com.weimu.universalview.ktx.setOnClickListenerPro
-
 import java.io.File
 import java.io.IOException
-import java.io.InputStream
 import java.io.OutputStream
 
 
 internal class ImageCropActivity : BaseActivity() {
 
-
-    private val ivBg: ImageView by lazy { findViewById<ImageView>(R.id.iv_bg) }
     private val cropImageView: CropImageView by lazy { findViewById<CropImageView>(R.id.cropImageView) }
 
     private var path = ""
     private var sourceUri: Uri? = null//源URI
     private var saveUri: Uri? = null//存储URI
-
-    private val handler = Handler()
-
-    private lateinit var toolBarManager: ToolBarManager
-
-    private val maxImageSize: Int
-        get() {
-            val textureLimit = maxTextureSize
-            return if (textureLimit == 0) {
-                SIZE_DEFAULT
-            } else {
-                Math.min(textureLimit, SIZE_LIMIT)
-            }
-        }
-
-    private val maxTextureSize: Int
-        get() {
-            val maxSize = IntArray(1)
-            GLES10.glGetIntegerv(GLES10.GL_MAX_TEXTURE_SIZE, maxSize, 0)
-            return maxSize[0]
-        }
 
 
     companion object {
@@ -65,9 +34,6 @@ internal class ImageCropActivity : BaseActivity() {
 
         val DATA_EXTRA_PATH = "data_extra_path"
         val OUTPUT_PATH = "outputPath"
-
-        private val SIZE_DEFAULT = 2048
-        private val SIZE_LIMIT = 4096
 
         fun newIntent(context: Context, path: String): Intent {
             val intent = Intent(context, ImageCropActivity::class.java)
@@ -86,14 +52,10 @@ internal class ImageCropActivity : BaseActivity() {
 
 
     override fun afterViewAttach(savedInstanceState: Bundle?) {
-        initView()
-    }
-
-
-    fun initView() {
         StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
         StatusBarManager.setLightMode(this.window, false)
-        toolBarManager = ToolBarManager.with(this, getContentView())
+
+        ToolBarManager.with(this, getContentView())
                 .bg {
                     this.setBackgroundResource(R.color.white)
                 }
@@ -109,79 +71,26 @@ internal class ImageCropActivity : BaseActivity() {
                     this.isEnabled = true
                     this.setOnClickListenerPro {
                         //点击完成
-                        //ProgressDialog.show(ImageCropActivity.this, null, getString(R.string.save_ing), true, false);
-                        saveUri = Uri.fromFile(Helper.createCropFile(this@ImageCropActivity))
-                        saveOutput(cropImageView!!.croppedBitmap)
+                        saveOutput(cropImageView.croppedBitmap)
                     }
                 }
 
 
-        //crop setup
-        cropImageView.setHandleSizeInDp(8)//设置裁剪四周小圆球的大小
-        cropImageView.setFrameStrokeWeightInDp(1)
-        cropImageView.setGuideStrokeWeightInDp(1)
-        cropImageView.setInitialFrameScale(0.5f)//裁剪区域为原图的一半
-        cropImageView.setCropMode(CropImageView.CropMode.SQUARE)//设置裁剪方式为圆形，可换
-
-
-        Glide.with(this).asBitmap().load(sourceUri).into(ivBg)
-
-        //获取源图片的旋转角度
-        val exifRotation = CropUtil.getExifRotation(CropUtil.getFromMediaUri(this, contentResolver, sourceUri))
-
-        var inputStream: InputStream? = null
-        try {
-            val sampleSize = calculateBitmapSampleSize(sourceUri)
-            inputStream = contentResolver.openInputStream(sourceUri!!)
-            val option = BitmapFactory.Options()
-            option.inSampleSize = sampleSize
-            val sizeBitmap = BitmapFactory.decodeStream(inputStream, null, option) ?: return
-            val matrix = getRotateMatrix(sizeBitmap, exifRotation % 360)
-            val rotated = Bitmap.createBitmap(sizeBitmap, 0, 0, sizeBitmap.width, sizeBitmap.height, matrix, true)
-            cropImageView.imageBitmap = rotated
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: OutOfMemoryError) {
-            e.printStackTrace()
-        } finally {
-            CropUtil.closeSilently(inputStream)
+        cropImageView.apply {
+            //配置
+            this.setHandleSizeInDp(8)//设置裁剪四周小圆球的大小
+            this.setFrameStrokeWeightInDp(1)
+            this.setGuideStrokeWeightInDp(1)
+            this.setInitialFrameScale(0.5f)//裁剪区域为原图的一半
+            this.setCropMode(CropImageView.CropMode.SQUARE)//设置裁剪方式为圆形，可换
         }
+        //加载
+        Glide.with(this).load(sourceUri).into(cropImageView)
     }
 
-
-    fun getRotateMatrix(bitmap: Bitmap?, rotation: Int): Matrix {
-        val matrix = Matrix()
-        if (bitmap != null && rotation != 0) {
-            val cx = bitmap.width / 2
-            val cy = bitmap.height / 2
-            matrix.preTranslate((-cx).toFloat(), (-cy).toFloat())
-            matrix.postRotate(rotation.toFloat())
-            matrix.postTranslate(cx.toFloat(), cy.toFloat())
-        }
-        return matrix
-    }
-
-    @Throws(IOException::class)
-    private fun calculateBitmapSampleSize(bitmapUri: Uri?): Int {
-        var inputStream: InputStream? = null
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true
-        try {
-            inputStream = contentResolver.openInputStream(bitmapUri!!)
-            BitmapFactory.decodeStream(inputStream, null, options) // Just get image size
-        } finally {
-            CropUtil.closeSilently(inputStream)
-        }
-
-        val maxSize = maxImageSize
-        var sampleSize = 1
-        while (options.outHeight / sampleSize > maxSize || options.outWidth / sampleSize > maxSize) {
-            sampleSize = sampleSize shl 1
-        }
-        return sampleSize
-    }
 
     private fun saveOutput(croppedImage: Bitmap) {
+        saveUri = Uri.fromFile(Helper.createCropFile(this@ImageCropActivity))
         if (saveUri != null) {
             var outputStream: OutputStream? = null
             try {
@@ -192,11 +101,16 @@ internal class ImageCropActivity : BaseActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             } finally {
-                CropUtil.closeSilently(outputStream)
+                if (outputStream == null) return
+                try {
+                    outputStream.close()
+                } catch (t: Throwable) {
+                    // Do nothing
+                }
             }
             setResult(RESULT_OK, Intent().putExtra(OUTPUT_PATH, saveUri!!.path))
         }
-        handler.post { croppedImage.recycle() }
+        Handler().post { croppedImage.recycle() }
         onBackPressed()
     }
 
