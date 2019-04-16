@@ -1,6 +1,6 @@
 package io.weimu.www.imagepicker
 
-import com.weimu.universalib.OriginAppData
+import com.weimu.universalview.OriginAppData
 
 /**
  * Author:你需要一台永动机

@@ -12,16 +12,14 @@ import com.bumptech.glide.request.transition.Transition
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
-import com.orhanobut.logger.Logger
 import com.shizhefei.view.largeimage.factory.FileBitmapDecoderFactory
-import com.weimu.universalib.OriginAppData
+import com.weimu.universalib.helper.Md5Helper
 import com.weimu.universalib.helper.MediaScanner
 import com.weimu.universalib.ktx.formatDate
-import com.weimu.universalib.ktx.toast
-import com.weimu.universalib.utils.AnimUtils
 import com.weimu.universalib.utils.FileUtils
-import com.weimu.universalib.utils.Md5Utils
+import com.weimu.universalview.OriginAppData
 import com.weimu.universalview.core.fragment.BaseFragment
+import com.weimu.universalview.helper.AnimHelper
 import com.weimu.universalview.ktx.invisible
 import com.weimu.universalview.ktx.visible
 import io.weimu.www.imagepicker.R
@@ -116,7 +114,7 @@ class ImagePreviewFragment : BaseFragment() {
 
         val targetDir = FILE_IMAGE_PREVIEW
         //Logger.e("目标路径=$targetDir")
-        val fileName = Md5Utils.sign(url, "weimu")
+        val fileName = Md5Helper.sign(url, "weimu")
 
         //md5 名称唯一性
         targetPath = "$targetDir$fileName"
@@ -212,7 +210,7 @@ class ImagePreviewFragment : BaseFragment() {
                 //加载大图
                 iv_large?.setImage(FileBitmapDecoderFactory(file))
                 //做一下过渡动画比较不会太生硬
-                AnimUtils.alphaAnim(iv_large, 1000, onAnimEnd = {
+                AnimHelper.alphaAnim(iv_large, 1000, onAnimEnd = {
                     //                    Handler().postDelayed({iv_large_thumbnail?.gone()},1000)
                     cl_root?.removeView(iv_large_thumbnail)
                 })
@@ -242,7 +240,7 @@ class ImagePreviewFragment : BaseFragment() {
             when (it) {
                 "发送给朋友" -> {
                     //发送给朋友
-                    toast("发送给朋友")
+                    toastSuccess("发送给朋友")
                 }
                 "保存图片" -> {
                     //保存图片
@@ -264,13 +262,13 @@ class ImagePreviewFragment : BaseFragment() {
         val saveFile = "$picturePath/$target"
         try {
             FileUtils.copyFile(sourceFile, saveFile)//直接复制即可
-            toast("保存成功")
+            toastSuccess("保存成功")
             //让图片可以扫描
             val filePaths = arrayOf("$picturePath/$target")
             val mimeTypes = arrayOf(MimeTypeMap.getSingleton().getMimeTypeFromExtension("png"))
             MediaScanner(context).scanFiles(filePaths, mimeTypes)
         } catch (e: FileNotFoundException) {
-            toast("文件未找到，请重试")
+            toastFail("文件未找到，请重试")
         }
 
     }

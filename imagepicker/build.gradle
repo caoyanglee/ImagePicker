@@ -28,7 +28,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //universal-view
-    compile "com.github.caoyanglee:universalui:$rootProject.universal_view"
+    compile "com.github.caoyanglee:universalui:$rootProject.universal_ui"
     //裁剪图
     compile 'com.isseiaoki:simplecropview:1.1.8@aar'
     //图片预览
