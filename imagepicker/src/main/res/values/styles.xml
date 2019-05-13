@@ -20,4 +20,24 @@
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
+
+    <!--图片预览主题-->
+    <style name="ImagePreviewTheme" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@color/colorTransparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentTransitions">true</item>
+        <!--<item name="android:windowAnimationStyle">@style/ImagePreviewActivityAnim</item>-->
+    </style>
+
+    <!--图片预览 ProgressBar-->
+    <style name="CustomProgressBar" parent="Base.Widget.AppCompat.ProgressBar">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="colorAccent">#fff</item>
+    </style>
+
 </resources>

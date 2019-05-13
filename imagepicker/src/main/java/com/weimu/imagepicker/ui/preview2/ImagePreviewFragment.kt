@@ -1,4 +1,4 @@
-package io.weimu.www.imagepicker.ui.preview
+package com.weimu.imagepicker.ui.preview2
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,6 +13,7 @@ import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
 import com.shizhefei.view.largeimage.factory.FileBitmapDecoderFactory
+import com.weimu.imagepicker.R
 import com.weimu.universalib.helper.Md5Helper
 import com.weimu.universalib.helper.MediaScanner
 import com.weimu.universalib.ktx.formatDate
@@ -22,9 +23,7 @@ import com.weimu.universalview.core.fragment.BaseFragment
 import com.weimu.universalview.helper.AnimHelper
 import com.weimu.universalview.ktx.invisible
 import com.weimu.universalview.ktx.visible
-import io.weimu.www.imagepicker.R
-import io.weimu.www.imagepicker.widget.MenuDialog
-import kotlinx.android.synthetic.main.fragment_image_preview_app.*
+import kotlinx.android.synthetic.main.fragment_image_preview_v2.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
@@ -44,7 +43,7 @@ class ImagePreviewFragment : BaseFragment() {
     val FILE_IMAGE_PREVIEW = "${OriginAppData.context.externalCacheDir}/images/"//  cache/images 下的图片
 
 
-    override fun getLayoutResID() = R.layout.fragment_image_preview_app
+    override fun getLayoutResID() = R.layout.fragment_image_preview_v2
 
 
     companion object {
@@ -73,7 +72,6 @@ class ImagePreviewFragment : BaseFragment() {
     var url: String = ""
     var smallUrl: String = ""
     var targetPath = ""
-
 
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
         super.beforeViewAttach(savedInstanceState)
@@ -193,6 +191,7 @@ class ImagePreviewFragment : BaseFragment() {
 
     //显示图片
     private fun showImage(file: File) {
+        //Logger.e("目标地址=${file.toString()}")
         if (iv_large_thumbnail == null || iv_large == null) return
         try {
             val options = BitmapFactory.Options()
@@ -212,11 +211,11 @@ class ImagePreviewFragment : BaseFragment() {
                 //做一下过渡动画比较不会太生硬
                 AnimHelper.alphaAnim(iv_large, 1000, onAnimEnd = {
                     //                    Handler().postDelayed({iv_large_thumbnail?.gone()},1000)
-                    cl_root?.removeView(iv_large_thumbnail)
+                    cl_root.removeView(iv_large_thumbnail)
                 })
             } else {
                 //加载普通图
-                iv_large?.setImage(targetBitmap)
+                iv_large.setImage(targetBitmap)
             }
         } catch (e: OutOfMemoryError) {
             iv_large?.setImage(FileBitmapDecoderFactory(file))
@@ -226,28 +225,28 @@ class ImagePreviewFragment : BaseFragment() {
     }
 
 
-    //长按处理
+    //TODO 长按处理
     private fun longClick(): Boolean {
         val menus: ArrayList<String> = arrayListOf()
-        if (url.startsWith("http:") || url.startsWith("https:")) {
-            menus.add("发送给朋友")
-        }
-        menus.add("保存图片")
-
-
-        val dialog = MenuDialog().transmitMenu(menus).show(context) as MenuDialog
-        dialog.onMenuClickV2 = {
-            when (it) {
-                "发送给朋友" -> {
-                    //发送给朋友
-                    toastSuccess("发送给朋友")
-                }
-                "保存图片" -> {
-                    //保存图片
-                    saveImageToLocal();
-                }
-            }
-        }
+//        if (url.startsWith("http:") || url.startsWith("https:")) {
+//            menus.add("发送给朋友")
+//        }
+//        menus.add("保存图片")
+//        val dialog = MenuDialog().transmitMenu(menus).show(this) as MenuDialog
+//        dialog.onMenuClickV2 = {
+//            when (it) {
+//                "发送给朋友" -> {
+//                    //发送给朋友
+//                    UmengCenter.shareImage(getCurrentActivity(), url, SHARE_MEDIA.WEIXIN)
+//                }
+//                "保存图片" -> {
+//                    //保存图片
+//                    //val drawable = photo_view.drawable as BitmapDrawable
+//                    //savePictures(drawable.bitmap)
+//                    saveImageToLocal();
+//                }
+//            }
+//        }
 
 
         return true
@@ -277,6 +276,7 @@ class ImagePreviewFragment : BaseFragment() {
         super.onDetach()
         task?.pause()
     }
+
 }
 
 

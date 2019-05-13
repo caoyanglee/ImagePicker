@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import com.weimu.imagepicker.ImagePicker
+import com.weimu.imagepicker.ui.preview2.ImagePreviewActivity
 import com.weimu.universalib.ktx.dip2px
 import com.weimu.universalib.ktx.getColorPro
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
@@ -13,7 +14,6 @@ import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.requestPermission
 import io.weimu.www.imagepicker.R
 import io.weimu.www.imagepicker.fragment.adapter.ImageGridAdapter
-import io.weimu.www.imagepicker.ui.preview.ImagePreviewActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 

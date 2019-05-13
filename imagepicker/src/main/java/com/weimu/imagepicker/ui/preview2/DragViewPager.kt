@@ -1,4 +1,4 @@
-package io.weimu.www.imagepicker.widget
+package com.weimu.imagepicker.ui.preview2
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -15,7 +15,7 @@ import com.weimu.universalib.ktx.getScreenHeight
 
 /**
  * Author:你需要一台永动机
- * Date:2019/3/19 15:33
+ * Date:2018/6/14 00:20
  * Description:
  */
 class DragViewPager : ViewPager, View.OnClickListener {
@@ -53,11 +53,19 @@ class DragViewPager : ViewPager, View.OnClickListener {
     private var mVelocityTracker: VelocityTracker? = null
     private var iAnimClose: IAnimClose? = null
 
+    fun setIAnimClose(iAnimClose: IAnimClose) {
+        this.iAnimClose = iAnimClose
+    }
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context) : super(context) {
+        init(context)
+    }
 
-    init {
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        init(context)
+    }
+
+    fun init(context: Context) {
         screenHeight = context.getScreenHeight().toFloat()
         setBackgroundColor(Color.BLACK)
         addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -71,17 +79,18 @@ class DragViewPager : ViewPager, View.OnClickListener {
                 currentPageStatus = state
             }
         })
+        //设置自己为显示视图
+        setCurrentShowView(this)
     }
 
-
-    //✨重要✨
+    //重要
     fun setCurrentShowView(currentShowView: View?) {
         this.currentShowView = currentShowView
         this.currentShowView?.setOnClickListener(this)
     }
 
 
-    //LargeImageView使用，根据需要拦截ACTION_MOVE
+    //配合SubsamplingScaleImageView使用，根据需要拦截ACTION_MOVE
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         if (adapter !is DragViewAdapter) return super.onInterceptTouchEvent(ev)
         val mImage: LargeImageView? = (adapter as DragViewAdapter).getImageView(currentItem) //特殊操作
@@ -208,7 +217,7 @@ class DragViewPager : ViewPager, View.OnClickListener {
             }
             valueAnimator.start()
         } else if (iAnimClose != null)
-            iAnimClose?.onPictureClick()
+            iAnimClose!!.onPictureClick()
     }
 
 
@@ -274,13 +283,11 @@ class DragViewPager : ViewPager, View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        iAnimClose?.onPictureClick()
+        if (iAnimClose != null) {
+            iAnimClose!!.onPictureClick()
+        }
     }
 
-
-    fun setIAnimClose(iAnimClose: IAnimClose) {
-        this.iAnimClose = iAnimClose
-    }
 
     interface IAnimClose {
         fun onPictureClick()

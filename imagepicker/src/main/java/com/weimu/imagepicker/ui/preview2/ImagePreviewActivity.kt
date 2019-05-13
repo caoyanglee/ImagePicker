@@ -1,4 +1,4 @@
-package io.weimu.www.imagepicker.ui.preview
+package com.weimu.imagepicker.ui.preview2
 
 import android.app.Activity
 import android.content.Intent
@@ -10,17 +10,16 @@ import android.support.v4.app.SharedElementCallback
 import android.view.View
 import com.rd.animation.type.AnimationType
 import com.shizhefei.view.largeimage.LargeImageView
+import com.weimu.imagepicker.R
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.pager.BaseFragmentStatePagerAdapter
 import com.weimu.universalview.interfaces.MyViewPagerChangeListener
-import io.weimu.www.imagepicker.R
-import io.weimu.www.imagepicker.widget.DragViewPager
-import kotlinx.android.synthetic.main.activity_image_preview_app.*
+import kotlinx.android.synthetic.main.activity_image_preview_v2.*
 
 
 class ImagePreviewActivity : BaseActivity() {
 
-    override fun getLayoutResID() = R.layout.activity_image_preview_app
+    override fun getLayoutResID() = R.layout.activity_image_preview_v2
 
     private lateinit var smallPicList: ArrayList<String>
     private var imageList: ArrayList<String> = ArrayList()
@@ -48,10 +47,10 @@ class ImagePreviewActivity : BaseActivity() {
 
         //小图
         fun startWithSmall(
-            context: Activity,
-            imageList: ArrayList<String>,
-            smallList: ArrayList<String>,
-            position: Int = 0
+                context: Activity,
+                imageList: ArrayList<String>,
+                smallList: ArrayList<String>,
+                position: Int = 0
         ) {
             val intent = Intent(context, ImagePreviewActivity::class.java)
             intent.putExtra(IMAGE_LIST, imageList)
@@ -63,11 +62,11 @@ class ImagePreviewActivity : BaseActivity() {
 
         //共享元素
         fun startWithAnim(
-            context: Activity,
-            imageList: ArrayList<String>,
-            smallList: ArrayList<String>,
-            position: Int = 0,
-            view: View?
+                context: Activity,
+                imageList: ArrayList<String>,
+                smallList: ArrayList<String>,
+                position: Int = 0,
+                view: View?
         ) {
             val intent = Intent(context, ImagePreviewActivity::class.java)
             intent.putExtra(IMAGE_LIST, imageList)
@@ -126,7 +125,7 @@ class ImagePreviewActivity : BaseActivity() {
         }
 
         viewpager.apply {
-            this.offscreenPageLimit = 3
+            this.offscreenPageLimit = 1
             this.adapter = mAdapter
             mAdapter.setFragments(fragments)
             this.currentItem = position

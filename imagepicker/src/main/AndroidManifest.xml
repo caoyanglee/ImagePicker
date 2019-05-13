@@ -25,6 +25,10 @@
         <activity
             android:name=".ui.CameraSelectorActivity"
             android:theme="@style/BasePageTheme" />
+
+        <activity
+            android:name=".ui.preview2.ImagePreviewActivity"
+            android:theme="@style/ImagePreviewTheme" />
     </application>
 
 </manifest>
