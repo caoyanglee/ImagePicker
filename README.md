@@ -87,7 +87,7 @@ ImagePicker.pickImage(activity, 9, ImageSelectorActivity.MODE_MULTIPLE, true, tr
 ```
 
 
-1.2.直接拍张
+1.2.直接拍照
 ```kotlin
 ImagePicker.takePhoto(activity);
 ```
@@ -111,5 +111,10 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
        // do something
     }
 }
+```
+
+1.3可拖拽下拉退出的图片预览
+```kotlin
+ImagePreviewActivity.start(context,imageList)
 ```
 
