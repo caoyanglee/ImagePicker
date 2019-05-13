@@ -4,6 +4,7 @@ package com.weimu.imagepicker.ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -83,6 +84,7 @@ internal class ImageSelectorActivity : BaseActivity() {
         val MODE_MULTIPLE = 1
         val MODE_SINGLE = 2
 
+        //直接开启activity
         fun start(activity: Activity, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean) {
             val intent = Intent(activity, ImageSelectorActivity::class.java)
             intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
@@ -92,6 +94,18 @@ internal class ImageSelectorActivity : BaseActivity() {
             intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
             intent.putExtra(EXTRA_ENABLE_COMPRESS, enableCompress)
             activity.startActivityForResult(intent, ImagePicker.REQUEST_IMAGE)
+        }
+
+        //生成新的Intent
+        fun newIntent(context: Context, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean): Intent {
+            val intent = Intent(context, ImageSelectorActivity::class.java)
+            intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
+            intent.putExtra(EXTRA_SELECT_MODE, mode)
+            intent.putExtra(EXTRA_SHOW_CAMERA, enableCamera)
+            intent.putExtra(EXTRA_ENABLE_PREVIEW, enablePreview)
+            intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
+            intent.putExtra(EXTRA_ENABLE_COMPRESS, enableCompress)
+            return intent
         }
     }
 

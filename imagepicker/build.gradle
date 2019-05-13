@@ -8,10 +8,10 @@ apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.caoyanglee'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion versions.compileSdk
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
         versionCode 1
         versionName "1.0"
     }
@@ -28,7 +28,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //universal-view
-    compile "com.github.caoyanglee:universalui:$rootProject.universal_ui"
+    compile deps.core.ui
     //裁剪图
     compile 'com.isseiaoki:simplecropview:1.1.8@aar'
     //图片预览
