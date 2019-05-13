@@ -61,7 +61,7 @@ object ImagePicker {
     }
 
     /**
-     * 自定义
+     * 自定义 启动activity
      */
     fun custom(activity: Activity, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean) {
         ImageSelectorActivity.start(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop, enableCompress)
@@ -69,7 +69,7 @@ object ImagePicker {
 
 
     /**
-     * 自定义生成
+     * 自定义 生成Intent
      * 注意：使用此方法 必须自己调用 startActivityForResult
      */
     fun customWithIntent(activity: Activity, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean) {
