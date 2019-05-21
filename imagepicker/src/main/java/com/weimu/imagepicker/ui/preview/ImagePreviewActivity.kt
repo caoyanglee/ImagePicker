@@ -15,7 +15,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.widget.CheckBox
-import android.widget.RelativeLayout
 import android.widget.Toast
 import com.weimu.imagepicker.ImageStaticHolder
 import com.weimu.imagepicker.R
@@ -63,7 +62,6 @@ internal class ImagePreviewActivity : BaseActivity() {
         }
     }
 
-    private val selectBarLayout: RelativeLayout by lazy { findViewById<RelativeLayout>(R.id.select_bar_layout) }
     private var checkboxSelect: CheckBox? = null
     private val viewPager: ViewPager by lazy { findViewById<ViewPager>(R.id.drag_viewPager) }
 
@@ -76,25 +74,20 @@ internal class ImagePreviewActivity : BaseActivity() {
     var isShowBar by Delegates.observable(false) { property, oldValue, newValue ->
         //todo是否显示
         if (newValue) {
-            StatusBarManager.showStatusBar(window)
             mToolBar.visible()
+            mSelectBarLayout.visible()
+            StatusBarManager.showStatusBar(window)
         } else {
-            StatusBarManager.hideStatusBar(window)
             mToolBar.gone()
+            mSelectBarLayout.gone()
+            StatusBarManager.hideStatusBar(window)
         }
-        selectBarLayout.visibility = if (newValue) View.VISIBLE else View.GONE
-
     }
 
     override fun getLayoutResID(): Int = R.layout.activity_image_preview
 
-    override fun afterViewAttach(savedInstanceState: Bundle?) {
-        initData()
-        initView()
-        registerListener()
-    }
 
-    private fun initData() {
+    override fun beforeViewAttach(savedInstanceState: Bundle?) {
         //images = getIntent().getParcelableArrayListExtra(EXTRA_PREVIEW_LIST);
         images = ImageStaticHolder.getChooseImages()
         selectImages = intent.getSerializableExtra(EXTRA_PREVIEW_SELECT_LIST) as ArrayList<LocalMedia>
@@ -102,9 +95,15 @@ internal class ImagePreviewActivity : BaseActivity() {
         position = intent.getIntExtra(EXTRA_POSITION, 1)
     }
 
+    override fun afterViewAttach(savedInstanceState: Bundle?) {
+        initView()
+        registerListener()
+    }
+
+
     private fun initView() {
         //状态栏和Toolbar
-        StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
+        StatusBarManager.setColor(this.window, Color.WHITE)
         StatusBarManager.setLightMode(this.window, false)
 
         mToolBar.apply { this.setBackgroundColor(Color.WHITE) }
@@ -162,7 +161,7 @@ internal class ImagePreviewActivity : BaseActivity() {
                 checkboxSelect!!.isChecked = false
                 return@OnClickListener
             }
-            val image = images[viewPager!!.currentItem]
+            val image = images[viewPager.currentItem]
             if (isChecked) {
                 selectImages.add(image)
             } else {
@@ -188,9 +187,9 @@ internal class ImagePreviewActivity : BaseActivity() {
         val enable = selectImages.size != 0
         mToolBar.menuText1 {
             this.isEnabled = enable
-            if (enable){
+            if (enable) {
                 this.text = "${getString(R.string.done_num)}(${selectImages.size}/${maxSelectNum})"
-            }else{
+            } else {
                 this.text = getString(R.string.done)
             }
 

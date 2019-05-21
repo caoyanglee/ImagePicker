@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
     <com.weimu.universalview.widget.ToolBarPro
         android:id="@+id/mToolBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/mSelectBarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mToolBar">
 
 
         <com.weimu.imagepicker.ui.preview.HackyViewPager
@@ -21,28 +29,28 @@
             android:transitionName="share_image" />
 
 
-        <RelativeLayout
-            android:id="@+id/select_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom"
-            android:background="#7f393a3e"
-            android:gravity="center_vertical">
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/mSelectBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#7f393a3e"
+        app:layout_constraintBottom_toBottomOf="parent">
 
 
-            <CheckBox
-                android:id="@+id/checkbox_select"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:button="@drawable/image_preview_check_circle_selector"
-                android:gravity="center"
-                android:paddingLeft="8dp"
-                android:paddingRight="16dp"
-                android:text="@string/choose"
-                android:textColor="@color/white"
-                android:textSize="17sp" />
-        </RelativeLayout>
-    </FrameLayout>
-</LinearLayout>
+        <CheckBox
+            android:id="@+id/checkbox_select"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:button="@drawable/image_preview_check_circle_selector"
+            android:gravity="center"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
+            android:text="@string/choose"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>
 
