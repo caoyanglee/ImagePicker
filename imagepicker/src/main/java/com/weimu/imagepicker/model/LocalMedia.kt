@@ -8,5 +8,5 @@ internal class LocalMedia(
         var duration: Long = 0,
         var lastUpdateAt: Long = 0) : Serializable, Comparable<LocalMedia> {
 
-    override fun compareTo(another: LocalMedia): Int = -path.compareTo(another.path)
+    override fun compareTo(other: LocalMedia): Int = -path.compareTo(other.path)
 }
