@@ -3,6 +3,7 @@ package com.weimu.imagepicker.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -13,8 +14,8 @@ import com.weimu.imagepicker.R
 import com.weimu.imagepicker.utils.Helper
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
-import com.weimu.universalview.core.toolbar.ToolBarManager
 import com.weimu.universalview.ktx.setOnClickListenerPro
+import kotlinx.android.synthetic.main.activity_image_crop.*
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -54,18 +55,16 @@ internal class ImageCropActivity : BaseActivity() {
     override fun afterViewAttach(savedInstanceState: Bundle?) {
         StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
         StatusBarManager.setLightMode(this.window, false)
-
-        ToolBarManager.with(this, getContentView())
-                .bg {
-                    this.setBackgroundResource(R.color.white)
-                }
-                .leftMenuIcon {
+        mToolBar.apply { this.setBackgroundColor(Color.WHITE) }
+                .navigationIcon {
                     this.setImageResource(R.drawable.toolbar_arrow_back_black)
+                    this.setOnClickListenerPro { onBackPressed() }
                 }
-                .title {
+                .centerTitle {
                     this.text = "${getString(R.string.crop_picture)}"
+                    this.setTextColor(Color.BLACK)
                 }
-                .rightMenuText {
+                .menuText1 {
                     this.text = getString(R.string.use)
                     this.setTextColor(ContextCompat.getColorStateList(context, R.color.black_text_selector))
                     this.isEnabled = true

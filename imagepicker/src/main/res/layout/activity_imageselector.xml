@@ -4,7 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/include_toolbar_primary" />
+    <com.weimu.universalview.widget.ToolBarPro
+        android:id="@+id/mToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,6 +23,7 @@
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:paddingBottom="48dp"
+            android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical" />
 
         <RelativeLayout
@@ -69,10 +73,7 @@
                 android:textColor="@color/white"
                 android:textSize="17sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/black_alpha20" />
+
         </RelativeLayout>
     </RelativeLayout>
 

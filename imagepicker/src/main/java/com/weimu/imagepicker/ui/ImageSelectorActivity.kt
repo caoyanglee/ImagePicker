@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -33,11 +34,11 @@ import com.weimu.imagepicker.utils.LocalMediaLoader
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
-import com.weimu.universalview.core.toolbar.ToolBarManager
 import com.weimu.universalview.ktx.dip2px
 import com.weimu.universalview.ktx.init
 import com.weimu.universalview.ktx.setOnClickListenerPro
 import com.weimu.universalview.ktx.setTextColorV2
+import kotlinx.android.synthetic.main.activity_imageselector.*
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
@@ -61,7 +62,6 @@ internal class ImageSelectorActivity : BaseActivity() {
     private val folderName: TextView by lazy { findViewById<TextView>(R.id.folder_name) }
     private val folderWindow: FolderWindow by lazy { FolderWindow(this) }
     private val cbOrigin: CheckBox by lazy { findViewById<CheckBox>(R.id.cb_origin) }
-    private lateinit var toolBarManager: ToolBarManager
 
     private var cameraPath: String? = null
 
@@ -150,18 +150,16 @@ internal class ImageSelectorActivity : BaseActivity() {
 
         StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
         StatusBarManager.setLightMode(this.window, false)
-
-        toolBarManager = ToolBarManager.with(this, getContentView())
-                .bg {
-                    this.setBackgroundResource(R.color.white)
-                }
-                .leftMenuIcon {
+        mToolBar.apply { this.setBackgroundColor(Color.WHITE) }
+                .navigationIcon {
                     this.setImageResource(R.drawable.toolbar_arrow_back_black)
+                    this.setOnClickListenerPro { onBackPressed() }
                 }
-                .title {
+                .centerTitle {
                     this.text = "选择图片"
+                    this.setTextColor(Color.BLACK)
                 }
-                .rightMenuText {
+                .menuText1 {
                     this.text = if (selectMode == MODE_MULTIPLE) (getString(R.string.done)) else ""
                     this.setTextColorV2(R.color.colorAccent)
                     this.setTextColor(ContextCompat.getColorStateList(context, R.color.black_text_selector))
@@ -171,6 +169,7 @@ internal class ImageSelectorActivity : BaseActivity() {
                         onSelectDone(imageAdapter.selectedImages)
                     }
                 }
+
 
         //是否使用原图
         cbOrigin.apply {
@@ -201,19 +200,19 @@ internal class ImageSelectorActivity : BaseActivity() {
                 folderWindow.showAsDropDown(findViewById<ConstraintLayout>(R.id.cl_toolbar))
             }
         })
+
         //recyclerView点击事件
         imageAdapter.setOnImageSelectChangedListener(object : ImageListAdapter.OnImageSelectChangedListener {
+            @SuppressLint("SetTextI18n")
             override fun onChange(selectImages: List<LocalMedia>) {
-                val enable = selectImages.isNotEmpty()
-                if (enable) {
-                    toolBarManager.rightMenuText {
-                        this.text = "${getString(R.string.done_num)}(${selectImages.size}/${maxSelectNum})"
-                        isEnabled = enable
-                    }
-                } else {
-                    toolBarManager.rightMenuText {
+                mToolBar.menuText1 {
+                    val enable = selectImages.isNotEmpty()
+                    if (enable) {
+                        this.text = "${getString(R.string.done_num)}(${selectImages.size}/$maxSelectNum)"
+                        this.isEnabled = enable
+                    } else {
                         this.text = getString(R.string.done)
-                        isEnabled = enable
+                        this.isEnabled = enable
                     }
                 }
             }

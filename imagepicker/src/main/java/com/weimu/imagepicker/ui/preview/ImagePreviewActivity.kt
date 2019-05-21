@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -21,8 +22,10 @@ import com.weimu.imagepicker.R
 import com.weimu.imagepicker.model.LocalMedia
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
-import com.weimu.universalview.core.toolbar.ToolBarManager
+import com.weimu.universalview.ktx.gone
 import com.weimu.universalview.ktx.setOnClickListenerPro
+import com.weimu.universalview.ktx.visible
+import kotlinx.android.synthetic.main.activity_image_preview.*
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -74,16 +77,14 @@ internal class ImagePreviewActivity : BaseActivity() {
         //todo是否显示
         if (newValue) {
             StatusBarManager.showStatusBar(window)
-            toolBarManager.showToolBar()
+            mToolBar.visible()
         } else {
             StatusBarManager.hideStatusBar(window)
-            toolBarManager.hideToolBar()
+            mToolBar.gone()
         }
         selectBarLayout.visibility = if (newValue) View.VISIBLE else View.GONE
 
     }
-
-    private lateinit var toolBarManager: ToolBarManager
 
     override fun getLayoutResID(): Int = R.layout.activity_image_preview
 
@@ -105,17 +106,17 @@ internal class ImagePreviewActivity : BaseActivity() {
         //状态栏和Toolbar
         StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
         StatusBarManager.setLightMode(this.window, false)
-        toolBarManager = ToolBarManager.with(this, getContentView())
-                .bg {
-                    this.setBackgroundResource(R.color.white)
-                }
-                .leftMenuIcon {
+
+        mToolBar.apply { this.setBackgroundColor(Color.WHITE) }
+                .navigationIcon {
                     this.setImageResource(R.drawable.toolbar_arrow_back_black)
+                    this.setOnClickListenerPro { onBackPressed() }
                 }
-                .title {
+                .centerTitle {
                     this.text = "${(position + 1).toString() + "/" + images.size}"
+                    this.setTextColor(Color.BLACK)
                 }
-                .rightMenuText {
+                .menuText1 {
                     this.text = getString(R.string.done)
                     this.setTextColor(ContextCompat.getColorStateList(context, R.color.black_text_selector))
                     this.isEnabled = false
@@ -140,7 +141,7 @@ internal class ImagePreviewActivity : BaseActivity() {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
                 override fun onPageSelected(position: Int) {
-                    toolBarManager.title { this.text = ((position + 1).toString() + "/" + images.size) }
+                    mToolBar.centerTitle { this.text = ((position + 1).toString() + "/" + images.size) }
                     onImageSwitch(position)
                 }
 
@@ -185,16 +186,15 @@ internal class ImagePreviewActivity : BaseActivity() {
     @SuppressLint("SetTextI18n")
     fun onSelectNumChange() {
         val enable = selectImages.size != 0
-        toolBarManager.rightMenuText { this.isEnabled = enable }
-
-        if (enable) {
-            toolBarManager.rightMenuText {
+        mToolBar.menuText1 {
+            this.isEnabled = enable
+            if (enable){
                 this.text = "${getString(R.string.done_num)}(${selectImages.size}/${maxSelectNum})"
-            }
-        } else {
-            toolBarManager.rightMenuText {
+            }else{
                 this.text = getString(R.string.done)
             }
+
+
         }
     }
 
