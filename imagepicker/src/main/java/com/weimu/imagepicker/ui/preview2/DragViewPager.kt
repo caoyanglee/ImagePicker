@@ -11,7 +11,7 @@ import android.view.VelocityTracker
 import android.view.View
 import com.nineoldandroids.view.ViewHelper
 import com.shizhefei.view.largeimage.LargeImageView
-import com.weimu.universalib.ktx.getScreenHeight
+import com.weimu.universalview.ktx.getScreenHeight
 
 /**
  * Author:你需要一台永动机

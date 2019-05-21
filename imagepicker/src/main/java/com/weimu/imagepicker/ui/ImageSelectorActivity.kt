@@ -30,11 +30,11 @@ import com.weimu.imagepicker.model.LocalMediaFolder
 import com.weimu.imagepicker.ui.preview.ImagePreviewActivity
 import com.weimu.imagepicker.utils.Helper
 import com.weimu.imagepicker.utils.LocalMediaLoader
-import com.weimu.universalib.ktx.dip2px
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.core.toolbar.ToolBarManager
+import com.weimu.universalview.ktx.dip2px
 import com.weimu.universalview.ktx.init
 import com.weimu.universalview.ktx.setOnClickListenerPro
 import com.weimu.universalview.ktx.setTextColorV2

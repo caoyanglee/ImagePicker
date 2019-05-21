@@ -14,14 +14,12 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.PopupWindow
-
 import com.weimu.imagepicker.R
 import com.weimu.imagepicker.adapter.ImageFolderAdapter
 import com.weimu.imagepicker.model.LocalMediaFolder
-import com.weimu.universalib.ktx.dip2px
-import com.weimu.universalib.ktx.getScreenHeight
-import com.weimu.universalib.ktx.getScreenWidth
-
+import com.weimu.universalview.ktx.dip2px
+import com.weimu.universalview.ktx.getScreenHeight
+import com.weimu.universalview.ktx.getScreenWidth
 import java.lang.reflect.Method
 
 
