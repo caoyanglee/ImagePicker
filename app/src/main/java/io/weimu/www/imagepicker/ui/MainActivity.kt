@@ -69,8 +69,8 @@ class MainActivity : AppCompatActivity() {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_IMAGE) {
-            val pics = data!!.getSerializableExtra(ImagePicker.REQUEST_OUTPUT) as ArrayList<String>
-            mAdapter.addData(pics)
+            val target = data?.getSerializableExtra(ImagePicker.REQUEST_OUTPUT) as List<String>
+            mAdapter.addData(target)
         }
     }
 }

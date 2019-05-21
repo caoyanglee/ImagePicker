@@ -14,13 +14,13 @@ import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
 import com.shizhefei.view.largeimage.factory.FileBitmapDecoderFactory
 import com.weimu.imagepicker.R
-import com.weimu.universalib.helper.Md5Helper
-import com.weimu.universalib.helper.MediaScanner
-import com.weimu.universalib.ktx.formatDate
-import com.weimu.universalib.utils.FileUtils
 import com.weimu.universalview.OriginAppData
 import com.weimu.universalview.core.fragment.BaseFragment
 import com.weimu.universalview.helper.AnimHelper
+import com.weimu.universalview.helper.FileHelper
+import com.weimu.universalview.helper.Md5Helper
+import com.weimu.universalview.helper.MediaScanner
+import com.weimu.universalview.ktx.formatDate
 import com.weimu.universalview.ktx.invisible
 import com.weimu.universalview.ktx.visible
 import kotlinx.android.synthetic.main.fragment_image_preview_v2.*
@@ -260,7 +260,7 @@ class ImagePreviewFragment : BaseFragment() {
         val sourceFile = targetPath
         val saveFile = "$picturePath/$target"
         try {
-            FileUtils.copyFile(sourceFile, saveFile)//直接复制即可
+            FileHelper.copyFile(sourceFile, saveFile)//直接复制即可
             toastSuccess("保存成功")
             //让图片可以扫描
             val filePaths = arrayOf("$picturePath/$target")

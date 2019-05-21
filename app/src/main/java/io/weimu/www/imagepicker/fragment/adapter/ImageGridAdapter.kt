@@ -3,7 +3,7 @@ package io.weimu.www.imagepicker.fragment.adapter
 
 import android.content.Context
 import com.bumptech.glide.Glide
-import com.weimu.universalib.origin.BaseB
+import com.weimu.universalview.core.BaseB
 import com.weimu.universalview.core.recyclerview.BaseRecyclerAdapter
 import com.weimu.universalview.core.recyclerview.BaseRecyclerViewHolder
 import io.weimu.www.imagepicker.R

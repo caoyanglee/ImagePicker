@@ -1,23 +1,15 @@
 package com.weimu.imagepicker.utils
 
+
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.support.v4.content.FileProvider
-import com.weimu.universalib.ktx.formatDate
-import com.weimu.universalib.ktx.getCurrentTimeStamp
-import com.weimu.universalib.ktx.getUri4File
-
-
+import com.weimu.universalview.ktx.formatDate
+import com.weimu.universalview.ktx.getCurrentTimeStamp
+import com.weimu.universalview.ktx.getUri4File
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 
 internal object Helper {
