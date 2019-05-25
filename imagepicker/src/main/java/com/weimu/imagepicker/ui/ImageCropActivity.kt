@@ -30,16 +30,24 @@ internal class ImageCropActivity : BaseActivity() {
     private var sourceUri: Uri? = null//源URI
     private var saveUri: Uri? = null//存储URI
 
+    //corp config
+    private var aspectRatioX = 0
+    private var aspectRatioY = 0
+
 
     companion object {
-        val REQUEST_CROP = 69
+        const val REQUEST_CROP = 69
 
-        val DATA_EXTRA_PATH = "data_extra_path"
-        val OUTPUT_PATH = "outputPath"
+        const val DATA_EXTRA_PATH = "data_extra_path"
+        const val OUTPUT_PATH = "outputPath"
+        private const val ASPECT_RATION_X = "aspectRatioX"
+        private const val ASPECT_RATION_Y = "aspectRatioY"
 
-        fun newIntent(context: Context, path: String): Intent {
+        fun newIntent(context: Context, path: String, aspectRatioX: Int = 0, aspectRatioY: Int = 0): Intent {
             val intent = Intent(context, ImageCropActivity::class.java)
             intent.putExtra(DATA_EXTRA_PATH, path)
+            intent.putExtra(ASPECT_RATION_X, aspectRatioX)
+            intent.putExtra(ASPECT_RATION_Y, aspectRatioY)
             return intent
         }
     }
@@ -50,6 +58,8 @@ internal class ImageCropActivity : BaseActivity() {
         //data
         path = intent.getStringExtra(DATA_EXTRA_PATH)
         sourceUri = Uri.fromFile(File(path))
+        aspectRatioX = intent.getIntExtra(ASPECT_RATION_X, 0)
+        aspectRatioY = intent.getIntExtra(ASPECT_RATION_Y, 0)
     }
 
 
@@ -81,6 +91,7 @@ internal class ImageCropActivity : BaseActivity() {
         cropImageView.apply {
             //配置
             this.setImageUriAsync(sourceUri)
+            if (aspectRatioX > 0 || aspectRatioY > 0) this.setAspectRatio(aspectRatioX, aspectRatioY)
         }
     }
 

@@ -60,7 +60,7 @@ internal class CameraSelectorActivity : BaseActivity() {
     /**
      * start to camera、preview、crop
      */
-    fun startCamera() {
+    private fun startCamera() {
         val cameraFile = createCameraFile()
         cameraPath = cameraFile.absolutePath
         startActionCapture(cameraFile, ImagePicker.REQUEST_CAMERA)
@@ -87,11 +87,12 @@ internal class CameraSelectorActivity : BaseActivity() {
     }
 
 
-    fun startCrop(path: String?) {
-        startActivityForResult(ImageCropActivity.newIntent(this, path!!), ImageCropActivity.REQUEST_CROP)
+    private fun startCrop(path: String?) {
+        if (path.isNullOrBlank()) return
+        startActivityForResult(ImageCropActivity.newIntent(this, path), ImageCropActivity.REQUEST_CROP)
     }
 
-    fun onSelectDone(path: String?) {
+    private fun onSelectDone(path: String?) {
         val images = ArrayList<String>()
         images.add(path!!)
         compressImage(images)//默认压缩

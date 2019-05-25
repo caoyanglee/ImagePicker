@@ -35,10 +35,7 @@ import com.weimu.imagepicker.utils.LocalMediaLoader
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
-import com.weimu.universalview.ktx.dip2px
-import com.weimu.universalview.ktx.init
-import com.weimu.universalview.ktx.setOnClickListenerPro
-import com.weimu.universalview.ktx.setTextColorV2
+import com.weimu.universalview.ktx.*
 import kotlinx.android.synthetic.main.activity_imageselector.*
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
@@ -52,10 +49,10 @@ internal class ImageSelectorActivity : BaseActivity() {
     private var selectMode = MODE_MULTIPLE
     private var enableCamera = true
     private var enablePreview = true
-    private var enableCrop = false
+    private var enableCrop = false//是否裁剪
     private var enableCompress = false//是否显示原图按钮
-
     private val spanCount = 4
+
     //ui
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.folder_list) }
     private val imageAdapter: ImageListAdapter by lazy { ImageListAdapter(this, maxSelectNum, selectMode, enableCamera, enablePreview) }
@@ -65,25 +62,24 @@ internal class ImageSelectorActivity : BaseActivity() {
     private val cbOrigin: CheckBox by lazy { findViewById<CheckBox>(R.id.cb_origin) }
 
     private var cameraPath: String? = null
-
     private var allFolders: List<LocalMediaFolder> = arrayListOf()//所有图片文件夹
-
     private var isUseOrigin = false//是否使用原图
 
 
     companion object {
 
-        val BUNDLE_CAMERA_PATH = "CameraPath"
+        const val BUNDLE_CAMERA_PATH = "CameraPath"
 
-        val EXTRA_MAX_SELECT_NUM = "MaxSelectNum"//最大选择数
-        val EXTRA_SELECT_MODE = "SelectMode"//选择模式
-        val EXTRA_SHOW_CAMERA = "ShowCamera"//是否显示摄像头
-        val EXTRA_ENABLE_PREVIEW = "EnablePreview"//是否需要预览
-        val EXTRA_ENABLE_CROP = "EnableCrop"//是否需要裁剪
-        val EXTRA_ENABLE_COMPRESS = "EnableCompress"//是否需要压缩
+        const val EXTRA_MAX_SELECT_NUM = "MaxSelectNum"//最大选择数
+        const val EXTRA_SELECT_MODE = "SelectMode"//选择模式
+        const val EXTRA_SHOW_CAMERA = "ShowCamera"//是否显示摄像头
+        const val EXTRA_ENABLE_PREVIEW = "EnablePreview"//是否需要预览
+        const val EXTRA_ENABLE_CROP = "EnableCrop"//是否需要裁剪
+        const val EXTRA_ENABLE_COMPRESS = "EnableCompress"//是否需要压缩
 
-        val MODE_MULTIPLE = 1
-        val MODE_SINGLE = 2
+
+        const val MODE_MULTIPLE = 1//多选
+        const val MODE_SINGLE = 2//单选
 
         //直接开启activity
         fun start(activity: Activity, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean) {
@@ -114,14 +110,13 @@ internal class ImageSelectorActivity : BaseActivity() {
     override fun getLayoutResID(): Int = R.layout.activity_imageselector
 
 
-    override fun afterViewAttach(savedInstanceState: Bundle?) {
+    override fun beforeViewAttach(savedInstanceState: Bundle?) {
         maxSelectNum = intent.getIntExtra(EXTRA_MAX_SELECT_NUM, 9)
         selectMode = intent.getIntExtra(EXTRA_SELECT_MODE, MODE_MULTIPLE)
         enableCamera = intent.getBooleanExtra(EXTRA_SHOW_CAMERA, true)
         enablePreview = intent.getBooleanExtra(EXTRA_ENABLE_PREVIEW, true)
         enableCrop = intent.getBooleanExtra(EXTRA_ENABLE_CROP, false)
         enableCompress = intent.getBooleanExtra(EXTRA_ENABLE_COMPRESS, false)
-
 
         if (selectMode == MODE_MULTIPLE) {
             enableCrop = false
@@ -131,11 +126,60 @@ internal class ImageSelectorActivity : BaseActivity() {
         if (savedInstanceState != null) {
             cameraPath = savedInstanceState.getString(BUNDLE_CAMERA_PATH)
         }
+    }
+
+    override fun afterViewAttach(savedInstanceState: Bundle?) {
         initView()
         registerListener()
+        loadData()
+    }
 
-        ///load data
+    private fun initView() {
+        //StatusBar
+        StatusBarManager.apply {
+            this.setColor(window, Color.WHITE)
+            this.setLightMode(window, false)
+        }
+        //ToolBar
+        mToolBar.apply {
+            this.setBackgroundColor(Color.WHITE)
+            this.navigationIcon {
+                this.setImageResource(R.drawable.toolbar_arrow_back_black)
+                this.setOnClickListenerPro { onBackPressed() }
+            }
+            this.centerTitle {
+                this.text = "选择图片"
+                this.setTextColor(Color.BLACK)
+            }
+            this.menuText1 {
+                this.text = if (selectMode == MODE_MULTIPLE) (getString(R.string.done)) else ""
+                this.setTextColorV2(R.color.colorAccent)
+                this.setTextColor(ContextCompat.getColorStateList(context, R.color.black_text_selector))
+                this.isEnabled = false
+                this.setOnClickListenerPro {
+                    //点击完成
+                    onSelectDone(imageAdapter.selectedImages)
+                }
+            }
 
+        }
+        //CheckBox use Origin Pic
+        cbOrigin.apply {
+            if (!enableCompress) this.visibility = View.GONE
+            this.isChecked = isUseOrigin
+            this.setOnClickListener { isUseOrigin = !this.isChecked }
+        }
+        //RecyclerView
+        recyclerView.apply {
+            this.init()
+            this.layoutManager = GridLayoutManager(this@ImageSelectorActivity, spanCount)
+            this.setHasFixedSize(true)
+            this.addItemDecoration(GridItemDecoration(spanCount, dip2px(2f), dip2px(2f)))
+            this.adapter = imageAdapter
+        }
+    }
+
+    private fun loadData() {
         LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage(object : LocalMediaLoader.LocalMediaLoadListener {
             override fun loadComplete(folders: List<LocalMediaFolder>) {
                 allFolders = folders
@@ -146,48 +190,7 @@ internal class ImageSelectorActivity : BaseActivity() {
         })
     }
 
-
-    private fun initView() {
-
-        StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
-        StatusBarManager.setLightMode(this.window, false)
-        mToolBar.apply { this.setBackgroundColor(Color.WHITE) }
-                .navigationIcon {
-                    this.setImageResource(R.drawable.toolbar_arrow_back_black)
-                    this.setOnClickListenerPro { onBackPressed() }
-                }
-                .centerTitle {
-                    this.text = "选择图片"
-                    this.setTextColor(Color.BLACK)
-                }
-                .menuText1 {
-                    this.text = if (selectMode == MODE_MULTIPLE) (getString(R.string.done)) else ""
-                    this.setTextColorV2(R.color.colorAccent)
-                    this.setTextColor(ContextCompat.getColorStateList(context, R.color.black_text_selector))
-                    this.isEnabled = false
-                    this.setOnClickListenerPro {
-                        //点击完成
-                        onSelectDone(imageAdapter.selectedImages)
-                    }
-                }
-
-
-        //是否使用原图
-        cbOrigin.apply {
-            if (!enableCompress) this.visibility = View.GONE
-            this.isChecked = isUseOrigin
-            this.setOnClickListener { isUseOrigin = !this.isChecked }
-        }
-        recyclerView.apply {
-            this.init()
-            this.layoutManager = GridLayoutManager(this@ImageSelectorActivity, spanCount)
-            this.setHasFixedSize(true)
-            this.addItemDecoration(GridItemDecoration(spanCount, dip2px(2f), dip2px(2f)))
-            this.adapter = imageAdapter
-        }
-    }
-
-    fun registerListener() {
+    private fun registerListener() {
         folderLayout.setOnClickListener(View.OnClickListener {
             //Toast.makeText(ImageSelectorActivity.this, "文件夹长度  " + allFolders.size() + "  内部图片数量  " + allFolders.get(0).getImages().size(), Toast.LENGTH_SHORT).show();
             if (allFolders.size == 0 || allFolders[0].images.size == 0) {
@@ -278,8 +281,7 @@ internal class ImageSelectorActivity : BaseActivity() {
             } else if (requestCode == ImageCropActivity.REQUEST_CROP) {
                 val path = data?.getStringExtra(ImageCropActivity.OUTPUT_PATH) ?: ""
                 onSelectDone(path)
-            }// on crop success
-            //on preview select change
+            }
         }
     }
 
@@ -289,7 +291,7 @@ internal class ImageSelectorActivity : BaseActivity() {
     }
 
     /**
-     * start to camera、preview、crop
+     * 打开相机，预览，裁剪
      */
     fun startCamera() {
         val cameraFile = createCameraFile()
@@ -317,12 +319,8 @@ internal class ImageSelectorActivity : BaseActivity() {
         startActivityForResult(ImageCropActivity.newIntent(this, "$path"), ImageCropActivity.REQUEST_CROP)
     }
 
-    /**
-     * on select done
-     *
-     * @param medias
-     */
-    fun onSelectDone(medias: List<LocalMedia>) {
+    //选择完成
+    private fun onSelectDone(medias: List<LocalMedia>) {
         val images = ArrayList<String>()
         for (media in medias) {
             images.add("${media.path}")
@@ -337,7 +335,7 @@ internal class ImageSelectorActivity : BaseActivity() {
     }
 
     //返回图片
-    fun onResult(images: ArrayList<String>) {
+    private fun onResult(images: ArrayList<String>) {
         if (isUseOrigin) {
             setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, images))
             onBackPressed()
@@ -355,11 +353,11 @@ internal class ImageSelectorActivity : BaseActivity() {
                 .ignoreBy(100)                            // 忽略不压缩图片的大小
                 .setCompressListener(object : OnCompressListener { //设置回调
                     override fun onStart() {
-                        Log.d("weimu", "开始压缩")
+                        //Log.d("weimu", "开始压缩")
                     }
 
                     override fun onSuccess(file: File) {
-                        Log.d("weimu", "压缩成功 地址为：$file")
+                        //Log.d("weimu", "压缩成功 地址为：$file")
                         newImageList.add(file.toString())
                         //所有图片压缩成功
                         if (newImageList.size == photos.size) {
@@ -374,11 +372,9 @@ internal class ImageSelectorActivity : BaseActivity() {
                 }).launch()    //启动压缩
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         ImageStaticHolder.clearImages()
     }
-
 
 }

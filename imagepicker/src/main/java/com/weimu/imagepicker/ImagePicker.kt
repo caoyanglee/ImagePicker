@@ -76,5 +76,4 @@ object ImagePicker {
         ImageSelectorActivity.newIntent(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop, enableCompress)
     }
 
-
 }
