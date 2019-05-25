@@ -132,7 +132,7 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 }
 ```
 
-3可拖拽下拉退出的图片预览页面
+3.可拖拽下拉退出的图片预览页面
 ```kotlin
 ImagePreviewActivity.start(context,imageList)
 ```
