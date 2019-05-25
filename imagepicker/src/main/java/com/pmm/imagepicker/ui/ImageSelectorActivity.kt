@@ -111,7 +111,7 @@ internal class ImageSelectorActivity : BaseActivity() {
                 this.setOnClickListenerPro { onBackPressed() }
             }
             this.centerTitle {
-                this.text = "选择图片"
+                this.text = getString(R.string.select_image)
                 this.setTextColor(Color.BLACK)
             }
             this.menuText1 {
@@ -154,19 +154,18 @@ internal class ImageSelectorActivity : BaseActivity() {
     }
 
     private fun registerListener() {
-        folderLayout.setOnClickListener(View.OnClickListener {
+        folderLayout.setOnClickListenerPro {
             //Toast.makeText(ImageSelectorActivity.this, "文件夹长度  " + allFolders.size() + "  内部图片数量  " + allFolders.get(0).getImages().size(), Toast.LENGTH_SHORT).show();
-            if (allFolders.size == 0 || allFolders[0].images.size == 0) {
+            if (allFolders.isEmpty() || allFolders[0].images.isEmpty()) {
                 Toast.makeText(this@ImageSelectorActivity, "没有可选择的图片", Toast.LENGTH_SHORT).show()
-                return@OnClickListener
+                return@setOnClickListenerPro
             }
             if (folderWindow.isShowing) {
                 folderWindow.dismiss()
             } else {
-
-                folderWindow.showAsDropDown(findViewById<ConstraintLayout>(R.id.cl_toolbar))
+                folderWindow.showAsDropDown(mToolBar)
             }
-        })
+        }
 
         //recyclerView点击事件
         imageAdapter.setOnImageSelectChangedListener(object : ImageListAdapter.OnImageSelectChangedListener {

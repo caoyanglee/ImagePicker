@@ -18,6 +18,8 @@ import com.weimu.universalview.core.recyclerview.decoration.LinearItemDecoration
 import com.weimu.universalview.ktx.dip2px
 import com.weimu.universalview.ktx.getScreenHeight
 import com.weimu.universalview.ktx.getScreenWidth
+import com.weimu.universalview.ktx.getStatusBarHeight
+import com.weimu.universalview.widget.ToolBarPro
 import java.lang.reflect.Method
 
 /**
@@ -38,7 +40,7 @@ internal class FolderWindow(private val context: Context) : PopupWindow() {
         view.setOnClickListener { dismiss() }
         this.contentView = window
         this.width = context.getScreenWidth()
-        this.height = context.getScreenHeight() - context.dip2px(96f)
+        this.height = context.getScreenHeight() - (context.dip2px(ToolBarPro.GlobalConfig.toolbarHeight) + context.getStatusBarHeight() + context.dip2px(48f))
         this.animationStyle = R.style.WindowStyle
         this.isFocusable = true
         this.isOutsideTouchable = true
