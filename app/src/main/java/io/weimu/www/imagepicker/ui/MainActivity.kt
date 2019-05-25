@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import com.weimu.imagepicker.Config
-import com.weimu.imagepicker.ImagePicker
-import com.weimu.imagepicker.ui.preview2.ImagePreviewActivity
+import com.pmm.imagepicker.Config
+import com.pmm.imagepicker.ImagePicker
+import com.pmm.imagepicker.ui.preview2.ImagePreviewActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.dip2px
@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
             //添加
             this.onFooterClick = {
 //                ImagePicker.pickAvatar(this@MainActivity);
-//                ImagePicker.pickImage(this@MainActivity, 9)
-                ImagePicker.pickImage4One(activity = this@MainActivity)
+                ImagePicker.pickImage(this@MainActivity, 9)
+//                ImagePicker.pickImage4One(activity = this@MainActivity)
 //                ImagePicker.takePhoto(this@MainActivity, true);//使用摄像头
 
 

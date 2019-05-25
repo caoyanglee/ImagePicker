@@ -1,4 +1,4 @@
-package com.weimu.imagepicker.ui.preview
+package com.pmm.imagepicker.ui.preview
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -16,9 +16,9 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.widget.CheckBox
 import android.widget.Toast
-import com.weimu.imagepicker.ImageStaticHolder
-import com.weimu.imagepicker.R
-import com.weimu.imagepicker.model.LocalMedia
+import com.pmm.imagepicker.ImageStaticHolder
+import com.pmm.imagepicker.R
+import com.pmm.imagepicker.model.LocalMedia
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.gone

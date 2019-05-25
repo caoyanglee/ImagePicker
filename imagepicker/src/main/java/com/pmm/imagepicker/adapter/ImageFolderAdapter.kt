@@ -1,4 +1,4 @@
-package com.weimu.imagepicker.adapter
+package com.pmm.imagepicker.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,16 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.weimu.imagepicker.R
-import com.weimu.imagepicker.model.LocalMedia
-import com.weimu.imagepicker.model.LocalMediaFolder
-
+import com.pmm.imagepicker.R
+import com.pmm.imagepicker.model.LocalMedia
+import com.pmm.imagepicker.model.LocalMediaFolder
 import java.io.File
-import java.util.ArrayList
+import java.util.*
 
 
 internal class ImageFolderAdapter(private val context: Context) : RecyclerView.Adapter<ImageFolderAdapter.ViewHolder>() {

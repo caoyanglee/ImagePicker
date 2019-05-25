@@ -1,15 +1,15 @@
-package com.weimu.imagepicker.ui
+package com.pmm.imagepicker.ui
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import com.weimu.imagepicker.ImagePicker
-import com.weimu.imagepicker.R
-import com.weimu.imagepicker.ktx.createCameraFile
-import com.weimu.imagepicker.ktx.startActionCapture
-import com.weimu.imagepicker.Config
+import com.pmm.imagepicker.Config
+import com.pmm.imagepicker.ImagePicker
+import com.pmm.imagepicker.R
+import com.pmm.imagepicker.ktx.createCameraFile
+import com.pmm.imagepicker.ktx.startActionCapture
 import com.weimu.universalview.core.activity.BaseActivity
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener

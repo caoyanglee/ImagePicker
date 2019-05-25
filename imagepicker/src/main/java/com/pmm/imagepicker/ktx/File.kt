@@ -1,4 +1,4 @@
-package com.weimu.imagepicker.ktx
+package com.pmm.imagepicker.ktx
 
 import android.app.Activity
 import android.content.Context

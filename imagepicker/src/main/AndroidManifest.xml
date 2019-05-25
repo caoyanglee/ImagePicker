@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.weimu.imagepicker">
+    package="com.pmm.imagepicker">
 
     <!-- 相机权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
@@ -25,7 +25,6 @@
         <activity
             android:name=".ui.CameraSelectorActivity"
             android:theme="@style/BasePageTheme" />
-
         <activity
             android:name=".ui.preview2.ImagePreviewActivity"
             android:theme="@style/ImagePreviewTheme" />

@@ -1,4 +1,4 @@
-package com.weimu.imagepicker.ui
+package com.pmm.imagepicker.ui
 
 
 import android.annotation.SuppressLint
@@ -20,18 +20,16 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.weimu.imagepicker.ImagePicker
-import com.weimu.imagepicker.ImageStaticHolder
-import com.weimu.imagepicker.R
-import com.weimu.imagepicker.adapter.ImageFolderAdapter
-import com.weimu.imagepicker.adapter.ImageListAdapter
-import com.weimu.imagepicker.ktx.createCameraFile
-import com.weimu.imagepicker.ktx.startActionCapture
-import com.weimu.imagepicker.Config
-import com.weimu.imagepicker.model.LocalMedia
-import com.weimu.imagepicker.model.LocalMediaFolder
-import com.weimu.imagepicker.ui.preview.ImagePreviewActivity
-import com.weimu.imagepicker.LocalMediaLoader
+import com.pmm.imagepicker.*
+import com.pmm.imagepicker.ImageStaticHolder
+import com.pmm.imagepicker.LocalMediaLoader
+import com.pmm.imagepicker.adapter.ImageFolderAdapter
+import com.pmm.imagepicker.adapter.ImageListAdapter
+import com.pmm.imagepicker.ktx.createCameraFile
+import com.pmm.imagepicker.ktx.startActionCapture
+import com.pmm.imagepicker.model.LocalMedia
+import com.pmm.imagepicker.model.LocalMediaFolder
+import com.pmm.imagepicker.ui.preview.ImagePreviewActivity
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
@@ -278,12 +276,12 @@ internal class ImageSelectorActivity : BaseActivity() {
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     fun startCropWithAnim(path: String, view: View) {
-        startActivityForResult(ImageCropActivity.newIntent(this, path,config), ImageCropActivity.REQUEST_CROP,
+        startActivityForResult(ImageCropActivity.newIntent(this, path, config), ImageCropActivity.REQUEST_CROP,
                 ActivityOptions.makeSceneTransitionAnimation(this, view, "share_image").toBundle())
     }
 
     fun startCrop(path: String?) {
-        startActivityForResult(ImageCropActivity.newIntent(this, "$path",config), ImageCropActivity.REQUEST_CROP)
+        startActivityForResult(ImageCropActivity.newIntent(this, "$path", config), ImageCropActivity.REQUEST_CROP)
     }
 
     //选择完成

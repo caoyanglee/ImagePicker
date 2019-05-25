@@ -1,7 +1,7 @@
-package com.weimu.imagepicker.ui.preview
+package com.pmm.imagepicker.ui.preview
 
 import android.os.Bundle
-import com.weimu.imagepicker.R
+import com.pmm.imagepicker.R
 import com.weimu.universalview.core.fragment.BaseFragment
 import com.weimu.universalview.ktx.load
 import kotlinx.android.synthetic.main.fragment_image_preview.*

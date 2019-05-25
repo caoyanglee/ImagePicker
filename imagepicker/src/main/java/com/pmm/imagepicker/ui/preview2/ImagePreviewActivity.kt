@@ -1,4 +1,4 @@
-package com.weimu.imagepicker.ui.preview2
+package com.pmm.imagepicker.ui.preview2
 
 import android.app.Activity
 import android.content.Intent
@@ -8,9 +8,9 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.SharedElementCallback
 import android.view.View
+import com.pmm.imagepicker.R
 import com.rd.animation.type.AnimationType
 import com.shizhefei.view.largeimage.LargeImageView
-import com.weimu.imagepicker.R
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.pager.BaseFragmentStatePagerAdapter
 import com.weimu.universalview.interfaces.MyViewPagerChangeListener

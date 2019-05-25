@@ -1,4 +1,4 @@
-package com.weimu.imagepicker.ui
+package com.pmm.imagepicker.ui
 
 import android.content.Context
 import android.content.Intent
@@ -8,9 +8,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.content.ContextCompat
-import com.weimu.imagepicker.R
-import com.weimu.imagepicker.ktx.getUri4Crop
-import com.weimu.imagepicker.Config
+import com.pmm.imagepicker.Config
+import com.pmm.imagepicker.R
+import com.pmm.imagepicker.ktx.getUri4Crop
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.setOnClickListenerPro

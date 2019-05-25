@@ -1,9 +1,9 @@
-package com.weimu.imagepicker
+package com.pmm.imagepicker
 
 import android.app.Activity
 import android.content.Intent
-import com.weimu.imagepicker.ui.CameraSelectorActivity
-import com.weimu.imagepicker.ui.ImageSelectorActivity
+import com.pmm.imagepicker.ui.CameraSelectorActivity
+import com.pmm.imagepicker.ui.ImageSelectorActivity
 
 /**
  * Author:你需要一台永动机
@@ -76,14 +76,7 @@ object ImagePicker {
      * @param activity
      */
     fun pickAvatar(activity: Activity) {
-        val config = Config().apply {
-            this.maxSelectNum = 1
-            this.enableCamera = true
-            this.enablePreview = true
-            this.enableCrop = true
-            this.showIsCompress = false
-        }
-        ImageSelectorActivity.start(activity, config)
+        pickImage4One(activity)
     }
 
 

@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@+id/mToolBar">
 
 
-        <com.weimu.imagepicker.ui.preview.HackyViewPager
+        <com.pmm.imagepicker.ui.preview.HackyViewPager
             android:id="@+id/drag_viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

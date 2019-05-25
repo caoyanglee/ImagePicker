@@ -1,4 +1,4 @@
-package com.weimu.imagepicker.ui.preview2
+package com.pmm.imagepicker.ui.preview2
 
 import android.animation.ValueAnimator
 import android.content.Context

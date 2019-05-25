@@ -1,4 +1,4 @@
-package com.weimu.imagepicker.ui.preview2
+package com.pmm.imagepicker.ui.preview2
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -12,8 +12,8 @@ import com.bumptech.glide.request.transition.Transition
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
+import com.pmm.imagepicker.R
 import com.shizhefei.view.largeimage.factory.FileBitmapDecoderFactory
-import com.weimu.imagepicker.R
 import com.weimu.universalview.OriginAppData
 import com.weimu.universalview.core.fragment.BaseFragment
 import com.weimu.universalview.helper.AnimHelper

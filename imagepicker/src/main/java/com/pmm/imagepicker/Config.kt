@@ -1,4 +1,4 @@
-package com.weimu.imagepicker
+package com.pmm.imagepicker
 
 import java.io.Serializable
 
