@@ -26,10 +26,11 @@ import com.weimu.imagepicker.ImageStaticHolder
 import com.weimu.imagepicker.R
 import com.weimu.imagepicker.adapter.ImageFolderAdapter
 import com.weimu.imagepicker.adapter.ImageListAdapter
+import com.weimu.imagepicker.ktx.createCameraFile
+import com.weimu.imagepicker.ktx.startActionCapture
 import com.weimu.imagepicker.model.LocalMedia
 import com.weimu.imagepicker.model.LocalMediaFolder
 import com.weimu.imagepicker.ui.preview.ImagePreviewActivity
-import com.weimu.imagepicker.utils.Helper
 import com.weimu.imagepicker.utils.LocalMediaLoader
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
@@ -291,9 +292,9 @@ internal class ImageSelectorActivity : BaseActivity() {
      * start to camera、preview、crop
      */
     fun startCamera() {
-        val cameraFile = Helper.createCameraFile(this)
+        val cameraFile = createCameraFile()
         cameraPath = cameraFile.absolutePath
-        Helper.startActionCapture(this, cameraFile, ImagePicker.REQUEST_CAMERA)
+        startActionCapture(cameraFile, ImagePicker.REQUEST_CAMERA)
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

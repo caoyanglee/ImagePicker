@@ -4,10 +4,4 @@
     <external-path
         name="external_storage_root"
         path="." />
-    <external-path
-        name="CameraImage"
-        path="ImageSelector/CameraImage/" />
-    <external-path
-        name="CropImage"
-        path="ImageSelector/CropImage/" />
 </paths>
