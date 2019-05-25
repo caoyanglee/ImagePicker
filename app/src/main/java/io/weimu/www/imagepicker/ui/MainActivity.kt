@@ -38,13 +38,9 @@ class MainActivity : AppCompatActivity() {
             }
             //添加
             this.onFooterClick = {
-                //                ImagePicker.pickAvatar(this@MainActivity);
+//                ImagePicker.pickAvatar(this@MainActivity);
 //                ImagePicker.pickImage(this@MainActivity, 9)
-                ImagePicker.pickImage4One(
-                        activity = this@MainActivity,
-                        cropAspectRatioX = 9,
-                        cropAspectRatioY = 16
-                )
+                ImagePicker.pickImage4One(activity = this@MainActivity)
 //                ImagePicker.takePhoto(this@MainActivity, true);//使用摄像头
 
 
