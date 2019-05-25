@@ -10,9 +10,9 @@ import android.os.Handler
 import android.support.v4.content.ContextCompat
 import com.weimu.imagepicker.R
 import com.weimu.imagepicker.ktx.getUri4Crop
+import com.weimu.imagepicker.Config
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
-import com.weimu.universalview.helper.FileHelper
 import com.weimu.universalview.ktx.setOnClickListenerPro
 import kotlinx.android.synthetic.main.activity_image_crop.*
 import java.io.File
@@ -30,9 +30,8 @@ internal class ImageCropActivity : BaseActivity() {
     private var sourceUri: Uri? = null//源URI
     private var saveUri: Uri? = null//存储URI
 
-    //corp config
-    private var aspectRatioX = 0
-    private var aspectRatioY = 0
+    //config
+    private lateinit var config: Config
 
 
     companion object {
@@ -40,14 +39,11 @@ internal class ImageCropActivity : BaseActivity() {
 
         const val DATA_EXTRA_PATH = "data_extra_path"
         const val OUTPUT_PATH = "outputPath"
-        private const val ASPECT_RATION_X = "aspectRatioX"
-        private const val ASPECT_RATION_Y = "aspectRatioY"
 
-        fun newIntent(context: Context, path: String, aspectRatioX: Int = 0, aspectRatioY: Int = 0): Intent {
+        fun newIntent(context: Context, path: String, config: Config): Intent {
             val intent = Intent(context, ImageCropActivity::class.java)
             intent.putExtra(DATA_EXTRA_PATH, path)
-            intent.putExtra(ASPECT_RATION_X, aspectRatioX)
-            intent.putExtra(ASPECT_RATION_Y, aspectRatioY)
+            intent.putExtra(Config.EXTRA_CONFIG, config)
             return intent
         }
     }
@@ -58,8 +54,6 @@ internal class ImageCropActivity : BaseActivity() {
         //data
         path = intent.getStringExtra(DATA_EXTRA_PATH)
         sourceUri = Uri.fromFile(File(path))
-        aspectRatioX = intent.getIntExtra(ASPECT_RATION_X, 0)
-        aspectRatioY = intent.getIntExtra(ASPECT_RATION_Y, 0)
     }
 
 
@@ -91,7 +85,8 @@ internal class ImageCropActivity : BaseActivity() {
         cropImageView.apply {
             //配置
             this.setImageUriAsync(sourceUri)
-            if (aspectRatioX > 0 || aspectRatioY > 0) this.setAspectRatio(aspectRatioX, aspectRatioY)
+            if (config.cropAspectRatioX > 0 || config.cropAspectRatioY > 0)
+                this.setAspectRatio(config.cropAspectRatioX, config.cropAspectRatioY)
         }
     }
 

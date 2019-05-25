@@ -1,6 +1,8 @@
 package com.weimu.imagepicker
 
 import android.app.Activity
+import android.content.Intent
+import com.weimu.imagepicker.Config.Companion.MODE_MULTIPLE
 
 import com.weimu.imagepicker.ui.CameraSelectorActivity
 import com.weimu.imagepicker.ui.ImageSelectorActivity
@@ -31,12 +33,21 @@ object ImagePicker {
     fun pickImage(
             activity: Activity,
             maxSelectNum: Int = 9,
-            mode: Int = ImageSelectorActivity.MODE_MULTIPLE,
+            mode: Int = MODE_MULTIPLE,
             enableCamera: Boolean = true,
             enablePreview: Boolean = true,
             enableCrop: Boolean = false,
             enableCompress: Boolean = true) {
-        ImageSelectorActivity.start(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop, enableCompress)
+        val config = Config().apply {
+            this.maxSelectNum = maxSelectNum
+            this.selectMode = mode
+            this.enableCamera = enableCamera
+            this.enablePreview = enablePreview
+            this.enableCrop = enableCrop
+            this.showIsCompress = enableCompress
+        }
+
+        ImageSelectorActivity.start(activity, config)
     }
 
 
@@ -46,7 +57,14 @@ object ImagePicker {
      * @param activity
      */
     fun pickAvatar(activity: Activity) {
-        ImageSelectorActivity.start(activity, 1, ImageSelectorActivity.MODE_SINGLE, true, true, true, false)
+        val config = Config().apply {
+            this.maxSelectNum = 1
+            this.enableCamera = true
+            this.enablePreview = true
+            this.enableCrop = true
+            this.showIsCompress = false
+        }
+        ImageSelectorActivity.start(activity, config)
     }
 
 
@@ -57,14 +75,17 @@ object ImagePicker {
      * @param enableCrop 是否启用裁剪
      */
     fun takePhoto(activity: Activity, enableCrop: Boolean = false) {
-        CameraSelectorActivity.start(activity, enableCrop)
+        val config = Config().apply {
+            this.enableCrop = enableCrop
+        }
+        CameraSelectorActivity.start(activity, config)
     }
 
     /**
      * 自定义 启动activity
      */
-    fun custom(activity: Activity, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean) {
-        ImageSelectorActivity.start(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop, enableCompress)
+    fun custom(activity: Activity, config: Config) {
+        ImageSelectorActivity.start(activity, config)
     }
 
 
@@ -72,8 +93,8 @@ object ImagePicker {
      * 自定义 生成Intent
      * 注意：使用此方法 必须自己调用 startActivityForResult
      */
-    fun customWithIntent(activity: Activity, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean) {
-        ImageSelectorActivity.newIntent(activity, maxSelectNum, mode, enableCamera, enablePreview, enableCrop, enableCompress)
+    fun customCreateIntent(activity: Activity, config: Config): Intent {
+        return ImageSelectorActivity.newIntent(activity, config)
     }
 
 }

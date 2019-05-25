@@ -12,8 +12,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.weimu.imagepicker.ImageStaticHolder
 import com.weimu.imagepicker.R
+import com.weimu.imagepicker.Config
 import com.weimu.imagepicker.model.LocalMedia
-import com.weimu.imagepicker.ui.ImageSelectorActivity
 import com.weimu.universalview.ktx.load4CenterCrop
 import java.io.File
 import java.util.*
@@ -21,11 +21,7 @@ import java.util.*
 
 internal class ImageListAdapter(
         private var context: Context,
-        val maxSelectNum: Int,
-        var selectMode: Int = ImageSelectorActivity.MODE_MULTIPLE,
-        var showCamera: Boolean = true,
-        var enablePreview: Boolean = true
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        private val config: Config) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var images: ArrayList<LocalMedia> = ArrayList()
         private set
@@ -53,7 +49,7 @@ internal class ImageListAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (showCamera && position == 0) {
+        return if (config.enableCamera && position == 0) {
             TYPE_CAMERA
         } else {
             TYPE_PICTURE
@@ -80,26 +76,26 @@ internal class ImageListAdapter(
             }
         } else {
             val contentHolder = holder as ViewHolder
-            val image = images[if (showCamera) position - 1 else position]
+            val image = images[if (config.enableCamera) position - 1 else position]
 
             contentHolder.picture.load4CenterCrop(
                     file = File(image.path),
                     placeholder = R.drawable.image_placeholder
             )
 
-            if (selectMode == ImageSelectorActivity.MODE_SINGLE) {
+            if (config.selectMode == Config.MODE_SINGLE) {
                 contentHolder.ivCheckCircle.visibility = View.GONE
             }
 
             selectImage(contentHolder, isSelected(image))
 
-            if (enablePreview) {
+            if (config.enablePreview) {
                 contentHolder.ivCheckCircle.setOnClickListener { changeCheckboxState(contentHolder, image) }
             }
 
             contentHolder.contentView.setOnClickListener {
-                if ((selectMode == ImageSelectorActivity.MODE_SINGLE || enablePreview) && imageSelectChangedListener != null) {
-                    imageSelectChangedListener!!.onPictureClick(image, if (showCamera) position - 1 else position, holder.picture)
+                if ((config.selectMode == Config.MODE_SINGLE || config.enablePreview) && imageSelectChangedListener != null) {
+                    imageSelectChangedListener!!.onPictureClick(image, if (config.enableCamera) position - 1 else position, holder.picture)
                 } else {
                     changeCheckboxState(contentHolder, image)
                 }
@@ -108,14 +104,14 @@ internal class ImageListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return if (showCamera) images.size + 1 else images.size
+        return if (config.enableCamera) images.size + 1 else images.size
     }
 
     @SuppressLint("StringFormatMatches")
     private fun changeCheckboxState(contentHolder: ViewHolder, image: LocalMedia) {
         val isChecked = contentHolder.ivCheckCircle.isSelected
-        if (selectImages.size >= maxSelectNum && !isChecked) {
-            Toast.makeText(context, context.getString(R.string.message_max_num, maxSelectNum), Toast.LENGTH_LONG).show()
+        if (selectImages.size >= config.maxSelectNum && !isChecked) {
+            Toast.makeText(context, context.getString(R.string.message_max_num, config.maxSelectNum), Toast.LENGTH_LONG).show()
             return
         }
         if (isChecked) {

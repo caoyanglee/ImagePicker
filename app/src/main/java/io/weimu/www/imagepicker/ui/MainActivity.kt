@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity() {
             }
             //添加
             this.onFooterClick = {
-                ImagePicker.pickAvatar(this@MainActivity);
-//                ImagePicker.pickImage(this@MainActivity, 9)
+//                ImagePicker.pickAvatar(this@MainActivity);
+                ImagePicker.pickImage(this@MainActivity, 9)
 //                ImagePicker.takePhoto(this@MainActivity, true);//使用摄像头
             }
         }

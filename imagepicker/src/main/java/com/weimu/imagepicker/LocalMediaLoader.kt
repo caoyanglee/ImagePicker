@@ -1,4 +1,4 @@
-package com.weimu.imagepicker.utils
+package com.weimu.imagepicker
 
 import android.database.Cursor
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
-import com.weimu.imagepicker.R
 import com.weimu.imagepicker.model.LocalMedia
 import com.weimu.imagepicker.model.LocalMediaFolder
 import java.io.File

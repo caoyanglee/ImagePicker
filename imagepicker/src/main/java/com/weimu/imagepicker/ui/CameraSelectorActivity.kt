@@ -6,41 +6,35 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import com.weimu.imagepicker.ImagePicker
-
 import com.weimu.imagepicker.R
 import com.weimu.imagepicker.ktx.createCameraFile
 import com.weimu.imagepicker.ktx.startActionCapture
+import com.weimu.imagepicker.Config
 import com.weimu.universalview.core.activity.BaseActivity
-
-import java.io.File
-import java.util.ArrayList
-
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
+import java.io.File
+import java.util.*
 
 /**
  * 相机选择
  */
 internal class CameraSelectorActivity : BaseActivity() {
-
-
     companion object {
         val REQUEST_OUTPUT = "outputList"
 
         val BUNDLE_CAMERA_PATH = "CameraPath"
 
-        val EXTRA_ENABLE_CROP = "EnableCrop"//是否需要裁剪
-
-        fun start(activity: Activity, enableCrop: Boolean) {
+        fun start(activity: Activity, config: Config) {
             val intent = Intent(activity, CameraSelectorActivity::class.java)
-            intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
+            intent.putExtra(Config.EXTRA_CONFIG, config)
             activity.startActivityForResult(intent, ImagePicker.REQUEST_IMAGE)
         }
     }
 
     private var cameraPath: String? = null
 
-    private var enableCrop = false
+    private lateinit var config: Config
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -50,7 +44,7 @@ internal class CameraSelectorActivity : BaseActivity() {
     override fun getLayoutResID(): Int = R.layout.activity_camera_selector
 
     override fun afterViewAttach(savedInstanceState: Bundle?) {
-        enableCrop = intent.getBooleanExtra(EXTRA_ENABLE_CROP, false)
+        config = intent.getSerializableExtra(Config.EXTRA_CONFIG) as Config
         if (savedInstanceState != null) {
             cameraPath = savedInstanceState.getString(BUNDLE_CAMERA_PATH)
         }
@@ -71,7 +65,7 @@ internal class CameraSelectorActivity : BaseActivity() {
             // on take photo success
             if (requestCode == ImagePicker.REQUEST_CAMERA) {
                 sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(cameraPath))))
-                if (enableCrop) {
+                if (config.enableCrop) {
                     startCrop(cameraPath)
                 } else {
                     onSelectDone(cameraPath)
@@ -89,7 +83,7 @@ internal class CameraSelectorActivity : BaseActivity() {
 
     private fun startCrop(path: String?) {
         if (path.isNullOrBlank()) return
-        startActivityForResult(ImageCropActivity.newIntent(this, path), ImageCropActivity.REQUEST_CROP)
+        startActivityForResult(ImageCropActivity.newIntent(this, path, config), ImageCropActivity.REQUEST_CROP)
     }
 
     private fun onSelectDone(path: String?) {

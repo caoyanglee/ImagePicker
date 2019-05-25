@@ -15,7 +15,6 @@ import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.LinearLayout
@@ -28,14 +27,18 @@ import com.weimu.imagepicker.adapter.ImageFolderAdapter
 import com.weimu.imagepicker.adapter.ImageListAdapter
 import com.weimu.imagepicker.ktx.createCameraFile
 import com.weimu.imagepicker.ktx.startActionCapture
+import com.weimu.imagepicker.Config
 import com.weimu.imagepicker.model.LocalMedia
 import com.weimu.imagepicker.model.LocalMediaFolder
 import com.weimu.imagepicker.ui.preview.ImagePreviewActivity
-import com.weimu.imagepicker.utils.LocalMediaLoader
+import com.weimu.imagepicker.LocalMediaLoader
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
-import com.weimu.universalview.ktx.*
+import com.weimu.universalview.ktx.dip2px
+import com.weimu.universalview.ktx.init
+import com.weimu.universalview.ktx.setOnClickListenerPro
+import com.weimu.universalview.ktx.setTextColorV2
 import kotlinx.android.synthetic.main.activity_imageselector.*
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
@@ -45,17 +48,11 @@ import java.util.*
 
 internal class ImageSelectorActivity : BaseActivity() {
 
-    private var maxSelectNum = 9
-    private var selectMode = MODE_MULTIPLE
-    private var enableCamera = true
-    private var enablePreview = true
-    private var enableCrop = false//是否裁剪
-    private var enableCompress = false//是否显示原图按钮
-    private val spanCount = 4
+    private lateinit var config: Config
 
     //ui
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.folder_list) }
-    private val imageAdapter: ImageListAdapter by lazy { ImageListAdapter(this, maxSelectNum, selectMode, enableCamera, enablePreview) }
+    private val imageAdapter: ImageListAdapter by lazy { ImageListAdapter(this, config) }
     private val folderLayout: LinearLayout by lazy { findViewById<LinearLayout>(R.id.folder_layout) }
     private val folderName: TextView by lazy { findViewById<TextView>(R.id.folder_name) }
     private val folderWindow: FolderWindow by lazy { FolderWindow(this) }
@@ -67,41 +64,20 @@ internal class ImageSelectorActivity : BaseActivity() {
 
 
     companion object {
-
         const val BUNDLE_CAMERA_PATH = "CameraPath"
 
-        const val EXTRA_MAX_SELECT_NUM = "MaxSelectNum"//最大选择数
-        const val EXTRA_SELECT_MODE = "SelectMode"//选择模式
-        const val EXTRA_SHOW_CAMERA = "ShowCamera"//是否显示摄像头
-        const val EXTRA_ENABLE_PREVIEW = "EnablePreview"//是否需要预览
-        const val EXTRA_ENABLE_CROP = "EnableCrop"//是否需要裁剪
-        const val EXTRA_ENABLE_COMPRESS = "EnableCompress"//是否需要压缩
-
-
-        const val MODE_MULTIPLE = 1//多选
-        const val MODE_SINGLE = 2//单选
 
         //直接开启activity
-        fun start(activity: Activity, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean) {
+        fun start(activity: Activity, config: Config) {
             val intent = Intent(activity, ImageSelectorActivity::class.java)
-            intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
-            intent.putExtra(EXTRA_SELECT_MODE, mode)
-            intent.putExtra(EXTRA_SHOW_CAMERA, enableCamera)
-            intent.putExtra(EXTRA_ENABLE_PREVIEW, enablePreview)
-            intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
-            intent.putExtra(EXTRA_ENABLE_COMPRESS, enableCompress)
+            intent.putExtra(Config.EXTRA_CONFIG, config)
             activity.startActivityForResult(intent, ImagePicker.REQUEST_IMAGE)
         }
 
         //生成新的Intent
-        fun newIntent(context: Context, maxSelectNum: Int, mode: Int, enableCamera: Boolean, enablePreview: Boolean, enableCrop: Boolean, enableCompress: Boolean): Intent {
+        fun newIntent(context: Context, config: Config): Intent {
             val intent = Intent(context, ImageSelectorActivity::class.java)
-            intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
-            intent.putExtra(EXTRA_SELECT_MODE, mode)
-            intent.putExtra(EXTRA_SHOW_CAMERA, enableCamera)
-            intent.putExtra(EXTRA_ENABLE_PREVIEW, enablePreview)
-            intent.putExtra(EXTRA_ENABLE_CROP, enableCrop)
-            intent.putExtra(EXTRA_ENABLE_COMPRESS, enableCompress)
+            intent.putExtra(Config.EXTRA_CONFIG, config)
             return intent
         }
     }
@@ -111,18 +87,7 @@ internal class ImageSelectorActivity : BaseActivity() {
 
 
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
-        maxSelectNum = intent.getIntExtra(EXTRA_MAX_SELECT_NUM, 9)
-        selectMode = intent.getIntExtra(EXTRA_SELECT_MODE, MODE_MULTIPLE)
-        enableCamera = intent.getBooleanExtra(EXTRA_SHOW_CAMERA, true)
-        enablePreview = intent.getBooleanExtra(EXTRA_ENABLE_PREVIEW, true)
-        enableCrop = intent.getBooleanExtra(EXTRA_ENABLE_CROP, false)
-        enableCompress = intent.getBooleanExtra(EXTRA_ENABLE_COMPRESS, false)
-
-        if (selectMode == MODE_MULTIPLE) {
-            enableCrop = false
-        } else {
-            enablePreview = false
-        }
+        config = intent.getSerializableExtra(Config.EXTRA_CONFIG) as Config
         if (savedInstanceState != null) {
             cameraPath = savedInstanceState.getString(BUNDLE_CAMERA_PATH)
         }
@@ -152,7 +117,7 @@ internal class ImageSelectorActivity : BaseActivity() {
                 this.setTextColor(Color.BLACK)
             }
             this.menuText1 {
-                this.text = if (selectMode == MODE_MULTIPLE) (getString(R.string.done)) else ""
+                this.text = if (config.selectMode == Config.MODE_MULTIPLE) (getString(R.string.done)) else ""
                 this.setTextColorV2(R.color.colorAccent)
                 this.setTextColor(ContextCompat.getColorStateList(context, R.color.black_text_selector))
                 this.isEnabled = false
@@ -165,16 +130,16 @@ internal class ImageSelectorActivity : BaseActivity() {
         }
         //CheckBox use Origin Pic
         cbOrigin.apply {
-            if (!enableCompress) this.visibility = View.GONE
+            if (!config.showIsCompress) this.visibility = View.GONE
             this.isChecked = isUseOrigin
             this.setOnClickListener { isUseOrigin = !this.isChecked }
         }
         //RecyclerView
         recyclerView.apply {
             this.init()
-            this.layoutManager = GridLayoutManager(this@ImageSelectorActivity, spanCount)
+            this.layoutManager = GridLayoutManager(this@ImageSelectorActivity, config.gridSpanCount)
             this.setHasFixedSize(true)
-            this.addItemDecoration(GridItemDecoration(spanCount, dip2px(2f), dip2px(2f)))
+            this.addItemDecoration(GridItemDecoration(config.gridSpanCount, dip2px(2f), dip2px(2f)))
             this.adapter = imageAdapter
         }
     }
@@ -212,7 +177,7 @@ internal class ImageSelectorActivity : BaseActivity() {
                 mToolBar.menuText1 {
                     val enable = selectImages.isNotEmpty()
                     if (enable) {
-                        this.text = "${getString(R.string.done_num)}(${selectImages.size}/$maxSelectNum)"
+                        this.text = "${getString(R.string.done_num)}(${selectImages.size}/${config.maxSelectNum})"
                         this.isEnabled = enable
                     } else {
                         this.text = getString(R.string.done)
@@ -226,22 +191,24 @@ internal class ImageSelectorActivity : BaseActivity() {
             }
 
             override fun onPictureClick(media: LocalMedia, position: Int, view: View) {
-                if (enablePreview) {
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        startPreviewWithAnim(imageAdapter.images, position, view)
-                    } else {
-                        startPreview(imageAdapter.images, position)
+                when {
+                    config.enablePreview -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            startPreviewWithAnim(imageAdapter.images, position, view)
+                        } else {
+                            startPreview(imageAdapter.images, position)
+                        }
                     }
-
-                } else if (enableCrop) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        startCrop("${media.path}")
-                    } else {
-                        startCrop(media.path)
+                    config.enableCrop -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            startCrop("${media.path}")
+                        } else {
+                            startCrop(media.path)
+                        }
                     }
-                } else {
-                    onSelectDone(media.path)
+                    else -> {
+                        onSelectDone(media.path)
+                    }
                 }
             }
         })
@@ -263,7 +230,7 @@ internal class ImageSelectorActivity : BaseActivity() {
             // on take photo success
             if (requestCode == ImagePicker.REQUEST_CAMERA) {
                 sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(cameraPath))))
-                if (enableCrop) {
+                if (config.enableCrop) {
                     startCrop(cameraPath)
                 } else {
                     onSelectDone(cameraPath)
@@ -301,22 +268,22 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     fun startPreviewWithAnim(previewImages: List<LocalMedia>, position: Int, view: View) {
-        ImagePreviewActivity.startPreviewWithAnim(this, imageAdapter.selectedImages, maxSelectNum, position, view)
+        ImagePreviewActivity.startPreviewWithAnim(this, imageAdapter.selectedImages, config.maxSelectNum, position, view)
     }
 
     fun startPreview(previewImages: List<LocalMedia>, position: Int) {
-        ImagePreviewActivity.startPreview(this, imageAdapter.selectedImages, maxSelectNum, position)
+        ImagePreviewActivity.startPreview(this, imageAdapter.selectedImages, config.maxSelectNum, position)
     }
 
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     fun startCropWithAnim(path: String, view: View) {
-        startActivityForResult(ImageCropActivity.newIntent(this, path), ImageCropActivity.REQUEST_CROP,
+        startActivityForResult(ImageCropActivity.newIntent(this, path,config), ImageCropActivity.REQUEST_CROP,
                 ActivityOptions.makeSceneTransitionAnimation(this, view, "share_image").toBundle())
     }
 
     fun startCrop(path: String?) {
-        startActivityForResult(ImageCropActivity.newIntent(this, "$path"), ImageCropActivity.REQUEST_CROP)
+        startActivityForResult(ImageCropActivity.newIntent(this, "$path",config), ImageCropActivity.REQUEST_CROP)
     }
 
     //选择完成
