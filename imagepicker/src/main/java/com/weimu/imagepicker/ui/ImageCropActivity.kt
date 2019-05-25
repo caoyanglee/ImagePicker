@@ -54,6 +54,7 @@ internal class ImageCropActivity : BaseActivity() {
         //data
         path = intent.getStringExtra(DATA_EXTRA_PATH)
         sourceUri = Uri.fromFile(File(path))
+        config = intent.getSerializableExtra(Config.EXTRA_CONFIG) as Config
     }
 
 

@@ -2,8 +2,6 @@ package com.weimu.imagepicker
 
 import android.app.Activity
 import android.content.Intent
-import com.weimu.imagepicker.Config.Companion.MODE_MULTIPLE
-
 import com.weimu.imagepicker.ui.CameraSelectorActivity
 import com.weimu.imagepicker.ui.ImageSelectorActivity
 
@@ -33,18 +31,39 @@ object ImagePicker {
     fun pickImage(
             activity: Activity,
             maxSelectNum: Int = 9,
-            mode: Int = MODE_MULTIPLE,
             enableCamera: Boolean = true,
             enablePreview: Boolean = true,
-            enableCrop: Boolean = false,
-            enableCompress: Boolean = true) {
+            showIsCompress: Boolean = true
+    ) {
         val config = Config().apply {
             this.maxSelectNum = maxSelectNum
-            this.selectMode = mode
+            this.selectMode = Config.MODE_MULTIPLE
             this.enableCamera = enableCamera
             this.enablePreview = enablePreview
+            this.showIsCompress = showIsCompress
+        }
+
+        ImageSelectorActivity.start(activity, config)
+    }
+
+    fun pickImage4One(
+            activity: Activity,
+            enableCamera: Boolean = true,
+            enableCrop: Boolean = true,
+            cropAspectRatioX: Int = 0,
+            cropAspectRatioY: Int = 0,
+            showIsCompress: Boolean = true
+    ) {
+        val config = Config().apply {
+            this.selectMode = Config.MODE_SINGLE
+            this.enableCamera = enableCamera
             this.enableCrop = enableCrop
-            this.showIsCompress = enableCompress
+            this.cropAspectRatioX = cropAspectRatioX
+            this.cropAspectRatioY = cropAspectRatioY
+            if (this.cropAspectRatioX > 0 && this.cropAspectRatioY > 0) {
+                this.enableCrop = true
+            }
+            this.showIsCompress = showIsCompress
         }
 
         ImageSelectorActivity.start(activity, config)
@@ -74,15 +93,23 @@ object ImagePicker {
      * @param activity
      * @param enableCrop 是否启用裁剪
      */
-    fun takePhoto(activity: Activity, enableCrop: Boolean = false) {
+    fun takePhoto(activity: Activity,
+                  enableCrop: Boolean = false,
+                  cropAspectRatioX: Int = 0,
+                  cropAspectRatioY: Int = 0) {
         val config = Config().apply {
+            this.selectMode = Config.MODE_SINGLE
             this.enableCrop = enableCrop
+            this.cropAspectRatioX = cropAspectRatioX
+            this.cropAspectRatioY = cropAspectRatioY
         }
         CameraSelectorActivity.start(activity, config)
     }
 
     /**
      * 自定义 启动activity
+     * @param activity
+     * @param config 配置对象
      */
     fun custom(activity: Activity, config: Config) {
         ImageSelectorActivity.start(activity, config)
@@ -92,6 +119,8 @@ object ImagePicker {
     /**
      * 自定义 生成Intent
      * 注意：使用此方法 必须自己调用 startActivityForResult
+     * @param activity
+     * @param config 配置对象
      */
     fun customCreateIntent(activity: Activity, config: Config): Intent {
         return ImageSelectorActivity.newIntent(activity, config)

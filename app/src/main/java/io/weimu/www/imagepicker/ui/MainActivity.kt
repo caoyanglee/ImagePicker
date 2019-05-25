@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
+import com.weimu.imagepicker.Config
 import com.weimu.imagepicker.ImagePicker
 import com.weimu.imagepicker.ui.preview2.ImagePreviewActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
@@ -37,9 +38,22 @@ class MainActivity : AppCompatActivity() {
             }
             //添加
             this.onFooterClick = {
-//                ImagePicker.pickAvatar(this@MainActivity);
-                ImagePicker.pickImage(this@MainActivity, 9)
+                //                ImagePicker.pickAvatar(this@MainActivity);
+//                ImagePicker.pickImage(this@MainActivity, 9)
+                ImagePicker.pickImage4One(
+                        activity = this@MainActivity,
+                        cropAspectRatioX = 9,
+                        cropAspectRatioY = 16
+                )
 //                ImagePicker.takePhoto(this@MainActivity, true);//使用摄像头
+
+
+//                ImagePicker.custom(this@MainActivity, Config().apply {
+//                    selectMode = Config.MODE_SINGLE
+//                    enableCrop = true
+//                    cropAspectRatioX = 1
+//                    cropAspectRatioY = 1
+//                })
             }
         }
     }

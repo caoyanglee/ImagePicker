@@ -43,11 +43,14 @@ internal class CameraSelectorActivity : BaseActivity() {
 
     override fun getLayoutResID(): Int = R.layout.activity_camera_selector
 
-    override fun afterViewAttach(savedInstanceState: Bundle?) {
+    override fun beforeViewAttach(savedInstanceState: Bundle?) {
         config = intent.getSerializableExtra(Config.EXTRA_CONFIG) as Config
         if (savedInstanceState != null) {
             cameraPath = savedInstanceState.getString(BUNDLE_CAMERA_PATH)
         }
+    }
+
+    override fun afterViewAttach(savedInstanceState: Bundle?) {
         startCamera()
     }
 
