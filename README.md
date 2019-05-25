@@ -36,7 +36,7 @@ implementation 'com.android.support:design:28.0.0'
 implementation 'com.github.bumptech.glide:glide:4.8.0'
 annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 implementation 'com.github.chrisbanes:PhotoView:2.1.3'
-implementation 'com.isseiaoki:simplecropview:1.1.7@aar'
+implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
 implementation 'top.zibin:Luban:1.1.3'
 ```
 
@@ -68,7 +68,7 @@ implementation 'top.zibin:Luban:1.1.3'
 
 ## 用法
 
-1.1.打开图库
+1.1.打开图库 多选
 ```kotlin
 ImagePicker.pickImage(activity);
 ```
@@ -78,16 +78,33 @@ ImagePicker.pickImage(activity);
 /**
  * @param activity
  * @param maxSelectNum 最大选择图片数          default=9
- * @param mode 图库模式【单选】【多选】         default=ImageSelectorActivity.MODE_MULTIPLE
  * @param enableCamera 是否启用摄像头          default=true
  * @param enablePreview 是否打开预览           default=true
- * @param enableCrop 是否进行裁剪【单选可用】   default=false
+ * @param showIsCompress 是否显示使用原图按钮   default=true
  */
-ImagePicker.pickImage(activity, 9, ImageSelectorActivity.MODE_MULTIPLE, true, true, false);
+ImagePicker.pickImage(activity, 9, true, true, true);
+```
+
+1.2.打开图库 单选
+```kotlin
+ImagePicker.pickImage4One(activity);
+```
+
+**多参数调用**
+```kotlin
+/**
+ * @param activity
+ * @param enableCamera 是否启用摄像头          default=true
+ * @param enableCrop   是否打开裁剪            default=true
+ * @param cropAspectRatioX   裁剪宽高比 宽     default=0
+ * @param cropAspectRatioY   裁剪宽高比 高     default=0
+ * @param showIsCompress 是否显示使用原图按钮   default=true
+ */
+ImagePicker.pickImage4One(activity,true,true,9,16,true);
 ```
 
 
-1.2.直接拍照
+1.3.直接拍照
 ```kotlin
 ImagePicker.takePhoto(activity);
 ```
@@ -97,8 +114,10 @@ ImagePicker.takePhoto(activity);
 /**
  * @param activity
  * @param enableCrop 是否启用裁剪 default=false
+ * @param cropAspectRatioX   裁剪宽高比 宽     default=0
+ * @param cropAspectRatioY   裁剪宽高比 高     default=0
  */
-ImagePicker.takePhoto(activity,false);
+ImagePicker.takePhoto(activity,ture,9,16);
 ```
 
 2.接收结果信息
