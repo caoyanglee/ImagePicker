@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils
 import android.widget.PopupWindow
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.adapter.ImageFolderAdapter
+import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.imagepicker.model.LocalMediaFolder
 import com.weimu.universalview.core.recyclerview.decoration.LinearItemDecoration
 import com.weimu.universalview.ktx.dip2px
@@ -21,6 +22,7 @@ import com.weimu.universalview.ktx.getScreenWidth
 import com.weimu.universalview.ktx.getStatusBarHeight
 import com.weimu.universalview.widget.ToolBarPro
 import java.lang.reflect.Method
+import java.util.ArrayList
 
 /**
  * Author:你需要一台永动机
@@ -60,15 +62,19 @@ internal class FolderWindow(private val context: Context) : PopupWindow() {
                     dividerDrawable = ColorDrawable(Color.rgb(220, 220, 220))))
             this.layoutManager = LinearLayoutManager(context)
             this.adapter = mAdapter
-
             this.visibility = View.GONE
         }
 
     }
 
     fun bindFolder(folders: List<LocalMediaFolder>) {
-        mAdapter.bindFolder(folders)
+        mAdapter.setDataToAdapter(folders)
     }
+
+    fun setOnFolderClickListener(onFolderClickListener: ((folderName: String?, images: List<LocalMedia>) -> Unit)?){
+        mAdapter.onFolderClickListener = onFolderClickListener
+    }
+
 
     override fun showAsDropDown(anchor: View) {
         super.showAsDropDown(anchor)
@@ -80,9 +86,6 @@ internal class FolderWindow(private val context: Context) : PopupWindow() {
 
     }
 
-    fun setOnItemClickListener(onItemClickListener: ImageFolderAdapter.OnItemClickListener) {
-        mAdapter.setOnItemClickListener(onItemClickListener)
-    }
 
     override fun dismiss() {
         if (isDismiss) return

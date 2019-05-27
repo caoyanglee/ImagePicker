@@ -14,14 +14,10 @@ import android.support.annotation.RequiresApi
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.orhanobut.logger.Logger
 import com.pmm.imagepicker.*
-import com.pmm.imagepicker.ImageStaticHolder
-import com.pmm.imagepicker.LocalMediaLoader
 import com.pmm.imagepicker.adapter.ImageFolderAdapter
 import com.pmm.imagepicker.adapter.ImageListAdapter
 import com.pmm.imagepicker.ktx.createCameraFile
@@ -219,15 +215,12 @@ internal class ImageSelectorActivity : BaseActivity() {
             }
         })
         //点击某个文件件
-        folderWindow.setOnItemClickListener(object : ImageFolderAdapter.OnItemClickListener {
-            override fun onItemClick(folderName: String?, images: List<LocalMedia>) {
-                folderWindow.dismiss()
-                imageAdapter.bindImages(images as ArrayList<LocalMedia>)
-                this@ImageSelectorActivity.folderName.text = folderName
-                recyclerView.smoothScrollToPosition(0)
-            }
-
-        })
+        folderWindow.setOnFolderClickListener { folderName, images ->
+            folderWindow.dismiss()
+            imageAdapter.bindImages(images as ArrayList<LocalMedia>)
+            this@ImageSelectorActivity.folderName.text = folderName
+            recyclerView.smoothScrollToPosition(0)
+        }
     }
 
 
