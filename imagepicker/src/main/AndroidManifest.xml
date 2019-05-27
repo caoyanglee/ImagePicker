@@ -11,19 +11,12 @@
 
     <application
         android:allowBackup="true"
-        android:supportsRtl="true">
-        <activity
-            android:name=".ui.ImageSelectorActivity"
-            android:theme="@style/BasePageTheme" />
-        <activity
-            android:name=".ui.preview.ImagePreviewActivity"
-            android:theme="@style/BasePageTheme" />
-        <activity
-            android:name=".ui.ImageCropActivity"
-            android:theme="@style/BasePageTheme" />
-        <activity
-            android:name=".ui.CameraSelectorActivity"
-            android:theme="@style/BasePageTheme" />
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.ImageSelectorActivity" />
+        <activity android:name=".ui.preview.ImagePreviewActivity" />
+        <activity android:name=".ui.ImageCropActivity" />
+        <activity android:name=".ui.CameraSelectorActivity" />
         <activity
             android:name=".ui.preview2.ImagePreviewActivity"
             android:theme="@style/ImagePreviewTheme" />

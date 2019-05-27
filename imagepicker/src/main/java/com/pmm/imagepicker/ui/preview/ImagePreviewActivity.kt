@@ -187,7 +187,7 @@ internal class ImagePreviewActivity : BaseActivity() {
     }
 
     inner class SimpleFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-        override fun getItem(position: Int): Fragment = ImagePreviewFragment.newInstance(images[position].path!!)
+        override fun getItem(position: Int): Fragment = ImagePreviewFragment.newInstance(images[position].path)
         override fun getCount(): Int = images.size
     }
 
