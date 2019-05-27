@@ -18,7 +18,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.pmm.imagepicker.*
-import com.pmm.imagepicker.adapter.ImageFolderAdapter
 import com.pmm.imagepicker.adapter.ImageListAdapter
 import com.pmm.imagepicker.ktx.createCameraFile
 import com.pmm.imagepicker.ktx.startActionCapture
@@ -29,6 +28,7 @@ import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.*
+import com.weimu.universalview.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_imageselector.*
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
@@ -93,30 +93,20 @@ internal class ImageSelectorActivity : BaseActivity() {
     }
 
     private fun initView() {
-        //StatusBar
-        StatusBarManager.apply {
-            val statusColor = getColorPro(R.color.colorPrimaryDark)
-            this.setColor(window, statusColor)
-            if (statusColor == Color.WHITE) {
-                this.setLightMode(window)
-            } else {
-                this.setDarkMode(window)
-            }
-        }
         //ToolBar
         mToolBar.apply {
-            this.setBackgroundColor(getColorPro(R.color.colorPrimary))
             this.navigationIcon {
-                this.setImageResource(R.drawable.ic_nav_back_24dp)
-                this.setColorFilter(getColorPro(R.color.toolbar_navigation))
+                if (ToolBarPro.GlobalConfig.navigationDrawable == null) {
+                    this.setImageResource(R.drawable.ic_nav_back_24dp)
+                    val lightColor = this@apply.getToolBarBgColor().isLightColor()
+                    this.setColorFilter(if (lightColor) Color.BLACK else Color.WHITE)
+                }
                 this.setOnClickListenerPro { onBackPressed() }
             }
             this.centerTitle {
                 this.text = getString(R.string.select_image)
-                this.setTextColor(getColorPro(R.color.toolbar_title))
             }
             this.menuText1 {
-                this.setTextColor(getColorPro(R.color.toolbar_menu))
                 this.text = if (config.selectMode == Config.MODE_MULTIPLE) (getString(R.string.done)) else ""
                 this.setOnClickListenerPro {
                     //点击完成
@@ -126,6 +116,18 @@ internal class ImageSelectorActivity : BaseActivity() {
             }
 
         }
+        //StatusBar
+        StatusBarManager.apply {
+            val statusColor = mToolBar.getToolBarBgColor()
+            this.setColor(window, statusColor)
+            if (statusColor.isLightColor()) {
+                this.setLightMode(window)
+            } else {
+                this.setDarkMode(window)
+            }
+        }
+
+
         //CheckBox use Origin Pic
         tvOrigin.apply {
             if (!config.showIsCompress) {

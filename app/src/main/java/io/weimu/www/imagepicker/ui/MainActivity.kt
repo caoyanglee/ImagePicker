@@ -68,15 +68,11 @@ class MainActivity : AppCompatActivity() {
 
         //ToolBar
         mToolBar.apply {
-            this.setBackgroundColor(getColorPro(R.color.colorPrimary))
             this.navigationIcon {
-                this.setImageResource(R.drawable.ic_nav_back_24dp)
-                this.setColorFilter(getColorPro(R.color.toolbar_navigation))
                 this.setOnClickListenerPro { onBackPressed() }
             }
             this.centerTitle {
                 this.text = getString(R.string.app_name)
-                this.setTextColor(getColorPro(R.color.toolbar_title))
             }
         }
 

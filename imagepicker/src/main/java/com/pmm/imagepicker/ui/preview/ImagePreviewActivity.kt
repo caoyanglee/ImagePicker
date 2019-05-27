@@ -21,7 +21,10 @@ import com.pmm.imagepicker.model.LocalMedia
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.*
+import com.weimu.universalview.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_image_preview.*
+import kotlinx.android.synthetic.main.activity_image_preview.mToolBar
+import kotlinx.android.synthetic.main.activity_imageselector.*
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -99,35 +102,38 @@ internal class ImagePreviewActivity : BaseActivity() {
 
 
     private fun initView() {
+        mToolBar.apply {
+            this.navigationIcon {
+                if (ToolBarPro.GlobalConfig.navigationDrawable == null) {
+                    this.setImageResource(R.drawable.ic_nav_back_24dp)
+                    val lightColor = this@apply.getToolBarBgColor().isLightColor()
+                    this.setColorFilter(if (lightColor) Color.BLACK else Color.WHITE)
+                }
+                this.setOnClickListenerPro { onBackPressed() }
+            }
+            this.centerTitle {
+                this.text = "${position + 1}/${images.size}"
+            }
+            this.menuText1 {
+                this.text = getString(R.string.done)
+                this.setOnClickListenerPro {
+                    //点击完成
+                    onDoneClick(true)
+                }
+                this.invisible()
+            }
+        }
+
         //StatusBar
         StatusBarManager.apply {
-            val statusColor = getColorPro(R.color.colorPrimaryDark)
+            val statusColor = mToolBar.getToolBarBgColor()
             this.setColor(window, statusColor)
-            if (statusColor == Color.WHITE) {
+            if (statusColor.isLightColor()) {
                 this.setLightMode(window)
             } else {
                 this.setDarkMode(window)
             }
         }
-        mToolBar.apply { this.setBackgroundColor(getColorPro(R.color.colorPrimary)) }
-                .navigationIcon {
-                    this.setImageResource(R.drawable.ic_nav_back_24dp)
-                    this.setColorFilter(getColorPro(R.color.toolbar_navigation))
-                    this.setOnClickListenerPro { onBackPressed() }
-                }
-                .centerTitle {
-                    this.text = "${position + 1}/${images.size}"
-                    this.setTextColor(getColorPro(R.color.toolbar_title))
-                }
-                .menuText1 {
-                    this.setTextColor(getColorPro(R.color.toolbar_menu))
-                    this.text = getString(R.string.done)
-                    this.setOnClickListenerPro {
-                        //点击完成
-                        onDoneClick(true)
-                    }
-                    this.invisible()
-                }
 
         onSelectNumChange()
 

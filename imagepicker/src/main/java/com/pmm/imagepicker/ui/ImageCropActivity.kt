@@ -13,8 +13,12 @@ import com.pmm.imagepicker.ktx.getUri4Crop
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.getColorPro
+import com.weimu.universalview.ktx.isLightColor
 import com.weimu.universalview.ktx.setOnClickListenerPro
+import com.weimu.universalview.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_image_crop.*
+import kotlinx.android.synthetic.main.activity_image_crop.mToolBar
+import kotlinx.android.synthetic.main.activity_imageselector.*
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -58,36 +62,36 @@ internal class ImageCropActivity : BaseActivity() {
     }
 
     override fun afterViewAttach(savedInstanceState: Bundle?) {
-        //StatusBar
-        StatusBarManager.apply {
-            val statusColor = getColorPro(R.color.colorPrimaryDark)
-            this.setColor(window, statusColor)
-            if (statusColor == Color.WHITE) {
-                this.setLightMode(window)
-            } else {
-                this.setDarkMode(window)
-            }
-        }
         //ToolBar
         mToolBar.apply {
-            this.setBackgroundColor(getColorPro(R.color.colorPrimary))
             this.navigationIcon {
-                this.setImageResource(R.drawable.ic_nav_back_24dp)
-                this.setColorFilter(getColorPro(R.color.toolbar_navigation))
+                if (ToolBarPro.GlobalConfig.navigationDrawable == null) {
+                    this.setImageResource(R.drawable.ic_nav_back_24dp)
+                    val lightColor = this@apply.getToolBarBgColor().isLightColor()
+                    this.setColorFilter(if (lightColor) Color.BLACK else Color.WHITE)
+                }
                 this.setOnClickListenerPro { onBackPressed() }
             }
             this.centerTitle {
                 this.text = getString(R.string.crop_picture)
-                this.setTextColor(getColorPro(R.color.toolbar_title))
             }
             this.menuText1 {
-                this.setTextColor(getColorPro(R.color.toolbar_menu))
                 this.text = getString(R.string.use)
                 this.isEnabled = true
                 this.setOnClickListenerPro {
                     //点击完成
                     saveOutput(cropImageView.croppedImage)
                 }
+            }
+        }
+        //StatusBar
+        StatusBarManager.apply {
+            val statusColor = mToolBar.getToolBarBgColor()
+            this.setColor(window, statusColor)
+            if (statusColor.isLightColor()) {
+                this.setLightMode(window)
+            } else {
+                this.setDarkMode(window)
             }
         }
 
