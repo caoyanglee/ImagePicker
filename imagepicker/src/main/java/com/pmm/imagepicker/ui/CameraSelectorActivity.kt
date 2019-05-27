@@ -5,12 +5,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.ImagePicker
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.ktx.createCameraFile
 import com.pmm.imagepicker.ktx.startActionCapture
 import com.weimu.universalview.core.activity.BaseActivity
+import com.weimu.universalview.ktx.gone
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
@@ -41,7 +44,7 @@ internal class CameraSelectorActivity : BaseActivity() {
         outState.putString(BUNDLE_CAMERA_PATH, cameraPath)
     }
 
-    override fun getLayoutResID(): Int = R.layout.activity_camera_selector
+    override fun getLayoutUI(): ViewGroup = FrameLayout(this@CameraSelectorActivity).apply { this.gone() }
 
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
         config = intent.getSerializableExtra(Config.EXTRA_CONFIG) as Config
@@ -104,11 +107,11 @@ internal class CameraSelectorActivity : BaseActivity() {
                 .ignoreBy(100)                                  // 忽略不压缩图片的大小
                 .setCompressListener(object : OnCompressListener { //设置回调
                     override fun onStart() {
-                        Log.d("weimu", "开始压缩")
+                        //Log.d("weimu", "开始压缩")
                     }
 
                     override fun onSuccess(file: File) {
-                        Log.d("weimu", "压缩成功 地址为：$file")
+                        //Log.d("weimu", "压缩成功 地址为：$file")
                         newImageList.add(file.toString())
                         //所有图片压缩成功
                         if (newImageList.size == photos.size) {

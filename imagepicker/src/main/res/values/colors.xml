@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F75255</color>
-    <color name="colorPrimaryDark">#B3F75255</color>
-    <color name="colorAccent">#F75255</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorAccent">#52A6FF</color>
     <color name="colorBg">#F5F6F8</color>
 
     <color name="image_overlay">#20000000</color>
     <color name="image_overlay2">#80000000</color>
 
-
+    <!--ToolBar-->
+    <color name="toolbar_navigation">#222222</color>
+    <color name="toolbar_title">#222222</color>
+    <color name="toolbar_menu">#222222</color>
 </resources>

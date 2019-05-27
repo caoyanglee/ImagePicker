@@ -7,7 +7,7 @@
         android:id="@+id/picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/image_placeholder"
+        android:src="@drawable/ic_image_24dp"
         android:transitionName="share_image" />
 
 
@@ -17,5 +17,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:padding="6dp"
-        android:src="@drawable/image_selector_check_circle_selector" />
+        android:src="@drawable/image_preview_check_circle_selector" />
 </com.weimu.universalview.widget.SquareRelativeLayout>

@@ -1,5 +1,6 @@
 package com.pmm.imagepicker
 
+import com.theartofdev.edmodo.cropper.CropImageView
 import java.io.Serializable
 
 /**
@@ -16,7 +17,7 @@ class Config : Serializable {
         const val MODE_SINGLE = 2//单选
     }
 
-
+    //***** 基础 *****
     var maxSelectNum = 9//最大图片选择数
 
     var selectMode = MODE_MULTIPLE
@@ -40,17 +41,22 @@ class Config : Serializable {
             field = if (selectMode == MODE_SINGLE) false else value
         }
 
+    //***** 裁剪 *****
     var enableCrop = false
         //是否裁剪
         set(value) {
             field = if (selectMode == MODE_MULTIPLE) false else value
         }
 
-    var cropAspectRatioX = 0//宽高比 X
-    var cropAspectRatioY = 0//宽高比 Y
+    var cropAspectRatioX = -1//宽高比 X
+    var cropAspectRatioY = -1//宽高比 Y
+    var cropMiniWidth = -1//裁剪框的 最小宽度 单位px
+    var cropMiniHeight = -1//裁剪框的 最小高度 单位px
 
+    //***** 压缩 *****
     var showIsCompress = false//是否显示原图按钮
 
+    //***** 网格列表 *****
     var gridSpanCount = 4//RecyclerView的网格数
 
 

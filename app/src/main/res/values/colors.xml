@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--调用的统一颜色-->
-    <color name="colorPrimary">#52A6FF</color>
-    <color name="colorPrimaryDark">#52A6FF</color>
-    <color name="colorAccent">#52A6FF</color>
-    <color name="gray_background">#F5F5F5</color>
+    <color name="colorPrimary">#191D26</color>
+    <color name="colorPrimaryDark">#191D26</color>
+    <color name="colorAccent">#EECCA2</color>
+    <color name="colorBg">#ffffff</color>
 
+
+    <!--ToolBar-->
+    <color name="toolbar_navigation">#ffffff</color>
+    <color name="toolbar_title">#ffffff</color>
+    <color name="toolbar_menu">#ffffff</color>
 </resources>

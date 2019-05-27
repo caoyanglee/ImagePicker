@@ -11,8 +11,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.support.constraint.ConstraintLayout
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -20,6 +18,7 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.orhanobut.logger.Logger
 import com.pmm.imagepicker.*
 import com.pmm.imagepicker.ImageStaticHolder
 import com.pmm.imagepicker.LocalMediaLoader
@@ -33,15 +32,14 @@ import com.pmm.imagepicker.ui.preview.ImagePreviewActivity
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
-import com.weimu.universalview.ktx.dip2px
-import com.weimu.universalview.ktx.init
-import com.weimu.universalview.ktx.setOnClickListenerPro
-import com.weimu.universalview.ktx.setTextColorV2
+import com.weimu.universalview.ktx.*
 import kotlinx.android.synthetic.main.activity_imageselector.*
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
 import java.util.*
+import kotlin.properties.Delegates
+import kotlin.reflect.KProperty
 
 
 internal class ImageSelectorActivity : BaseActivity() {
@@ -54,11 +52,12 @@ internal class ImageSelectorActivity : BaseActivity() {
     private val folderLayout: LinearLayout by lazy { findViewById<LinearLayout>(R.id.folder_layout) }
     private val folderName: TextView by lazy { findViewById<TextView>(R.id.folder_name) }
     private val folderWindow: FolderWindow by lazy { FolderWindow(this) }
-    private val cbOrigin: CheckBox by lazy { findViewById<CheckBox>(R.id.cb_origin) }
 
     private var cameraPath: String? = null
     private var allFolders: List<LocalMediaFolder> = arrayListOf()//所有图片文件夹
-    private var isUseOrigin = false//是否使用原图
+    private var isUseOrigin by Delegates.observable(false) { property: KProperty<*>, oldValue: Boolean, newValue: Boolean ->
+        tvOrigin.isActivated = newValue
+    }//是否使用原图
 
 
     companion object {
@@ -100,37 +99,47 @@ internal class ImageSelectorActivity : BaseActivity() {
     private fun initView() {
         //StatusBar
         StatusBarManager.apply {
-            this.setColor(window, Color.WHITE)
-            this.setLightMode(window, false)
+            val statusColor = getColorPro(R.color.colorPrimaryDark)
+            this.setColor(window, statusColor)
+            if (statusColor == Color.WHITE) {
+                this.setLightMode(window)
+            } else {
+                this.setDarkMode(window)
+            }
         }
         //ToolBar
         mToolBar.apply {
-            this.setBackgroundColor(Color.WHITE)
+            this.setBackgroundColor(getColorPro(R.color.colorPrimary))
             this.navigationIcon {
-                this.setImageResource(R.drawable.toolbar_arrow_back_black)
+                this.setImageResource(R.drawable.ic_nav_back_24dp)
+                this.setColorFilter(getColorPro(R.color.toolbar_navigation))
                 this.setOnClickListenerPro { onBackPressed() }
             }
             this.centerTitle {
                 this.text = getString(R.string.select_image)
-                this.setTextColor(Color.BLACK)
+                this.setTextColor(getColorPro(R.color.toolbar_title))
             }
             this.menuText1 {
+                this.setTextColor(getColorPro(R.color.toolbar_menu))
                 this.text = if (config.selectMode == Config.MODE_MULTIPLE) (getString(R.string.done)) else ""
-                this.setTextColorV2(R.color.colorAccent)
-                this.setTextColor(ContextCompat.getColorStateList(context, R.color.black_text_selector))
-                this.isEnabled = false
                 this.setOnClickListenerPro {
                     //点击完成
                     onSelectDone(imageAdapter.selectedImages)
                 }
+                this.invisible()
             }
 
         }
         //CheckBox use Origin Pic
-        cbOrigin.apply {
-            if (!config.showIsCompress) this.visibility = View.GONE
-            this.isChecked = isUseOrigin
-            this.setOnClickListener { isUseOrigin = !this.isChecked }
+        tvOrigin.apply {
+            if (!config.showIsCompress) {
+                this.visibility = View.GONE
+            } else {
+                this.isActivated = isUseOrigin
+                this.setOnClickListenerPro {
+                    isUseOrigin = !isUseOrigin
+                }
+            }
         }
         //RecyclerView
         recyclerView.apply {
@@ -175,10 +184,10 @@ internal class ImageSelectorActivity : BaseActivity() {
                     val enable = selectImages.isNotEmpty()
                     if (enable) {
                         this.text = "${getString(R.string.done_num)}(${selectImages.size}/${config.maxSelectNum})"
-                        this.isEnabled = enable
+                        this.visible()
                     } else {
                         this.text = getString(R.string.done)
-                        this.isEnabled = enable
+                        this.invisible()
                     }
                 }
             }

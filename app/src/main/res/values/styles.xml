@@ -16,7 +16,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- 允许使用transitions -->
-        <item name="android:windowBackground">@color/gray_background</item>
+        <item name="android:windowBackground">@color/colorBg</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
 

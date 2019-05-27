@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.ImagePicker
 import com.pmm.imagepicker.ui.preview2.ImagePreviewActivity
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
@@ -13,10 +12,10 @@ import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.dip2px
 import com.weimu.universalview.ktx.getColorPro
 import com.weimu.universalview.ktx.requestPermission
+import com.weimu.universalview.ktx.setOnClickListenerPro
 import io.weimu.www.imagepicker.R
 import io.weimu.www.imagepicker.fragment.adapter.ImageGridAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,9 +37,15 @@ class MainActivity : AppCompatActivity() {
             }
             //添加
             this.onFooterClick = {
-//                ImagePicker.pickAvatar(this@MainActivity);
-                ImagePicker.pickImage(this@MainActivity, 9)
-//                ImagePicker.pickImage4One(activity = this@MainActivity)
+                //                ImagePicker.pickAvatar(this@MainActivity);
+//                ImagePicker.pickImage(this@MainActivity, 9)
+                ImagePicker.pickImage4One(
+                        activity = this@MainActivity,
+                        cropAspectRatioY = 1,
+                        cropAspectRatioX = 1,
+                        cropMiniHeight = this@MainActivity.dip2px(100f),
+                        cropMiniWidth = this@MainActivity.dip2px(1000f)
+                )
 //                ImagePicker.takePhoto(this@MainActivity, true);//使用摄像头
 
 
@@ -58,8 +63,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        StatusBarManager.setColor(window, getColorPro(R.color.white))
-        StatusBarManager.setLightMode(window)
+        StatusBarManager.setColor(window, getColorPro(R.color.colorPrimary))
+        StatusBarManager.setDarkMode(window)
+
+        //ToolBar
+        mToolBar.apply {
+            this.setBackgroundColor(getColorPro(R.color.colorPrimary))
+            this.navigationIcon {
+                this.setImageResource(R.drawable.ic_nav_back_24dp)
+                this.setColorFilter(getColorPro(R.color.toolbar_navigation))
+                this.setOnClickListenerPro { onBackPressed() }
+            }
+            this.centerTitle {
+                this.text = getString(R.string.app_name)
+                this.setTextColor(getColorPro(R.color.toolbar_title))
+            }
+        }
+
 
         requestPermission(
                 permissions = *arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),

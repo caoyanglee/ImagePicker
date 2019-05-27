@@ -43,9 +43,7 @@ internal class ImageListAdapter(
     fun bindSelectImages(images: ArrayList<LocalMedia>) {
         this.selectImages = images
         notifyDataSetChanged()
-        if (imageSelectChangedListener != null) {
-            imageSelectChangedListener!!.onChange(selectImages)
-        }
+        imageSelectChangedListener?.onChange(selectImages)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -58,10 +56,10 @@ internal class ImageListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == TYPE_CAMERA) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_camera, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_camera, parent, false)
             return HeaderViewHolder(view)
         } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_picture, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_picture, parent, false)
             return ViewHolder(view)
         }
     }
@@ -70,9 +68,7 @@ internal class ImageListAdapter(
         if (getItemViewType(position) == TYPE_CAMERA) {
             val headerHolder = holder as HeaderViewHolder
             headerHolder.headerView.setOnClickListener {
-                if (imageSelectChangedListener != null) {
-                    imageSelectChangedListener!!.onTakePhoto()
-                }
+                imageSelectChangedListener?.onTakePhoto()
             }
         } else {
             val contentHolder = holder as ViewHolder
@@ -80,7 +76,7 @@ internal class ImageListAdapter(
 
             contentHolder.picture.load4CenterCrop(
                     file = File(image.path),
-                    placeholder = R.drawable.image_placeholder
+                    placeholder = R.drawable.ic_image_24dp
             )
 
             if (config.selectMode == Config.MODE_SINGLE) {
@@ -94,8 +90,8 @@ internal class ImageListAdapter(
             }
 
             contentHolder.contentView.setOnClickListener {
-                if ((config.selectMode == Config.MODE_SINGLE || config.enablePreview) && imageSelectChangedListener != null) {
-                    imageSelectChangedListener!!.onPictureClick(image, if (config.enableCamera) position - 1 else position, holder.picture)
+                if ((config.selectMode == Config.MODE_SINGLE || config.enablePreview)) {
+                    imageSelectChangedListener?.onPictureClick(image, if (config.enableCamera) position - 1 else position, holder.picture)
                 } else {
                     changeCheckboxState(contentHolder, image)
                 }
@@ -109,7 +105,7 @@ internal class ImageListAdapter(
 
     @SuppressLint("StringFormatMatches")
     private fun changeCheckboxState(contentHolder: ViewHolder, image: LocalMedia) {
-        val isChecked = contentHolder.ivCheckCircle.isSelected
+        val isChecked = contentHolder.ivCheckCircle.isActivated
         if (selectImages.size >= config.maxSelectNum && !isChecked) {
             Toast.makeText(context, context.getString(R.string.message_max_num, config.maxSelectNum), Toast.LENGTH_LONG).show()
             return
@@ -125,12 +121,10 @@ internal class ImageListAdapter(
             selectImages.add(image)
         }
         selectImage(contentHolder, !isChecked)
-        if (imageSelectChangedListener != null) {
-            imageSelectChangedListener!!.onChange(selectImages)
-        }
+        imageSelectChangedListener?.onChange(selectImages)
     }
 
-    fun isSelected(image: LocalMedia): Boolean {
+    private fun isSelected(image: LocalMedia): Boolean {
         for (media in selectImages) {
             if (media.path == image.path) {
                 return true
@@ -139,10 +133,9 @@ internal class ImageListAdapter(
         return false
     }
 
-    fun selectImage(holder: ViewHolder, isChecked: Boolean) {
-        holder.ivCheckCircle.isSelected = isChecked
+    private fun selectImage(holder: ViewHolder, isChecked: Boolean) {
+        holder.ivCheckCircle.isActivated = isChecked
         if (isChecked) {
-
             holder.picture.setColorFilter(ContextCompat.getColor(context, R.color.image_overlay2), PorterDuff.Mode.SRC_ATOP)
         } else {
             holder.picture.setColorFilter(ContextCompat.getColor(context, R.color.image_overlay), PorterDuff.Mode.SRC_ATOP)
@@ -152,14 +145,8 @@ internal class ImageListAdapter(
     internal class HeaderViewHolder(var headerView: View) : RecyclerView.ViewHolder(headerView)
 
     inner class ViewHolder(var contentView: View) : RecyclerView.ViewHolder(contentView) {
-        var picture: ImageView
-        var ivCheckCircle: ImageView
-
-        init {
-            picture = contentView.findViewById(R.id.picture)
-            ivCheckCircle = contentView.findViewById(R.id.iv_check_circle)
-        }
-
+        var picture: ImageView = contentView.findViewById(R.id.picture)
+        var ivCheckCircle: ImageView = contentView.findViewById(R.id.iv_check_circle)
     }
 
     interface OnImageSelectChangedListener {

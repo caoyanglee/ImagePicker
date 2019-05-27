@@ -7,12 +7,12 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.content.ContextCompat
 import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.ktx.getUri4Crop
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
+import com.weimu.universalview.ktx.getColorPro
 import com.weimu.universalview.ktx.setOnClickListenerPro
 import kotlinx.android.synthetic.main.activity_image_crop.*
 import java.io.File
@@ -57,24 +57,32 @@ internal class ImageCropActivity : BaseActivity() {
         config = intent.getSerializableExtra(Config.EXTRA_CONFIG) as Config
     }
 
-
     override fun afterViewAttach(savedInstanceState: Bundle?) {
-        StatusBarManager.setColor(this.window, ContextCompat.getColor(this, R.color.white))
-        StatusBarManager.setLightMode(this.window, false)
-
+        //StatusBar
+        StatusBarManager.apply {
+            val statusColor = getColorPro(R.color.colorPrimaryDark)
+            this.setColor(window, statusColor)
+            if (statusColor == Color.WHITE) {
+                this.setLightMode(window)
+            } else {
+                this.setDarkMode(window)
+            }
+        }
+        //ToolBar
         mToolBar.apply {
-            this.setBackgroundColor(Color.WHITE)
+            this.setBackgroundColor(getColorPro(R.color.colorPrimary))
             this.navigationIcon {
-                this.setImageResource(R.drawable.toolbar_arrow_back_black)
+                this.setImageResource(R.drawable.ic_nav_back_24dp)
+                this.setColorFilter(getColorPro(R.color.toolbar_navigation))
                 this.setOnClickListenerPro { onBackPressed() }
             }
             this.centerTitle {
-                this.text = "${getString(R.string.crop_picture)}"
-                this.setTextColor(Color.BLACK)
+                this.text = getString(R.string.crop_picture)
+                this.setTextColor(getColorPro(R.color.toolbar_title))
             }
             this.menuText1 {
+                this.setTextColor(getColorPro(R.color.toolbar_menu))
                 this.text = getString(R.string.use)
-                this.setTextColor(ContextCompat.getColorStateList(context, R.color.black_text_selector))
                 this.isEnabled = true
                 this.setOnClickListenerPro {
                     //点击完成
@@ -82,12 +90,21 @@ internal class ImageCropActivity : BaseActivity() {
                 }
             }
         }
+
+
         //裁剪视图
         cropImageView.apply {
             //配置
-            this.setImageUriAsync(sourceUri)
-            if (config.cropAspectRatioX > 0 || config.cropAspectRatioY > 0)
+            this.isAutoZoomEnabled = true//是否自动缩放
+
+            //设置宽高比
+            if (config.cropAspectRatioX > 0 && config.cropAspectRatioY > 0)
                 this.setAspectRatio(config.cropAspectRatioX, config.cropAspectRatioY)
+            //设置裁剪框最小的宽度高度
+            if (config.cropMiniWidth > 0 && config.cropMiniHeight > 0)
+                this.setMinCropResultSize(config.cropMiniWidth, config.cropMiniHeight)
+
+            this.setImageUriAsync(sourceUri)
         }
     }
 

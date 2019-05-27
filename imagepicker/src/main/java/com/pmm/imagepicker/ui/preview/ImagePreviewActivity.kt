@@ -11,7 +11,6 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.widget.CheckBox
@@ -21,9 +20,7 @@ import com.pmm.imagepicker.R
 import com.pmm.imagepicker.model.LocalMedia
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
-import com.weimu.universalview.ktx.gone
-import com.weimu.universalview.ktx.setOnClickListenerPro
-import com.weimu.universalview.ktx.visible
+import com.weimu.universalview.ktx.*
 import kotlinx.android.synthetic.main.activity_image_preview.*
 import java.util.*
 import kotlin.properties.Delegates
@@ -102,27 +99,34 @@ internal class ImagePreviewActivity : BaseActivity() {
 
 
     private fun initView() {
-        //状态栏和Toolbar
-        StatusBarManager.setColor(this.window, Color.WHITE)
-        StatusBarManager.setLightMode(this.window, false)
-
-        mToolBar.apply { this.setBackgroundColor(Color.WHITE) }
+        //StatusBar
+        StatusBarManager.apply {
+            val statusColor = getColorPro(R.color.colorPrimaryDark)
+            this.setColor(window, statusColor)
+            if (statusColor == Color.WHITE) {
+                this.setLightMode(window)
+            } else {
+                this.setDarkMode(window)
+            }
+        }
+        mToolBar.apply { this.setBackgroundColor(getColorPro(R.color.colorPrimary)) }
                 .navigationIcon {
-                    this.setImageResource(R.drawable.toolbar_arrow_back_black)
+                    this.setImageResource(R.drawable.ic_nav_back_24dp)
+                    this.setColorFilter(getColorPro(R.color.toolbar_navigation))
                     this.setOnClickListenerPro { onBackPressed() }
                 }
                 .centerTitle {
-                    this.text = "${(position + 1).toString() + "/" + images.size}"
-                    this.setTextColor(Color.BLACK)
+                    this.text = "${position + 1}/${images.size}"
+                    this.setTextColor(getColorPro(R.color.toolbar_title))
                 }
                 .menuText1 {
+                    this.setTextColor(getColorPro(R.color.toolbar_menu))
                     this.text = getString(R.string.done)
-                    this.setTextColor(ContextCompat.getColorStateList(context, R.color.black_text_selector))
-                    this.isEnabled = false
                     this.setOnClickListenerPro {
                         //点击完成
                         onDoneClick(true)
                     }
+                    this.invisible()
                 }
 
         onSelectNumChange()
@@ -186,10 +190,11 @@ internal class ImagePreviewActivity : BaseActivity() {
     fun onSelectNumChange() {
         val enable = selectImages.size != 0
         mToolBar.menuText1 {
-            this.isEnabled = enable
             if (enable) {
+                this.visible()
                 this.text = "${getString(R.string.done_num)}(${selectImages.size}/${maxSelectNum})"
             } else {
+                this.invisible()
                 this.text = getString(R.string.done)
             }
 

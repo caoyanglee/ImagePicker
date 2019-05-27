@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.imagepicker.model.LocalMediaFolder
+import com.weimu.universalview.ktx.load4CenterCrop
 import java.io.File
 import java.util.*
 
@@ -30,20 +31,14 @@ internal class ImageFolderAdapter(private val context: Context) : RecyclerView.A
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.item_folder, parent, false)
+        val itemView = LayoutInflater.from(context).inflate(R.layout.list_item_folder, parent, false)
         return ViewHolder(itemView)
     }
 
     @SuppressLint("StringFormatMatches")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val folder = folders[position]
-
-        Glide.with(context)
-                .asBitmap()
-                .load(File(folder.firstImagePath))
-                .apply(RequestOptions().centerCrop())
-                .transition(BitmapTransitionOptions.withCrossFade())
-                .into(holder.firstImage)
+        holder.firstImage.load4CenterCrop(File(folder.firstImagePath))
 
         holder.folderName.text = folder.name
         holder.imageNum.text = context.getString(R.string.num_postfix, folder.imageNum)

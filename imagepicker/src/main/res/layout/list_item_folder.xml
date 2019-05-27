@@ -13,7 +13,7 @@
         android:id="@+id/first_image"
         android:layout_width="74dp"
         android:layout_height="74dp"
-        android:src="@mipmap/ic_placeholder" />
+        android:src="@drawable/ic_image_24dp" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -41,7 +41,7 @@
 
     <ImageView
         android:id="@+id/is_selected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/radio_button" />
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_check_circle_p_16dp" />
 </LinearLayout>

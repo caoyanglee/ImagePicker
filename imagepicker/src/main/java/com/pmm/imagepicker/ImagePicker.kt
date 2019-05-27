@@ -52,6 +52,8 @@ object ImagePicker {
             enableCrop: Boolean = true,
             cropAspectRatioX: Int = 0,
             cropAspectRatioY: Int = 0,
+            cropMiniWidth: Int = 0,
+            cropMiniHeight: Int = 0,
             showIsCompress: Boolean = true
     ) {
         val config = Config().apply {
@@ -60,9 +62,13 @@ object ImagePicker {
             this.enableCrop = enableCrop
             this.cropAspectRatioX = cropAspectRatioX
             this.cropAspectRatioY = cropAspectRatioY
+            this.cropMiniWidth = cropMiniWidth
+            this.cropMiniHeight = cropMiniHeight
             if (this.cropAspectRatioX > 0 && this.cropAspectRatioY > 0) {
                 this.enableCrop = true
             }
+            if (this.cropMiniWidth > 0 && this.cropMiniHeight > 0)
+                this.enableCrop = true
             this.showIsCompress = showIsCompress
         }
 
