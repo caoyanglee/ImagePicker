@@ -12,13 +12,10 @@ import com.pmm.imagepicker.R
 import com.pmm.imagepicker.ktx.getUri4Crop
 import com.weimu.universalview.core.activity.BaseActivity
 import com.weimu.universalview.core.toolbar.StatusBarManager
-import com.weimu.universalview.ktx.getColorPro
-import com.weimu.universalview.ktx.isLightColor
-import com.weimu.universalview.ktx.setOnClickListenerPro
+import com.weimu.universalview.ktx.*
 import com.weimu.universalview.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_image_crop.*
 import kotlinx.android.synthetic.main.activity_image_crop.mToolBar
-import kotlinx.android.synthetic.main.activity_imageselector.*
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -38,6 +35,8 @@ internal class ImageCropActivity : BaseActivity() {
     private lateinit var config: Config
 
 
+    private var cropType = 0//0：自由裁剪 1：限制宽高比裁剪
+
     companion object {
         const val REQUEST_CROP = 69
 
@@ -52,7 +51,6 @@ internal class ImageCropActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutResID(): Int = R.layout.activity_image_crop
 
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
         //data
@@ -60,6 +58,8 @@ internal class ImageCropActivity : BaseActivity() {
         sourceUri = Uri.fromFile(File(path))
         config = intent.getSerializableExtra(Config.EXTRA_CONFIG) as Config
     }
+
+    override fun getLayoutResID(): Int = R.layout.activity_image_crop
 
     override fun afterViewAttach(savedInstanceState: Bundle?) {
         //ToolBar
@@ -80,7 +80,11 @@ internal class ImageCropActivity : BaseActivity() {
                 this.isEnabled = true
                 this.setOnClickListenerPro {
                     //点击完成
-                    saveOutput(cropImageView.croppedImage)
+                    if (cropType == 1) {
+                        saveOutput(cropImageView1.croppedImage)
+                    } else {
+                        saveOutput(cropImageView0.croppedImage)
+                    }
                 }
             }
         }
@@ -96,11 +100,33 @@ internal class ImageCropActivity : BaseActivity() {
         }
 
 
-        //裁剪视图
-        cropImageView.apply {
+        if ((config.cropMiniWidth > 0 && config.cropMiniHeight > 0)) {
+            cropImageView0.gone()
+            cropType = 1
+            crop1init()
+        } else {
+            cropImageView1.gone()
+            cropType = 0
+            crop0init()
+        }
+
+    }
+
+    private fun crop0init() {
+        cropImageView0.apply {
             //配置
             this.isAutoZoomEnabled = true//是否自动缩放
+            //设置宽高比
+            if (config.cropAspectRatioX > 0 && config.cropAspectRatioY > 0)
+                this.setAspectRatio(config.cropAspectRatioX, config.cropAspectRatioY)
+            this.setImageUriAsync(sourceUri)
+        }
+    }
 
+    private fun crop1init() {
+        cropImageView1.apply {
+            //配置
+            this.isAutoZoomEnabled = true//是否自动缩放
             //设置宽高比
             if (config.cropAspectRatioX > 0 && config.cropAspectRatioY > 0)
                 this.setAspectRatio(config.cropAspectRatioX, config.cropAspectRatioY)

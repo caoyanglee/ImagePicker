@@ -10,14 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
+    <!--自由裁剪-->
     <com.theartofdev.edmodo.cropper.CropImageView
-        android:id="@+id/cropImageView"
+        android:id="@+id/cropImageView0"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:cropAspectRatioX="1"
-        app:cropAspectRatioY="1"
+        android:layout_height="match_parent"
+        app:cropInitialCropWindowPaddingRatio="0.1" />
+
+    <!--限制裁剪-->
+    <com.theartofdev.edmodo.cropper.CropImageView
+        android:id="@+id/cropImageView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:cropInitialCropWindowPaddingRatio="0.0" />
 
 </LinearLayout>
