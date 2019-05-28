@@ -24,9 +24,9 @@ import com.weimu.universalview.ktx.*
 import com.weimu.universalview.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_image_preview.*
 import kotlinx.android.synthetic.main.activity_image_preview.mToolBar
-import kotlinx.android.synthetic.main.activity_imageselector.*
 import java.util.*
 import kotlin.properties.Delegates
+import kotlin.reflect.KProperty
 
 
 internal class ImagePreviewActivity : BaseActivity() {
@@ -62,7 +62,6 @@ internal class ImagePreviewActivity : BaseActivity() {
         }
     }
 
-    private var checkboxSelect: CheckBox? = null
     private val viewPager: ViewPager by lazy { findViewById<ViewPager>(R.id.drag_viewPager) }
 
     private var position: Int = 0
@@ -83,6 +82,10 @@ internal class ImagePreviewActivity : BaseActivity() {
             StatusBarManager.hideStatusBar(window)
         }
     }
+
+    private var isSelected by Delegates.observable(false) { property: KProperty<*>, oldValue: Boolean, newValue: Boolean ->
+        mTvSelect.isActivated = newValue
+    }//是否选中
 
     override fun getLayoutResID(): Int = R.layout.activity_image_preview
 
@@ -137,7 +140,6 @@ internal class ImagePreviewActivity : BaseActivity() {
 
         onSelectNumChange()
 
-        checkboxSelect = findViewById<View>(R.id.checkbox_select) as CheckBox
         onImageSwitch(position)
 
 
@@ -163,16 +165,15 @@ internal class ImagePreviewActivity : BaseActivity() {
 
     @SuppressLint("StringFormatMatches")
     fun registerListener() {
-
-        checkboxSelect!!.setOnClickListener(View.OnClickListener {
-            val isChecked = checkboxSelect!!.isChecked
-            if (selectImages.size >= maxSelectNum && isChecked) {
+        mTvSelect.setOnClickListener(View.OnClickListener {
+            isSelected = !isSelected
+            if (selectImages.size >= maxSelectNum && isSelected) {
                 Toast.makeText(this@ImagePreviewActivity, getString(R.string.message_max_num, maxSelectNum), Toast.LENGTH_LONG).show()
-                checkboxSelect!!.isChecked = false
+                mTvSelect.isActivated = false
                 return@OnClickListener
             }
             val image = images[viewPager.currentItem]
-            if (isChecked) {
+            if (isSelected) {
                 selectImages.add(image)
             } else {
                 for (media in selectImages) {
@@ -203,26 +204,21 @@ internal class ImagePreviewActivity : BaseActivity() {
                 this.invisible()
                 this.text = getString(R.string.done)
             }
-
-
         }
     }
 
     fun onImageSwitch(position: Int) {
-        checkboxSelect!!.isChecked = isSelected(images[position])
-    }
-
-    fun isSelected(image: LocalMedia): Boolean {
         for (media in selectImages) {
-            if (media.path == image.path) {
-                return true
+            if (media.path == images[position].path) {
+                isSelected = true
+                return
             }
         }
-        return false
+        isSelected = false
     }
 
 
-    fun onDoneClick(isDone: Boolean) {
+    private fun onDoneClick(isDone: Boolean) {
         val intent = Intent()
         intent.putExtra(OUTPUT_LIST, selectImages as ArrayList<*>)
         intent.putExtra(OUTPUT_ISDONE, isDone)
