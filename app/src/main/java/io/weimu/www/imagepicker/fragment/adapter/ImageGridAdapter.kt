@@ -6,14 +6,18 @@ import com.bumptech.glide.Glide
 import com.weimu.universalview.core.BaseB
 import com.weimu.universalview.core.recyclerview.BaseRecyclerAdapter
 import com.weimu.universalview.core.recyclerview.BaseRecyclerViewHolder
+import com.weimu.universalview.ktx.gone
+import com.weimu.universalview.ktx.visible
 import io.weimu.www.imagepicker.R
 import kotlinx.android.synthetic.main.grid_item_image.view.*
 
 
 class ImageGridAdapter(mContext: Context, var maxImageNumber: Int = 9) : BaseRecyclerAdapter<BaseB, String>(mContext) {
 
+
     var imageActionListener: ImageActionListener? = null
 
+    fun getSelectNum() = maxImageNumber - dataList.size
 
     override fun getItemLayoutRes(): Int = R.layout.grid_item_image
 
@@ -31,10 +35,43 @@ class ImageGridAdapter(mContext: Context, var maxImageNumber: Int = 9) : BaseRec
     override fun getFooterLayoutRes(): Int = R.layout.grid_item_image_add
 
 
+    override fun footerViewChange(holder: BaseRecyclerViewHolder) {
+        holder.itemView.setOnClickListener {
+            imageActionListener?.onItemAddClick()
+        }
+    }
+
+
+    override fun addData(data: List<String>?) {
+        super.addData(data)
+        if (dataList.size == maxImageNumber) hideFooter()
+    }
+
+    override fun addData(item: String) {
+        super.addData(item)
+        if (dataList.size == maxImageNumber) hideFooter()
+
+    }
+
+    override fun addData(position: Int, item: String) {
+        super.addData(position, item)
+        if (dataList.size == maxImageNumber) hideFooter()
+    }
+
+    override fun removeItem(position: Int) {
+        super.removeItem(position)
+        //防止尾部添加按钮消失
+        if (dataList.size == maxImageNumber - 1) showFooter()
+    }
+
     interface ImageActionListener {
 
         fun onItemClick(position: Int)
 
         fun onItemDeleteClick(position: Int)
+
+        fun onItemAddClick()
     }
+
+
 }
