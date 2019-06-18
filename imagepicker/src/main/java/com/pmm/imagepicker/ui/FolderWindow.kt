@@ -42,7 +42,7 @@ internal class FolderWindow(private val context: Context) : PopupWindow() {
         view.setOnClickListener { dismiss() }
         this.contentView = window
         this.width = context.getScreenWidth()
-        this.height = context.getScreenHeight() - (context.dip2px(ToolBarPro.GlobalConfig.toolbarHeight) + context.getStatusBarHeight() + context.dip2px(48f))
+        this.height = context.getScreenHeight() - (ToolBarPro.GlobalConfig.toolbarHeight + context.getStatusBarHeight() + context.dip2px(48f))
         this.animationStyle = R.style.WindowStyle
         this.isFocusable = true
         this.isOutsideTouchable = true
