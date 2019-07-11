@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         requestPermission(
                 permissions = *arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
                 granted = { initRecyclerVIew() },
-                dialogMessage = "请给我权限！"
+                content = "请给我权限！"
         )
     }
 

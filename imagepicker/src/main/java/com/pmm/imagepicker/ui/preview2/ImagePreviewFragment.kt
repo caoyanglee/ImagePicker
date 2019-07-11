@@ -18,8 +18,8 @@ import com.weimu.universalview.OriginAppData
 import com.weimu.universalview.core.fragment.BaseFragment
 import com.weimu.universalview.helper.AnimHelper
 import com.weimu.universalview.helper.FileHelper
-import com.weimu.universalview.helper.Md5Helper
 import com.weimu.universalview.helper.MediaScanner
+import com.weimu.universalview.helper.security.MD5Helper
 import com.weimu.universalview.ktx.formatDate
 import com.weimu.universalview.ktx.invisible
 import com.weimu.universalview.ktx.visible
@@ -112,7 +112,7 @@ class ImagePreviewFragment : BaseFragment() {
 
         val targetDir = FILE_IMAGE_PREVIEW
         //Logger.e("目标路径=$targetDir")
-        val fileName = Md5Helper.sign(url, "weimu")
+        val fileName = MD5Helper.sign(url, "weimu")
 
         //md5 名称唯一性
         targetPath = "$targetDir$fileName"
