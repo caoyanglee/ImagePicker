@@ -18,8 +18,7 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
     private val mDirPaths = HashSet<String>()//文件夹路径
 
     fun loadAllImage(imageLoadListener: LocalMediaLoadListener) {
-        activity.supportLoaderManager.initLoader(type, null, object : LoaderManager.LoaderCallbacks<Cursor> {
-
+        LoaderManager.getInstance(activity).initLoader(type, null, object : LoaderManager.LoaderCallbacks<Cursor> {
 
             override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
                 var cursorLoader: CursorLoader? = null
@@ -84,7 +83,7 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                         images.add(LocalMedia(files[i].absolutePath))
                     }
                     if (images.size > 0) {
-                        Collections.sort(images)
+                        images.sort()
                         localMediaFolder.images = images
                         localMediaFolder.firstImagePath = images[0].path
                         localMediaFolder.imageNum = localMediaFolder.images.size
