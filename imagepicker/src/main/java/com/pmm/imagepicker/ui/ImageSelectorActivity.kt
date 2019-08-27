@@ -25,6 +25,7 @@ import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.imagepicker.model.LocalMediaFolder
 import com.pmm.imagepicker.ui.preview.ImagePreviewActivity
 import com.weimu.universalview.core.activity.BaseActivity
+import com.weimu.universalview.core.dialog.ProgressDialog
 import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
 import com.weimu.universalview.core.toolbar.StatusBarManager
 import com.weimu.universalview.ktx.*
@@ -54,6 +55,8 @@ internal class ImageSelectorActivity : BaseActivity() {
     private var isUseOrigin by Delegates.observable(false) { property: KProperty<*>, oldValue: Boolean, newValue: Boolean ->
         tvOrigin.isActivated = newValue
     }//是否使用原图
+
+    private var isLoadImgIng = false//是否正在加载图片->返回给app
 
 
     companion object {
@@ -304,6 +307,8 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     //返回图片
     private fun onResult(images: ArrayList<String>) {
+        if (isLoadImgIng) return
+        isLoadImgIng = true
         if (isUseOrigin) {
             setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, images))
             onBackPressed()
@@ -314,21 +319,20 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     //压缩图片
     private fun compressImage(photos: ArrayList<String>) {
-        //Toast.makeText(this, "压缩中...", Toast.LENGTH_SHORT).show();
+        if (photos.size > 9) ProgressDialog.show(this@ImageSelectorActivity, message = "加载中")
         val newImageList = ArrayList<String>()
         Luban.with(this)
                 .load(photos)                                   // 传入要压缩的图片列表
                 .ignoreBy(100)                            // 忽略不压缩图片的大小
                 .setCompressListener(object : OnCompressListener { //设置回调
-                    override fun onStart() {
-                        //Log.d("weimu", "开始压缩")
-                    }
+                    override fun onStart() {}
 
                     override fun onSuccess(file: File) {
                         //Log.d("weimu", "压缩成功 地址为：$file")
                         newImageList.add(file.toString())
                         //所有图片压缩成功
                         if (newImageList.size == photos.size) {
+                            ProgressDialog.hide()
                             setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, newImageList))
                             onBackPressed()
                         }

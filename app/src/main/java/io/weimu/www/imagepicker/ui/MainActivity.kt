@@ -38,14 +38,14 @@ class MainActivity : AppCompatActivity() {
                 //添加
                 override fun onItemAddClick() {
 //                    ImagePicker.pickAvatar(this@MainActivity);
-//                    ImagePicker.pickImage(this@MainActivity, 9)
-                    ImagePicker.pickImage4One(
-                            activity = this@MainActivity,
-                            cropAspectRatioY = 9,
-                            cropAspectRatioX = 16,
-                            cropMiniHeight = this@MainActivity.dip2px(100f),
-                            cropMiniWidth = this@MainActivity.dip2px(1000f)
-                    )
+                    ImagePicker.pickImage(this@MainActivity, 30)
+//                    ImagePicker.pickImage4One(
+//                            activity = this@MainActivity,
+//                            cropAspectRatioY = 9,
+//                            cropAspectRatioX = 16,
+//                            cropMiniHeight = this@MainActivity.dip2px(100f),
+//                            cropMiniWidth = this@MainActivity.dip2px(1000f)
+//                    )
 //                ImagePicker.takePhoto(this@MainActivity, true);//使用摄像头
 
 
