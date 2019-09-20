@@ -12,7 +12,7 @@ import com.pmm.ui.core.toolbar.StatusBarManager
 import com.pmm.ui.ktx.dip2px
 import com.pmm.ui.ktx.getColorPro
 import com.pmm.ui.ktx.requestPermission
-import com.pmm.ui.ktx.setOnClickListenerPro
+import com.pmm.ui.ktx.click
 import io.weimu.www.imagepicker.R
 import io.weimu.www.imagepicker.fragment.adapter.ImageGridAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         //ToolBar
         mToolBar.apply {
             this.navigationIcon {
-                this.setOnClickListenerPro { onBackPressed() }
+                this.click { onBackPressed() }
             }
             this.centerTitle {
                 this.text = getString(R.string.app_name)

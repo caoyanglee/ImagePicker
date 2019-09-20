@@ -10,7 +10,7 @@ import com.pmm.ui.core.BaseB
 import com.pmm.ui.core.recyclerview.BaseRecyclerAdapter
 import com.pmm.ui.core.recyclerview.BaseRecyclerViewHolder
 import com.pmm.ui.ktx.load4CenterCrop
-import com.pmm.ui.ktx.setOnClickListenerPro
+import com.pmm.ui.ktx.click
 import kotlinx.android.synthetic.main.list_item_folder.view.*
 import java.io.File
 
@@ -43,7 +43,7 @@ internal class ImageFolderAdapter(mContext: Context) : BaseRecyclerAdapter<BaseB
             //是否显示
             this.is_selected.visibility = if (checkedIndex == position) View.VISIBLE else View.GONE
             //点击事件
-            this.setOnClickListenerPro {
+            this.click {
                 checkedIndex = position
                 notifyDataSetChanged()
                 onFolderClickListener?.invoke(item.name, item.images)

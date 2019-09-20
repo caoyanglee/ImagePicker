@@ -104,14 +104,14 @@ internal class ImageSelectorActivity : BaseActivity() {
                     val lightColor = this@apply.getToolBarBgColor().isLightColor()
                     this.setColorFilter(if (lightColor) Color.BLACK else Color.WHITE)
                 }
-                this.setOnClickListenerPro { onBackPressed() }
+                this.click { onBackPressed() }
             }
             this.centerTitle {
                 this.text = getString(R.string.select_image)
             }
             this.menuText1 {
                 this.text = if (config.selectMode == Config.MODE_MULTIPLE) (getString(R.string.done)) else ""
-                this.setOnClickListenerPro {
+                this.click {
                     //点击完成
                     onSelectDone(imageAdapter.selectedImages)
                 }
@@ -137,7 +137,7 @@ internal class ImageSelectorActivity : BaseActivity() {
                 this.visibility = View.GONE
             } else {
                 this.isActivated = isUseOrigin
-                this.setOnClickListenerPro {
+                this.click {
                     isUseOrigin = !isUseOrigin
                 }
             }
@@ -164,11 +164,11 @@ internal class ImageSelectorActivity : BaseActivity() {
     }
 
     private fun registerListener() {
-        folderLayout.setOnClickListenerPro {
+        folderLayout.click {
             //Toast.makeText(ImageSelectorActivity.this, "文件夹长度  " + allFolders.size() + "  内部图片数量  " + allFolders.get(0).getImages().size(), Toast.LENGTH_SHORT).show();
             if (allFolders.isEmpty() || allFolders[0].images.isEmpty()) {
                 Toast.makeText(this@ImageSelectorActivity, "没有可选择的图片", Toast.LENGTH_SHORT).show()
-                return@setOnClickListenerPro
+                return@click
             }
             if (folderWindow.isShowing) {
                 folderWindow.dismiss()

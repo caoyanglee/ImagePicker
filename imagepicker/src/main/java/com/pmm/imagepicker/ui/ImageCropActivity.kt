@@ -14,7 +14,7 @@ import com.pmm.ui.core.activity.BaseActivity
 import com.pmm.ui.core.toolbar.StatusBarManager
 import com.pmm.ui.ktx.gone
 import com.pmm.ui.ktx.isLightColor
-import com.pmm.ui.ktx.setOnClickListenerPro
+import com.pmm.ui.ktx.click
 import com.pmm.ui.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_image_crop.*
 import java.io.File
@@ -71,7 +71,7 @@ internal class ImageCropActivity : BaseActivity() {
                     val lightColor = this@apply.getToolBarBgColor().isLightColor()
                     this.setColorFilter(if (lightColor) Color.BLACK else Color.WHITE)
                 }
-                this.setOnClickListenerPro { onBackPressed() }
+                this.click { onBackPressed() }
             }
             this.centerTitle {
                 this.text = getString(R.string.crop_picture)
@@ -79,7 +79,7 @@ internal class ImageCropActivity : BaseActivity() {
             this.menuText1 {
                 this.text = getString(R.string.use)
                 this.isEnabled = true
-                this.setOnClickListenerPro {
+                this.click {
                     //点击完成
                     if (cropType == 1) {
                         saveOutput(cropImageView1.croppedImage)

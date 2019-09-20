@@ -112,14 +112,14 @@ internal class ImagePreviewActivity : BaseActivity() {
                     val lightColor = this@apply.getToolBarBgColor().isLightColor()
                     this.setColorFilter(if (lightColor) Color.BLACK else Color.WHITE)
                 }
-                this.setOnClickListenerPro { onBackPressed() }
+                this.click { onBackPressed() }
             }
             this.centerTitle {
                 this.text = "${position + 1}/${images.size}"
             }
             this.menuText1 {
                 this.text = getString(R.string.done)
-                this.setOnClickListenerPro {
+                this.click {
                     //点击完成
                     onDoneClick(true)
                 }
