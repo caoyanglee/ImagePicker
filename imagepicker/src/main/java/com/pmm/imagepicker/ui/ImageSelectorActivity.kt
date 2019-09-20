@@ -10,13 +10,13 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.pmm.imagepicker.*
 import com.pmm.imagepicker.adapter.ImageListAdapter
 import com.pmm.imagepicker.ktx.createCameraFile
@@ -24,12 +24,12 @@ import com.pmm.imagepicker.ktx.startActionCapture
 import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.imagepicker.model.LocalMediaFolder
 import com.pmm.imagepicker.ui.preview.ImagePreviewActivity
-import com.weimu.universalview.core.activity.BaseActivity
-import com.weimu.universalview.core.dialog.ProgressDialog
-import com.weimu.universalview.core.recyclerview.decoration.GridItemDecoration
-import com.weimu.universalview.core.toolbar.StatusBarManager
-import com.weimu.universalview.ktx.*
-import com.weimu.universalview.widget.ToolBarPro
+import com.pmm.ui.core.activity.BaseActivity
+import com.pmm.ui.core.dialog.ProgressDialog
+import com.pmm.ui.core.recyclerview.decoration.GridItemDecoration
+import com.pmm.ui.core.toolbar.StatusBarManager
+import com.pmm.ui.ktx.*
+import com.pmm.ui.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_imageselector.*
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
@@ -230,6 +230,7 @@ internal class ImageSelectorActivity : BaseActivity() {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             // on take photo success
             if (requestCode == ImagePicker.REQUEST_CAMERA) {

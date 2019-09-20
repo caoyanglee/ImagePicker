@@ -3,11 +3,9 @@ package io.weimu.www.imagepicker.fragment.adapter
 
 import android.content.Context
 import com.bumptech.glide.Glide
-import com.weimu.universalview.core.BaseB
-import com.weimu.universalview.core.recyclerview.BaseRecyclerAdapter
-import com.weimu.universalview.core.recyclerview.BaseRecyclerViewHolder
-import com.weimu.universalview.ktx.gone
-import com.weimu.universalview.ktx.visible
+import com.pmm.ui.core.BaseB
+import com.pmm.ui.core.recyclerview.BaseRecyclerAdapter
+import com.pmm.ui.core.recyclerview.BaseRecyclerViewHolder
 import io.weimu.www.imagepicker.R
 import kotlinx.android.synthetic.main.grid_item_image.view.*
 

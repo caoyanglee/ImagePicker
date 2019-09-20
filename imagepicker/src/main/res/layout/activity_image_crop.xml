@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.weimu.universalview.widget.ToolBarPro
+    <com.pmm.ui.widget.ToolBarPro
         android:id="@+id/mToolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

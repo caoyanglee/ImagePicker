@@ -9,7 +9,7 @@
     tools:context="io.weimu.www.imagepicker.ui.MainActivity">
 
 
-    <com.weimu.universalview.widget.ToolBarPro
+    <com.pmm.ui.widget.ToolBarPro
         android:id="@+id/mToolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -22,7 +22,7 @@
         android:textSize="16sp" />
 
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/id_RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

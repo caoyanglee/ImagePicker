@@ -6,11 +6,11 @@ import android.view.View
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.imagepicker.model.LocalMediaFolder
-import com.weimu.universalview.core.BaseB
-import com.weimu.universalview.core.recyclerview.BaseRecyclerAdapter
-import com.weimu.universalview.core.recyclerview.BaseRecyclerViewHolder
-import com.weimu.universalview.ktx.load4CenterCrop
-import com.weimu.universalview.ktx.setOnClickListenerPro
+import com.pmm.ui.core.BaseB
+import com.pmm.ui.core.recyclerview.BaseRecyclerAdapter
+import com.pmm.ui.core.recyclerview.BaseRecyclerViewHolder
+import com.pmm.ui.ktx.load4CenterCrop
+import com.pmm.ui.ktx.setOnClickListenerPro
 import kotlinx.android.synthetic.main.list_item_folder.view.*
 import java.io.File
 

@@ -1,9 +1,9 @@
 package io.weimu.www.imagepicker
 
 import android.graphics.Color
-import com.weimu.universalview.OriginAppData
-import com.weimu.universalview.ktx.getDrawablePro
-import com.weimu.universalview.widget.ToolBarPro
+import com.pmm.ui.OriginAppData
+import com.pmm.ui.ktx.getDrawablePro
+import com.pmm.ui.widget.ToolBarPro
 
 /**
  * Author:你需要一台永动机

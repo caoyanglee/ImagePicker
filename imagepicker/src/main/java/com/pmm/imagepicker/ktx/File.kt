@@ -6,9 +6,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
-import com.weimu.universalview.ktx.formatDate
-import com.weimu.universalview.ktx.getCurrentTimeStamp
-import com.weimu.universalview.ktx.getUri4File
+import com.pmm.ui.ktx.formatDate
+import com.pmm.ui.ktx.getCurrentTimeStamp
+import com.pmm.ui.ktx.getUri4File
 import java.io.File
 
 /**

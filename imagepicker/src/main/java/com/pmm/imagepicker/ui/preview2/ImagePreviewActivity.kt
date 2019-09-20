@@ -3,17 +3,17 @@ package com.pmm.imagepicker.ui.preview2
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.SharedElementCallback
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.app.SharedElementCallback
+import androidx.fragment.app.FragmentManager
 import com.pmm.imagepicker.R
+import com.pmm.ui.core.activity.BaseActivity
+import com.pmm.ui.core.pager.BaseFragmentStatePagerAdapter
+import com.pmm.ui.interfaces.MyViewPagerChangeListener
 import com.rd.animation.type.AnimationType
 import com.shizhefei.view.largeimage.LargeImageView
-import com.weimu.universalview.core.activity.BaseActivity
-import com.weimu.universalview.core.pager.BaseFragmentStatePagerAdapter
-import com.weimu.universalview.interfaces.MyViewPagerChangeListener
 import kotlinx.android.synthetic.main.activity_image_preview_v2.*
 
 

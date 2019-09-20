@@ -3,15 +3,15 @@ package com.pmm.imagepicker.ui.preview2
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
-import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
+import androidx.viewpager.widget.ViewPager
 import com.nineoldandroids.view.ViewHelper
+import com.pmm.ui.ktx.getScreenHeight
 import com.shizhefei.view.largeimage.LargeImageView
-import com.weimu.universalview.ktx.getScreenHeight
 
 /**
  * Author:你需要一台永动机

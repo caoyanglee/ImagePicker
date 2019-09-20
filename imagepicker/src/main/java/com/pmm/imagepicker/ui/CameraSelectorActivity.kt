@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.pmm.imagepicker.Config
@@ -12,8 +11,8 @@ import com.pmm.imagepicker.ImagePicker
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.ktx.createCameraFile
 import com.pmm.imagepicker.ktx.startActionCapture
-import com.weimu.universalview.core.activity.BaseActivity
-import com.weimu.universalview.ktx.gone
+import com.pmm.ui.core.activity.BaseActivity
+import com.pmm.ui.ktx.gone
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
@@ -67,6 +66,7 @@ internal class CameraSelectorActivity : BaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             // on take photo success
             if (requestCode == ImagePicker.REQUEST_CAMERA) {

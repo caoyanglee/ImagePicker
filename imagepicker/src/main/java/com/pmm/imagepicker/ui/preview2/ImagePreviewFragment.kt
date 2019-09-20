@@ -1,5 +1,6 @@
 package com.pmm.imagepicker.ui.preview2
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -13,16 +14,17 @@ import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
 import com.pmm.imagepicker.R
+import com.pmm.ui.OriginAppData
+import com.pmm.ui.core.fragment.BaseFragment
+import com.pmm.ui.helper.AnimHelper
+import com.pmm.ui.helper.FileHelper
+import com.pmm.ui.helper.MediaScanner
+import com.pmm.ui.helper.security.MD5Helper
+import com.pmm.ui.ktx.formatDate
+import com.pmm.ui.ktx.invisible
+import com.pmm.ui.ktx.toast
+import com.pmm.ui.ktx.visible
 import com.shizhefei.view.largeimage.factory.FileBitmapDecoderFactory
-import com.weimu.universalview.OriginAppData
-import com.weimu.universalview.core.fragment.BaseFragment
-import com.weimu.universalview.helper.AnimHelper
-import com.weimu.universalview.helper.FileHelper
-import com.weimu.universalview.helper.MediaScanner
-import com.weimu.universalview.helper.security.MD5Helper
-import com.weimu.universalview.ktx.formatDate
-import com.weimu.universalview.ktx.invisible
-import com.weimu.universalview.ktx.visible
 import kotlinx.android.synthetic.main.fragment_image_preview_v2.*
 import java.io.File
 import java.io.FileNotFoundException
@@ -253,7 +255,7 @@ class ImagePreviewFragment : BaseFragment() {
     }
 
     //保存图片
-    private fun saveImageToLocal() {
+    private fun saveImageToLocal(context: Context) {
         val picturePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)//大部分图片都存储在这个路径里
         val target = "IMAGE${(Date().time / 1000).formatDate("yyyyMMddHHmmss")}.png"
 
@@ -261,13 +263,13 @@ class ImagePreviewFragment : BaseFragment() {
         val saveFile = "$picturePath/$target"
         try {
             FileHelper.copyFile(sourceFile, saveFile)//直接复制即可
-            toastSuccess("保存成功")
+            context.toast("保存成功")
             //让图片可以扫描
             val filePaths = arrayOf("$picturePath/$target")
             val mimeTypes = arrayOf(MimeTypeMap.getSingleton().getMimeTypeFromExtension("png"))
             MediaScanner(context).scanFiles(filePaths, mimeTypes)
         } catch (e: FileNotFoundException) {
-            toastFail("文件未找到，请重试")
+            context.toast("文件未找到，请重试")
         }
 
     }

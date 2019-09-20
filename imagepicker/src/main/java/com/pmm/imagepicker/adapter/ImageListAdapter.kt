@@ -3,18 +3,18 @@ package com.pmm.imagepicker.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PorterDuff
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.ImageStaticHolder
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.model.LocalMedia
-import com.weimu.universalview.ktx.load4CenterCrop
+import com.pmm.ui.ktx.load4CenterCrop
 import java.io.File
 import java.util.*
 
