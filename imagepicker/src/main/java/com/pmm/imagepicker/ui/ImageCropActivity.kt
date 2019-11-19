@@ -15,6 +15,7 @@ import com.pmm.ui.core.toolbar.StatusBarManager
 import com.pmm.ui.ktx.gone
 import com.pmm.ui.ktx.isLightColor
 import com.pmm.ui.ktx.click
+import com.pmm.ui.ktx.toast
 import com.pmm.ui.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_image_crop.*
 import java.io.File
@@ -140,28 +141,32 @@ internal class ImageCropActivity : BaseActivity() {
     }
 
 
-    private fun saveOutput(croppedImage: Bitmap) {
-        saveUri = getUri4Crop()
-        saveUri?.let {
-            var outputStream: OutputStream? = null
-            try {
-                outputStream = contentResolver.openOutputStream(it)
-                if (outputStream != null) {
-                    croppedImage.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            } finally {
-                if (outputStream == null) return
+    private fun saveOutput(croppedImage: Bitmap?) {
+        if (croppedImage == null) {
+            toast("图片无效,请重新选择！")
+        } else {
+            saveUri = getUri4Crop()
+            saveUri?.let {
+                var outputStream: OutputStream? = null
                 try {
-                    outputStream.close()
-                } catch (t: Throwable) {
-                    // Do nothing
+                    outputStream = contentResolver.openOutputStream(it)
+                    if (outputStream != null) {
+                        croppedImage.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } finally {
+                    if (outputStream == null) return
+                    try {
+                        outputStream.close()
+                    } catch (t: Throwable) {
+                        // Do nothing
+                    }
                 }
+                setResult(RESULT_OK, Intent().putExtra(OUTPUT_PATH, it.path))
             }
-            setResult(RESULT_OK, Intent().putExtra(OUTPUT_PATH, it.path))
+            Handler().post { croppedImage.recycle() }
         }
-        Handler().post { croppedImage.recycle() }
         onBackPressed()
     }
 

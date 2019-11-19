@@ -77,8 +77,11 @@ class ImagePreviewFragment : BaseFragment() {
 
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
         super.beforeViewAttach(savedInstanceState)
-        url = arguments!!.getString(PATH)
-        smallUrl = arguments!!.getString(PATH_SMALL) ?: ""
+        //arguments
+        arguments?.apply {
+            url = this.getString(PATH) ?: ""
+            smallUrl = this.getString(PATH_SMALL) ?: ""
+        }
     }
 
     override fun afterViewAttach(savedInstanceState: Bundle?) {
@@ -266,7 +269,8 @@ class ImagePreviewFragment : BaseFragment() {
             context.toast("保存成功")
             //让图片可以扫描
             val filePaths = arrayOf("$picturePath/$target")
-            val mimeTypes = arrayOf(MimeTypeMap.getSingleton().getMimeTypeFromExtension("png"))
+            val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("png") ?: ""
+            val mimeTypes = arrayOf(mimeType)
             MediaScanner(context).scanFiles(filePaths, mimeTypes)
         } catch (e: FileNotFoundException) {
             context.toast("文件未找到，请重试")
@@ -280,5 +284,7 @@ class ImagePreviewFragment : BaseFragment() {
     }
 
 }
+
+
 
 
