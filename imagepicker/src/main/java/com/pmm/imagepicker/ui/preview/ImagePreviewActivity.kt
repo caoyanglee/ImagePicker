@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.CheckBox
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -23,7 +22,6 @@ import com.pmm.ui.core.toolbar.StatusBarManager
 import com.pmm.ui.ktx.*
 import com.pmm.ui.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_image_preview.*
-import kotlinx.android.synthetic.main.activity_image_preview.mToolBar
 import java.util.*
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
