@@ -93,7 +93,7 @@ class DragViewPager : ViewPager, View.OnClickListener {
     //配合SubsamplingScaleImageView使用，根据需要拦截ACTION_MOVE
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         if (adapter !is DragViewAdapter) return super.onInterceptTouchEvent(ev)
-        val mImage: LargeImageView? = (adapter as DragViewAdapter).getImageView(currentItem) //特殊操作
+        val mImage: LargeImageView? = (adapter as DragViewAdapter?)?.getImageView(currentItem) //特殊操作
         setCurrentShowView(mImage)
         if (mImage == null) return super.onInterceptTouchEvent(ev)
         val canPullDown = mImage.canScrollVertically(0)//是否可以下拉
