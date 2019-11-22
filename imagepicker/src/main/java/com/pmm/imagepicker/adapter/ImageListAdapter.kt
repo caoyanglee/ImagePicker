@@ -23,7 +23,7 @@ internal class ImageListAdapter(
         private var context: Context,
         private val config: Config) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var images: ArrayList<LocalMedia> = ArrayList()
+    var images: List<LocalMedia> = ArrayList()
         private set
     private var selectImages: ArrayList<LocalMedia> = ArrayList()
 
@@ -33,7 +33,7 @@ internal class ImageListAdapter(
         get() = selectImages
 
 
-    fun bindImages(images: ArrayList<LocalMedia>) {
+    fun bindImages(images: List<LocalMedia>) {
         //讲选中的集合引用 给到appData
         ImageStaticHolder.setChooseImages(images)
         this.images = images

@@ -10,7 +10,7 @@ import androidx.viewpager.widget.ViewPager
  * Date:2019/3/21 10:36
  * Description:防止图片放大闪退
  */
-class HackyViewPager : ViewPager {
+internal class HackyViewPager : ViewPager {
 
     constructor(context: Context) : super(context) {}
 

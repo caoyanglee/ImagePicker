@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.pmm.imagepicker.R
 import com.pmm.ui.core.activity.BaseActivity
@@ -15,6 +16,7 @@ import com.pmm.ui.interfaces.MyViewPagerChangeListener
 import com.rd.animation.type.AnimationType
 import com.shizhefei.view.largeimage.LargeImageView
 import kotlinx.android.synthetic.main.activity_image_preview_v2.*
+import kotlin.math.max
 
 
 class ImagePreviewActivity : BaseActivity() {
@@ -127,7 +129,6 @@ class ImagePreviewActivity : BaseActivity() {
         viewpager.apply {
             this.offscreenPageLimit = 1
             this.adapter = mAdapter
-            mAdapter.setFragments(fragments)
             this.currentItem = position
             //滚动监听
             this.addOnPageChangeListener(object : MyViewPagerChangeListener() {
@@ -151,8 +152,21 @@ class ImagePreviewActivity : BaseActivity() {
     }
 
 
-    class ImagePagerAdapter(fm: FragmentManager) : BaseFragmentStatePagerAdapter(fm), DragViewPager.DragViewAdapter {
-        override fun getImageView(position: Int): LargeImageView = getItem(position).view!!.findViewById(R.id.iv_large)
+    inner class ImagePagerAdapter(fm: FragmentManager) : BaseFragmentStatePagerAdapter(fm), DragViewPager.DragViewAdapter {
+
+        override fun getItem(position: Int): Fragment {
+            if (smallPicList.size > 0) {
+                return ImagePreviewFragment.newInstance(imageList[position], smallPicList[position])
+            } else {
+                return ImagePreviewFragment.newInstance(imageList[position])
+            }
+        }
+
+        override fun getCount(): Int = max(smallPicList.size, imageList.size)
+
+        override fun getImageView(position: Int): LargeImageView? {
+            return getFragment(position).view?.findViewById(R.id.iv_large)
+        }
     }
 
     //动画返回
@@ -167,9 +181,7 @@ class ImagePreviewActivity : BaseActivity() {
         //ActivityCompat.finishAfterTransition(this)
     }
 
-
     override fun onBackPressed() {
         transitionFinish()
     }
-
 }

@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -58,6 +59,7 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     private var isLoadImgIng = false//是否正在加载图片->返回给app
 
+    private var loadDelay = 0L//第一次为0，后面为300毫秒，为了让共享元素动画可以正常运行
 
     companion object {
         const val BUNDLE_CAMERA_PATH = "CameraPath"
@@ -81,6 +83,10 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     override fun getLayoutResID(): Int = R.layout.activity_imageselector
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(BUNDLE_CAMERA_PATH, cameraPath)
+    }
 
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
         config = intent.getSerializableExtra(Config.EXTRA_CONFIG) as Config
@@ -92,8 +98,9 @@ internal class ImageSelectorActivity : BaseActivity() {
     override fun afterViewAttach(savedInstanceState: Bundle?) {
         initView()
         registerListener()
-        loadData()
+        initImageLoader()
     }
+
 
     private fun initView() {
         //ToolBar
@@ -152,13 +159,16 @@ internal class ImageSelectorActivity : BaseActivity() {
         }
     }
 
-    private fun loadData() {
+    private fun initImageLoader() {
         LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage(object : LocalMediaLoader.LocalMediaLoadListener {
             override fun loadComplete(folders: List<LocalMediaFolder>) {
-                allFolders = folders
-                folderWindow.bindFolder(allFolders)
-                //load all images first
-                imageAdapter.bindImages(allFolders[0].images as ArrayList<LocalMedia>)
+                Handler().postDelayed({
+                    allFolders = folders
+                    folderWindow.bindFolder(allFolders)
+                    //load all images first
+                    imageAdapter.bindImages(allFolders[0].images as ArrayList<LocalMedia>)
+                    if (loadDelay == 0L) loadDelay = 350
+                }, loadDelay)
             }
         })
     }
@@ -201,9 +211,9 @@ internal class ImageSelectorActivity : BaseActivity() {
                 when {
                     config.enablePreview -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            startPreviewWithAnim(imageAdapter.images, position, view)
+                            startPreviewWithAnim(position, view)
                         } else {
-                            startPreview(imageAdapter.images, position)
+                            startPreview(position)
                         }
                     }
                     config.enableCrop -> {
@@ -227,7 +237,6 @@ internal class ImageSelectorActivity : BaseActivity() {
             recyclerView.smoothScrollToPosition(0)
         }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -257,11 +266,6 @@ internal class ImageSelectorActivity : BaseActivity() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(BUNDLE_CAMERA_PATH, cameraPath)
-    }
-
     /**
      * 打开相机，预览，裁剪
      */
@@ -272,11 +276,11 @@ internal class ImageSelectorActivity : BaseActivity() {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    fun startPreviewWithAnim(previewImages: List<LocalMedia>, position: Int, view: View) {
+    fun startPreviewWithAnim(position: Int, view: View) {
         ImagePreviewActivity.startPreviewWithAnim(this, imageAdapter.selectedImages, config.maxSelectNum, position, view)
     }
 
-    fun startPreview(previewImages: List<LocalMedia>, position: Int) {
+    fun startPreview(position: Int) {
         ImagePreviewActivity.startPreview(this, imageAdapter.selectedImages, config.maxSelectNum, position)
     }
 

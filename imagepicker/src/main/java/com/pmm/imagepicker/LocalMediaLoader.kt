@@ -15,6 +15,7 @@ import java.util.*
 
 internal class LocalMediaLoader(private val activity: FragmentActivity, var type: Int = TYPE_IMAGE) {
 
+
     private val mDirPaths = HashSet<String>()//文件夹路径
 
     fun loadAllImage(imageLoadListener: LocalMediaLoadListener) {
@@ -22,16 +23,19 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
 
             override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
                 var cursorLoader: CursorLoader? = null
-                if (id == TYPE_IMAGE) {
-                    cursorLoader = CursorLoader(
-                            activity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            IMAGE_PROJECTION, MediaStore.Images.Media.MIME_TYPE + "=? or "
-                            + MediaStore.Images.Media.MIME_TYPE + "=?",
-                            arrayOf("image/jpeg", "image/png"), IMAGE_PROJECTION[2] + " DESC")
-                } else if (id == TYPE_VIDEO) {
-                    cursorLoader = CursorLoader(
-                            activity, MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                            VIDEO_PROJECTION, null, null, VIDEO_PROJECTION[2] + " DESC")
+                when (id) {
+                    TYPE_IMAGE -> {
+                        cursorLoader = CursorLoader(
+                                activity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                IMAGE_PROJECTION, MediaStore.Images.Media.MIME_TYPE + "=? or "
+                                + MediaStore.Images.Media.MIME_TYPE + "=?",
+                                arrayOf("image/jpeg", "image/png"), IMAGE_PROJECTION[2] + " DESC")
+                    }
+                    TYPE_VIDEO -> {
+                        cursorLoader = CursorLoader(
+                                activity, MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                                VIDEO_PROJECTION, null, null, VIDEO_PROJECTION[2] + " DESC")
+                    }
                 }
                 return cursorLoader as Loader<Cursor>
             }
@@ -42,6 +46,9 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                 val imageFolders = ArrayList<LocalMediaFolder>()//一组文件夹
                 val allImageFolder = LocalMediaFolder()//全部图片-文件夹
                 val allImages = ArrayList<LocalMedia>()//图片
+
+                if (!data.moveToFirst()) {
+                    return; }//issue链接：https://github.com/jeasonlzy/ImagePicker/issues/243#issuecomment-380353956
 
                 //while循环
                 while (data.moveToNext()) {
@@ -101,7 +108,7 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                 sortFolder(imageFolders)
                 imageLoadListener.loadComplete(imageFolders)
 
-                data.close()
+                //data.close()不用手动关闭
             }
 
             override fun onLoaderReset(loader: Loader<Cursor>) {}
@@ -143,7 +150,7 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
 
     companion object {
         // load type
-        val TYPE_CONTACK = 0
+        val TYPE_CONTRACT = 0
         val TYPE_IMAGE = 1
         val TYPE_VIDEO = 2
 

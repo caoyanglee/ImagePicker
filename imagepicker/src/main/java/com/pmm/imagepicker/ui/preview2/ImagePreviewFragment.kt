@@ -39,7 +39,7 @@ import java.util.*
  * 普通图片->PhotoView
  * 长图->WebView
  */
-class ImagePreviewFragment : BaseFragment() {
+internal class ImagePreviewFragment : BaseFragment() {
 
 
     val FILE_IMAGE_PREVIEW = "${OriginAppData.context.externalCacheDir}/images/"//  cache/images 下的图片
@@ -216,7 +216,7 @@ class ImagePreviewFragment : BaseFragment() {
                 //做一下过渡动画比较不会太生硬
                 AnimHelper.alphaAnim(iv_large, 1000, onAnimEnd = {
                     //                    Handler().postDelayed({iv_large_thumbnail?.gone()},1000)
-                    cl_root.removeView(iv_large_thumbnail)
+                    cl_root?.removeView(iv_large_thumbnail)
                 })
             } else {
                 //加载普通图

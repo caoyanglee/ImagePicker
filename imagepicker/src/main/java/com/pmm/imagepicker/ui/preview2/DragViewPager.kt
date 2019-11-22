@@ -18,7 +18,7 @@ import com.shizhefei.view.largeimage.LargeImageView
  * Date:2018/6/14 00:20
  * Description:
  */
-class DragViewPager : ViewPager, View.OnClickListener {
+internal class DragViewPager : ViewPager, View.OnClickListener {
 
     companion object {
         val STATUS_NORMAL = 0//正常浏览状态
@@ -93,7 +93,7 @@ class DragViewPager : ViewPager, View.OnClickListener {
     //配合SubsamplingScaleImageView使用，根据需要拦截ACTION_MOVE
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         if (adapter !is DragViewAdapter) return super.onInterceptTouchEvent(ev)
-        val mImage: LargeImageView? = (adapter as DragViewAdapter?)?.getImageView(currentItem) //特殊操作
+        val mImage: LargeImageView? = (adapter as DragViewAdapter).getImageView(currentItem) //特殊操作
         setCurrentShowView(mImage)
         if (mImage == null) return super.onInterceptTouchEvent(ev)
         val canPullDown = mImage.canScrollVertically(0)//是否可以下拉
@@ -296,7 +296,7 @@ class DragViewPager : ViewPager, View.OnClickListener {
     }
 
     interface DragViewAdapter {
-        fun getImageView(position: Int): LargeImageView
+        fun getImageView(position: Int): LargeImageView?
     }
 
 }
