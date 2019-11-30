@@ -48,11 +48,10 @@ internal class ImageSelectorActivity : BaseActivity() {
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.folder_list) }
     private val imageAdapter: ImageListAdapter by lazy { ImageListAdapter(this, config) }
     private val folderLayout: LinearLayout by lazy { findViewById<LinearLayout>(R.id.folder_layout) }
-    private val folderName: TextView by lazy { findViewById<TextView>(R.id.folder_name) }
     private val folderWindow: FolderWindow by lazy { FolderWindow(this) }
 
     private var cameraPath: String? = null
-    private var allFolders: List<LocalMediaFolder> = arrayListOf()//所有图片文件夹
+
     private var isUseOrigin by Delegates.observable(false) { property: KProperty<*>, oldValue: Boolean, newValue: Boolean ->
         tvOrigin.isActivated = newValue
     }//是否使用原图
@@ -60,6 +59,7 @@ internal class ImageSelectorActivity : BaseActivity() {
     private var isLoadImgIng = false//是否正在加载图片->返回给app
 
     private var loadDelay = 0L//第一次为0，后面为300毫秒，为了让共享元素动画可以正常运行
+
 
     companion object {
         const val BUNDLE_CAMERA_PATH = "CameraPath"
@@ -163,10 +163,10 @@ internal class ImageSelectorActivity : BaseActivity() {
         LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage(object : LocalMediaLoader.LocalMediaLoadListener {
             override fun loadComplete(folders: List<LocalMediaFolder>) {
                 Handler().postDelayed({
-                    allFolders = folders
-                    folderWindow.bindFolder(allFolders)
+                    folderWindow.bindFolder(folders)
                     //load all images first
-                    imageAdapter.bindImages(allFolders[0].images as ArrayList<LocalMedia>)
+                    val imagesInFirstFolder = folderWindow.getFolderImages()
+                    imageAdapter.bindImages(imagesInFirstFolder)
                     if (loadDelay == 0L) loadDelay = 350
                 }, loadDelay)
             }
@@ -176,7 +176,7 @@ internal class ImageSelectorActivity : BaseActivity() {
     private fun registerListener() {
         folderLayout.click {
             //Toast.makeText(ImageSelectorActivity.this, "文件夹长度  " + allFolders.size() + "  内部图片数量  " + allFolders.get(0).getImages().size(), Toast.LENGTH_SHORT).show();
-            if (allFolders.isEmpty() || allFolders[0].images.isEmpty()) {
+            if (folderWindow.isEmpty()) {
                 Toast.makeText(this@ImageSelectorActivity, "没有可选择的图片", Toast.LENGTH_SHORT).show()
                 return@click
             }
@@ -230,10 +230,9 @@ internal class ImageSelectorActivity : BaseActivity() {
             }
         })
         //点击某个文件件
-        folderWindow.setOnFolderClickListener { folderName, images ->
-            folderWindow.dismiss()
-            imageAdapter.bindImages(images as ArrayList<LocalMedia>)
-            this@ImageSelectorActivity.folderName.text = folderName
+        folderWindow.onFolderClickListener = { folderName, images ->
+            imageAdapter.bindImages(images)
+            mFolderName.text = folderName
             recyclerView.smoothScrollToPosition(0)
         }
     }

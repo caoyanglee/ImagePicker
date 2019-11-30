@@ -12,6 +12,7 @@ import android.widget.PopupWindow
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pmm.imagepicker.R
+import com.pmm.imagepicker.adapter.FolderClickCallBack
 import com.pmm.imagepicker.adapter.ImageFolderAdapter
 import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.imagepicker.model.LocalMediaFolder
@@ -34,7 +35,21 @@ internal class FolderWindow(private val context: Context) : PopupWindow() {
     private lateinit var recyclerView: RecyclerView
     private val mAdapter: ImageFolderAdapter by lazy { ImageFolderAdapter(context) }
 
+    var onFolderClickListener: ((folderName: String?, images: List<LocalMedia>) -> Unit)? = null
+
     private var isDismiss = false
+
+    var folders: List<LocalMediaFolder> = arrayListOf()
+        //所有图片文件夹
+        private set
+
+    var folderIndex = 0
+        //文件夹对应的角标
+        private set
+
+    fun getFolderImages(position: Int=folderIndex) = folders[position].images
+
+    fun isEmpty() = folders.isEmpty() || folders[0].images.isEmpty()
 
     init {
         window = LayoutInflater.from(context).inflate(R.layout.window_folder, null)
@@ -65,16 +80,21 @@ internal class FolderWindow(private val context: Context) : PopupWindow() {
             this.visibility = View.GONE
         }
 
+        mAdapter.onFolderClickListener = { index, folderName, images ->
+            this.dismiss()
+            folderIndex = index
+            onFolderClickListener?.invoke(folderName,images)
+        }
     }
 
     fun bindFolder(folders: List<LocalMediaFolder>) {
-        mAdapter.setDataToAdapter(folders)
+        this.folders = folders
+        mAdapter.setDataToAdapter(this.folders)
     }
 
-    fun setOnFolderClickListener(onFolderClickListener: ((folderName: String?, images: List<LocalMedia>) -> Unit)?){
+    fun setOnFolderClickListener(onFolderClickListener: FolderClickCallBack) {
         mAdapter.onFolderClickListener = onFolderClickListener
     }
-
 
     override fun showAsDropDown(anchor: View) {
         super.showAsDropDown(anchor)

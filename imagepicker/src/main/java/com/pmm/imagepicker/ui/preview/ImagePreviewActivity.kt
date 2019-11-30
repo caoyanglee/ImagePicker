@@ -18,6 +18,7 @@ import com.pmm.imagepicker.ImageStaticHolder
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.ui.core.activity.BaseActivity
+import com.pmm.ui.core.pager.BaseFragmentStatePagerAdapter
 import com.pmm.ui.core.toolbar.StatusBarManager
 import com.pmm.ui.ktx.*
 import com.pmm.ui.widget.ToolBarPro
@@ -185,7 +186,7 @@ internal class ImagePreviewActivity : BaseActivity() {
         })
     }
 
-    inner class SimpleFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+    inner class SimpleFragmentAdapter(fm: FragmentManager) : BaseFragmentStatePagerAdapter(fm) {
         override fun getItem(position: Int): Fragment = ImagePreviewFragment.newInstance(images[position].path)
         override fun getCount(): Int = images.size
     }

@@ -19,12 +19,15 @@ import java.io.File
  * Date:2019-05-27 15:48
  * Description:文件夹适配器
  */
+
+internal typealias FolderClickCallBack = ((index: Int, folderName: String?, images: List<LocalMedia>) -> Unit)?
+
 internal class ImageFolderAdapter(mContext: Context) : BaseRecyclerAdapter<BaseB, LocalMediaFolder>(mContext) {
 
     override fun getItemLayoutRes(): Int = R.layout.list_item_folder
 
     private var checkedIndex = -1//选中的位置
-    var onFolderClickListener: ((folderName: String?, images: List<LocalMedia>) -> Unit)? = null
+    var onFolderClickListener: FolderClickCallBack = null
 
 
     @SuppressLint("StringFormatMatches")
@@ -46,8 +49,10 @@ internal class ImageFolderAdapter(mContext: Context) : BaseRecyclerAdapter<BaseB
             this.click {
                 checkedIndex = position
                 notifyDataSetChanged()
-                onFolderClickListener?.invoke(item.name, item.images)
+                onFolderClickListener?.invoke(position, item.name, item.images)
             }
         }
     }
 }
+
+
