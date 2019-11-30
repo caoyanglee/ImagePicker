@@ -44,7 +44,7 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                 if (data == null || data.isClosed) return
 
                 val imageFolders = ArrayList<LocalMediaFolder>()//一组文件夹
-                val allImageFolder = LocalMediaFolder()//全部图片-文件夹
+                val imageFolder4All = LocalMediaFolder()//全部图片-文件夹
                 val allImages = ArrayList<LocalMedia>()//图片
 
                 if (!data.moveToFirst()) {
@@ -80,8 +80,9 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                     val localMediaFolder = getImageFolder(path, imageFolders)
 
                     //获取文件夹里的所有图片
-                    val files = parentFile.listFiles { dir, filename -> if (filename.endsWith(".jpg") or filename.endsWith(".png") || filename.endsWith(".jpeg")) true else false }
-
+                    val files = parentFile.listFiles { dir, filename ->
+                        filename.endsWith(".jpg") or filename.endsWith(".png") || filename.endsWith(".jpeg")
+                    }
 
                     val images = ArrayList<LocalMedia>()
 
@@ -98,17 +99,21 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                     }
                 }
 
-                allImageFolder.images = allImages
-                allImageFolder.imageNum = allImageFolder.images.size
+                imageFolder4All.images = allImages
+                imageFolder4All.imageNum = imageFolder4All.images.size
                 if (allImages.size != 0) {
-                    allImageFolder.firstImagePath = allImages[0].path
+                    imageFolder4All.firstImagePath = allImages[0].path
                 }
-                allImageFolder.name = activity.getString(R.string.all_image)
-                imageFolders.add(allImageFolder)
+                imageFolder4All.name = activity.getString(R.string.all_image)
+                imageFolders.add(imageFolder4All)
                 sortFolder(imageFolders)
+
+                //加载所有文件夹
                 imageLoadListener.loadComplete(imageFolders)
 
-                //data.close()不用手动关闭
+                mDirPaths.clear()//防止下次加载 文件夹扫描不到
+
+                //data.close()// 不用手动关闭
             }
 
             override fun onLoaderReset(loader: Loader<Cursor>) {}
@@ -118,9 +123,6 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
     private fun sortFolder(imageFolders: List<LocalMediaFolder>) {
         // 文件夹按图片数量排序
         Collections.sort(imageFolders, Comparator { lhs, rhs ->
-            if (lhs.images == null || rhs.images == null) {
-                return@Comparator 0
-            }
             //默认升序
             if (lhs.name == activity.getString(R.string.all_image)) return@Comparator -1
             val lsize = lhs.imageNum
@@ -134,7 +136,8 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
         val folderFile = imageFile.parentFile//图片对应的文件夹
         //搜寻所有文件夹
         for (folder in imageFolders) {
-            if (folder.name == folderFile.name) {
+            //不要单用文件名比较，因为有可能出现同名不同的文件夹
+            if (folder.path == folderFile.path) {
                 return folder
             }
         }
