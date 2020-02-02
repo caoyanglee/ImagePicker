@@ -32,7 +32,7 @@ private fun Context.createMediaFileInApp(childFoldName: String):File{
     val rootDir = if (state == Environment.MEDIA_MOUNTED) getExternalFilesDir(Environment.DIRECTORY_PICTURES) else this.filesDir
     val folderDir = File("$rootDir/$childFoldName/")
     if (!folderDir.exists() && folderDir.mkdirs()) { }
-    val fileName = "crop.jpg"
+    val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.jpg"//必须使用不同命名
     return File(folderDir, fileName)
 }
 
