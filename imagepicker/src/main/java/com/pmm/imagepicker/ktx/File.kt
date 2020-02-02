@@ -22,14 +22,14 @@ private fun Context.createMediaFile(childFoldName: String): File {
     val state = Environment.getExternalStorageState()
     val rootDir = if (state == Environment.MEDIA_MOUNTED) Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) else this.filesDir
     val folderDir = File("$rootDir/$childFoldName/")
-    if (!folderDir.exists() && folderDir.mkdirs()) {}
+    if (!folderDir.exists() && folderDir.mkdirs()) { }
     val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.jpg"
     return File(folderDir, fileName)
 }
 
-private fun Context.createMediaFileInApp(childFoldName: String):File{
+private fun Context.createMediaFileInApp(childFoldName: String): File {
     val state = Environment.getExternalStorageState()
-    val rootDir = if (state == Environment.MEDIA_MOUNTED) getExternalFilesDir(Environment.DIRECTORY_PICTURES) else this.filesDir
+    val rootDir = if (state == Environment.MEDIA_MOUNTED) "${(externalCacheDir?.absolutePath)?:""}/imagePicker_disk_cache" else this.cacheDir
     val folderDir = File("$rootDir/$childFoldName/")
     if (!folderDir.exists() && folderDir.mkdirs()) { }
     val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.jpg"//必须使用不同命名
