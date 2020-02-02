@@ -37,9 +37,9 @@ class MainActivity : AppCompatActivity() {
 
                 //添加
                 override fun onItemAddClick() {
-                    ImagePicker.pickImage4One(this@MainActivity,cropAspectRatioX = 1,cropAspectRatioY = 1)
+//                    ImagePicker.pickImage4One(this@MainActivity,cropAspectRatioX = 1,cropAspectRatioY = 1)
 //                    ImagePicker.pickAvatar(this@MainActivity);
-//                    ImagePicker.pickImage(this@MainActivity, 30)
+                    ImagePicker.pickImage(this@MainActivity, 30)
 //                    ImagePicker.pickImage4One(
 //                            activity = this@MainActivity,
 //                            cropAspectRatioY = 9,

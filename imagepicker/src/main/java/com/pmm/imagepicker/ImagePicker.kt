@@ -46,6 +46,14 @@ object ImagePicker {
         ImageSelectorActivity.start(activity, config)
     }
 
+    /**
+     * 选择一张图片
+     *
+     * @param cropAspectRatioX 裁剪的比例X
+     * @param cropAspectRatioY 裁剪的比例Y
+     * @param cropMiniHeight 裁剪的最小高度
+     * @param cropMiniWidth 裁剪的最小宽度
+     */
     fun pickImage4One(
             activity: Activity,
             enableCamera: Boolean = true,
