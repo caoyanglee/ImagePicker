@@ -20,11 +20,19 @@ import java.io.File
 //创建图片文件
 private fun Context.createMediaFile(childFoldName: String): File {
     val state = Environment.getExternalStorageState()
-    val rootDir = if (state == Environment.MEDIA_MOUNTED) Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) else this.cacheDir
+    val rootDir = if (state == Environment.MEDIA_MOUNTED) Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) else this.filesDir
     val folderDir = File("$rootDir/$childFoldName/")
-    if (!folderDir.exists() && folderDir.mkdirs()) {
-    }
+    if (!folderDir.exists() && folderDir.mkdirs()) {}
     val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.jpg"
+    return File(folderDir, fileName)
+}
+
+private fun Context.createMediaFileInApp(childFoldName: String):File{
+    val state = Environment.getExternalStorageState()
+    val rootDir = if (state == Environment.MEDIA_MOUNTED) getExternalFilesDir(Environment.DIRECTORY_PICTURES) else this.filesDir
+    val folderDir = File("$rootDir/$childFoldName/")
+    if (!folderDir.exists() && folderDir.mkdirs()) { }
+    val fileName = "crop.jpg"
     return File(folderDir, fileName)
 }
 
@@ -32,7 +40,7 @@ private fun Context.createMediaFile(childFoldName: String): File {
 internal fun Context.createCameraFile(): File = createMediaFile("Camera")
 
 //创建裁剪图片
-internal fun Context.createCropFile(): File = createMediaFile("Crop")
+internal fun Context.createCropFile(): File = createMediaFileInApp("Crop")
 
 //相机图片
 internal fun Context.getUri4Camera(): Uri = Uri.fromFile(createCameraFile())
