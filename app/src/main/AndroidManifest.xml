@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="io.weimu.www.imagepicker">
 
+    <!-- 相机权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- 存储权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".AppData"
         android:allowBackup="false"
