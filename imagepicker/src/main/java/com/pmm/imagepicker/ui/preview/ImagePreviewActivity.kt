@@ -19,7 +19,7 @@ import com.pmm.imagepicker.R
 import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.ui.core.activity.BaseActivity
 import com.pmm.ui.core.pager.BaseFragmentStatePagerAdapter
-import com.pmm.ui.core.toolbar.StatusBarManager
+import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.ktx.*
 import com.pmm.ui.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_image_preview.*
@@ -74,11 +74,11 @@ internal class ImagePreviewActivity : BaseActivity() {
         if (newValue) {
             mToolBar.visible()
             mSelectBarLayout.visible()
-            StatusBarManager.showStatusBar(window)
+            StatusNavigationBar.showStatusBar(window)
         } else {
             mToolBar.gone()
             mSelectBarLayout.gone()
-            StatusBarManager.hideStatusBar(window)
+            StatusNavigationBar.hideStatusBar(window)
         }
     }
 
@@ -105,6 +105,7 @@ internal class ImagePreviewActivity : BaseActivity() {
 
     private fun initView() {
         mToolBar.apply {
+            this.showStatusView=true
             this.navigationIcon {
                 if (ToolBarPro.GlobalConfig.navigationDrawable == null) {
                     this.setImageResource(R.drawable.ic_nav_back_24dp)
@@ -127,13 +128,14 @@ internal class ImagePreviewActivity : BaseActivity() {
         }
 
         //StatusBar
-        StatusBarManager.apply {
+        StatusNavigationBar.apply {
             val statusColor = mToolBar.getToolBarBgColor()
-            this.setColor(window, statusColor)
+            //this.setColor(window, statusColor)
+            this.setStatusNavigationBarTransparent(window)
             if (statusColor.isLightColor()) {
-                this.setLightMode(window)
+                this.setLightMode(window,true)
             } else {
-                this.setDarkMode(window)
+                this.setDarkMode(window,true)
             }
         }
 

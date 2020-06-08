@@ -16,7 +16,8 @@
         <item name="android:windowBackground">@color/colorTransparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentTransitions">true</item>
-        <!--<item name="android:windowAnimationStyle">@style/ImagePreviewActivityAnim</item>-->
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:navigationBarColor">@color/colorTransparent</item>
     </style>
 
     <!--图片预览 ProgressBar-->

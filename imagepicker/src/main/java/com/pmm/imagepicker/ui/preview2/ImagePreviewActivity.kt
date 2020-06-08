@@ -10,6 +10,7 @@ import androidx.core.app.SharedElementCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.pmm.imagepicker.R
+import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.core.activity.BaseActivity
 import com.pmm.ui.core.pager.BaseFragmentStatePagerAdapter
 import com.pmm.ui.interfaces.MyViewPagerChangeListener
@@ -82,6 +83,10 @@ class ImagePreviewActivity : BaseActivity() {
             }
             ActivityCompat.startActivity(context, intent, compat.toBundle());
         }
+    }
+
+    override fun beforeSuperCreate(savedInstanceState: Bundle?) {
+        StatusNavigationBar.setStatusNavigationBarTransparent(window)
     }
 
     override fun beforeViewAttach(savedInstanceState: Bundle?) {

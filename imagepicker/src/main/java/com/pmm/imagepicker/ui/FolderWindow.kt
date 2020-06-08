@@ -17,10 +17,7 @@ import com.pmm.imagepicker.adapter.ImageFolderAdapter
 import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.imagepicker.model.LocalMediaFolder
 import com.pmm.ui.core.recyclerview.decoration.LinearItemDecoration
-import com.pmm.ui.ktx.dip2px
-import com.pmm.ui.ktx.getScreenHeight
-import com.pmm.ui.ktx.getScreenWidth
-import com.pmm.ui.ktx.getStatusBarHeight
+import com.pmm.ui.ktx.*
 import com.pmm.ui.widget.ToolBarPro
 import java.lang.reflect.Method
 import java.util.ArrayList
@@ -57,7 +54,7 @@ internal class FolderWindow(private val context: Context) : PopupWindow() {
         view.setOnClickListener { dismiss() }
         this.contentView = window
         this.width = context.getScreenWidth()
-        this.height = context.getScreenHeight() - (ToolBarPro.GlobalConfig.toolbarHeight + context.getStatusBarHeight() + context.dip2px(48f))
+        this.height = context.getScreenHeight()
         this.animationStyle = R.style.WindowStyle
         this.isFocusable = true
         this.isOutsideTouchable = true

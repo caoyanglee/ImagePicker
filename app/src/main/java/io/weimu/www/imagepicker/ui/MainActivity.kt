@@ -7,12 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pmm.imagepicker.ImagePicker
 import com.pmm.imagepicker.ui.preview2.ImagePreviewActivity
+import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.core.recyclerview.decoration.GridItemDecoration
-import com.pmm.ui.core.toolbar.StatusBarManager
-import com.pmm.ui.ktx.dip2px
-import com.pmm.ui.ktx.getColorPro
-import com.pmm.ui.ktx.requestPermission
 import com.pmm.ui.ktx.click
+import com.pmm.ui.ktx.dip2px
+import com.pmm.ui.ktx.requestPermission
 import io.weimu.www.imagepicker.R
 import io.weimu.www.imagepicker.fragment.adapter.ImageGridAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -37,9 +36,9 @@ class MainActivity : AppCompatActivity() {
 
                 //添加
                 override fun onItemAddClick() {
-//                    ImagePicker.pickImage4One(this@MainActivity,cropAspectRatioX = 1,cropAspectRatioY = 1)
+                    ImagePicker.pickImage4One(this@MainActivity,cropAspectRatioX = 1,cropAspectRatioY = 1)
 //                    ImagePicker.pickAvatar(this@MainActivity);
-                    ImagePicker.pickImage(this@MainActivity, 30)
+//                    ImagePicker.pickImage(this@MainActivity, 30)
 //                    ImagePicker.pickImage4One(
 //                            activity = this@MainActivity,
 //                            cropAspectRatioY = 9,
@@ -64,13 +63,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        StatusNavigationBar.setStatusNavigationBarTransparent(window)
+        StatusNavigationBar.setDarkMode(window,true)
         setContentView(R.layout.activity_main)
-
-        StatusBarManager.setColor(window, getColorPro(R.color.colorPrimary))
-        StatusBarManager.setDarkMode(window)
 
         //ToolBar
         mToolBar.apply {
+            this.showStatusView = true
             this.navigationIcon {
                 this.click { onBackPressed() }
             }

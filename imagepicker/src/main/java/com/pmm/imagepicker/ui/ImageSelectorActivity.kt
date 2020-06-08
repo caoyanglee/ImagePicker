@@ -28,7 +28,7 @@ import com.pmm.imagepicker.ui.preview.ImagePreviewActivity
 import com.pmm.ui.core.activity.BaseActivity
 import com.pmm.ui.core.dialog.ProgressDialog
 import com.pmm.ui.core.recyclerview.decoration.GridItemDecoration
-import com.pmm.ui.core.toolbar.StatusBarManager
+import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.ktx.*
 import com.pmm.ui.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_imageselector.*
@@ -88,6 +88,11 @@ internal class ImageSelectorActivity : BaseActivity() {
         outState.putString(BUNDLE_CAMERA_PATH, cameraPath)
     }
 
+    override fun beforeSuperCreate(savedInstanceState: Bundle?) {
+        StatusNavigationBar.setStatusNavigationBarTransparent(window)
+        //StatusBar
+    }
+
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
         config = intent.getSerializableExtra(Config.EXTRA_CONFIG) as Config
         if (savedInstanceState != null) {
@@ -105,6 +110,7 @@ internal class ImageSelectorActivity : BaseActivity() {
     private fun initView() {
         //ToolBar
         mToolBar.apply {
+            this.showStatusView = true
             this.navigationIcon {
                 if (ToolBarPro.GlobalConfig.navigationDrawable == null) {
                     this.setImageResource(R.drawable.ic_nav_back_24dp)
@@ -126,14 +132,13 @@ internal class ImageSelectorActivity : BaseActivity() {
             }
 
         }
-        //StatusBar
-        StatusBarManager.apply {
+
+        StatusNavigationBar.apply {
             val statusColor = mToolBar.getToolBarBgColor()
-            this.setColor(window, statusColor)
             if (statusColor.isLightColor()) {
-                this.setLightMode(window)
+                this.setLightMode(window,true)
             } else {
-                this.setDarkMode(window)
+                this.setDarkMode(window,true)
             }
         }
 

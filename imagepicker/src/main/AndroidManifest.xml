@@ -12,8 +12,7 @@
         <activity android:name=".ui.preview.ImagePreviewActivity" />
         <activity android:name=".ui.ImageCropActivity" />
         <activity
-            android:name=".ui.CameraSelectorActivity"
-            android:theme="@style/ImagePreviewTheme" />
+            android:name=".ui.CameraSelectorActivity" />
         <activity
             android:name=".ui.preview2.ImagePreviewActivity"
             android:theme="@style/ImagePreviewTheme" />

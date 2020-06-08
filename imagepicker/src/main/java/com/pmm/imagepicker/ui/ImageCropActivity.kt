@@ -11,7 +11,7 @@ import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.ktx.getUri4Crop
 import com.pmm.ui.core.activity.BaseActivity
-import com.pmm.ui.core.toolbar.StatusBarManager
+import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.ktx.gone
 import com.pmm.ui.ktx.isLightColor
 import com.pmm.ui.ktx.click
@@ -53,6 +53,10 @@ internal class ImageCropActivity : BaseActivity() {
         }
     }
 
+    override fun beforeSuperCreate(savedInstanceState: Bundle?) {
+        StatusNavigationBar.setStatusNavigationBarTransparent(window)
+    }
+
 
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
         //data
@@ -66,6 +70,7 @@ internal class ImageCropActivity : BaseActivity() {
     override fun afterViewAttach(savedInstanceState: Bundle?) {
         //ToolBar
         mToolBar.apply {
+            this.showStatusView=true
             this.navigationIcon {
                 if (ToolBarPro.GlobalConfig.navigationDrawable == null) {
                     this.setImageResource(R.drawable.ic_nav_back_24dp)
@@ -91,13 +96,12 @@ internal class ImageCropActivity : BaseActivity() {
             }
         }
         //StatusBar
-        StatusBarManager.apply {
+        StatusNavigationBar.apply {
             val statusColor = mToolBar.getToolBarBgColor()
-            this.setColor(window, statusColor)
             if (statusColor.isLightColor()) {
-                this.setLightMode(window)
+                this.setLightMode(window,true)
             } else {
-                this.setDarkMode(window)
+                this.setDarkMode(window,true)
             }
         }
 
