@@ -27,6 +27,7 @@
             android:scrollbars="vertical" />
 
         <RelativeLayout
+            android:id="@+id/rl_navigator"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"

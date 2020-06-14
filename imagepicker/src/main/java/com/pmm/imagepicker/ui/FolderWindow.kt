@@ -17,10 +17,11 @@ import com.pmm.imagepicker.adapter.ImageFolderAdapter
 import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.imagepicker.model.LocalMediaFolder
 import com.pmm.ui.core.recyclerview.decoration.LinearItemDecoration
-import com.pmm.ui.ktx.*
-import com.pmm.ui.widget.ToolBarPro
+import com.pmm.ui.ktx.getNavigationBarHeight
+import com.pmm.ui.ktx.getScreenHeight
+import com.pmm.ui.ktx.getScreenWidth
+import com.pmm.ui.ktx.getStatusBarHeight
 import java.lang.reflect.Method
-import java.util.ArrayList
 
 /**
  * Author:你需要一台永动机
@@ -44,7 +45,7 @@ internal class FolderWindow(private val context: Context) : PopupWindow() {
         //文件夹对应的角标
         private set
 
-    fun getFolderImages(position: Int=folderIndex) = folders[position].images
+    fun getFolderImages(position: Int = folderIndex) = folders[position].images
 
     fun isEmpty() = folders.isEmpty() || folders[0].images.isEmpty()
 
@@ -75,12 +76,13 @@ internal class FolderWindow(private val context: Context) : PopupWindow() {
             this.layoutManager = LinearLayoutManager(context)
             this.adapter = mAdapter
             this.visibility = View.GONE
+            this.setPadding(0, 0, 0, context.getNavigationBarHeight() + context.getStatusBarHeight())
         }
 
         mAdapter.onFolderClickListener = { index, folderName, images ->
             this.dismiss()
             folderIndex = index
-            onFolderClickListener?.invoke(folderName,images)
+            onFolderClickListener?.invoke(folderName, images)
         }
     }
 

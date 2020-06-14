@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,10 +24,10 @@ import com.pmm.imagepicker.ktx.startActionCapture
 import com.pmm.imagepicker.model.LocalMedia
 import com.pmm.imagepicker.model.LocalMediaFolder
 import com.pmm.imagepicker.ui.preview.ImagePreviewActivity
+import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.core.activity.BaseActivity
 import com.pmm.ui.core.dialog.ProgressDialog
 import com.pmm.ui.core.recyclerview.decoration.GridItemDecoration
-import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.ktx.*
 import com.pmm.ui.widget.ToolBarPro
 import kotlinx.android.synthetic.main.activity_imageselector.*
@@ -136,12 +135,13 @@ internal class ImageSelectorActivity : BaseActivity() {
         StatusNavigationBar.apply {
             val statusColor = mToolBar.getToolBarBgColor()
             if (statusColor.isLightColor()) {
-                this.setLightMode(window,true)
+                this.setLightMode(window, true)
             } else {
-                this.setDarkMode(window,true)
+                this.setDarkMode(window, true)
             }
         }
 
+        rl_navigator.setMargins(b = getNavigationBarHeight())
 
         //CheckBox use Origin Pic
         tvOrigin.apply {
@@ -161,6 +161,7 @@ internal class ImageSelectorActivity : BaseActivity() {
             this.setHasFixedSize(true)
             this.addItemDecoration(GridItemDecoration(config.gridSpanCount, dip2px(2f), dip2px(2f)))
             this.adapter = imageAdapter
+            this.setPadding(dip2px(2f),0,dip2px(2f),getNavigationBarHeight()+dip2px(48f))
         }
     }
 
