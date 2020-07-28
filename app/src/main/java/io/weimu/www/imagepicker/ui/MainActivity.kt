@@ -79,12 +79,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        initRecyclerVIew()
 
-        requestPermission(
-                permissions = *arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
-                granted = { initRecyclerVIew() },
-                content = "请给我权限！"
-        )
+
+//        requestPermission(
+//                permissions = *arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
+//                granted = {  },
+//                content = "请给我权限！"
+//        )
+
+        mAdapter.addData("https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1091405991,859863778&fm=26&gp=0.jpg")
+        mAdapter.addData("https://youxi-test.oss-cn-beijing.aliyuncs.com/images/847313ed-3411-40fd-aa2d-5efc8d39a364.gif")
+
     }
 
     private fun initRecyclerVIew() {
