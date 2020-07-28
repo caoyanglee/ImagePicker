@@ -116,8 +116,15 @@ internal class ImagePreviewFragment : BaseFragment() {
         //Logger.e("目标路径=$targetDir")
         val fileName = MD5Helper.sign(url, "weimu")
 
+        val fileType = try {
+            url.substring(url.lastIndexOf(".")+1,url.length)
+        } catch (e: Exception) {
+            ""
+        }
+
         //md5 名称唯一性
-        targetPath = "$targetDir$fileName"
+        targetPath = "$targetDir$fileName.$fileType"
+
 
         //先显示小图
         showThumbnailImage {
