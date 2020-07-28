@@ -20,10 +20,7 @@ import com.pmm.ui.helper.AnimHelper
 import com.pmm.ui.helper.FileHelper
 import com.pmm.ui.helper.MediaScanner
 import com.pmm.ui.helper.security.MD5Helper
-import com.pmm.ui.ktx.formatDate
-import com.pmm.ui.ktx.invisible
-import com.pmm.ui.ktx.toast
-import com.pmm.ui.ktx.visible
+import com.pmm.ui.ktx.*
 import com.shizhefei.view.largeimage.factory.FileBitmapDecoderFactory
 import kotlinx.android.synthetic.main.fragment_image_preview_v2.*
 import java.io.File
@@ -122,7 +119,6 @@ internal class ImagePreviewFragment : BaseFragment() {
         //md5 名称唯一性
         targetPath = "$targetDir$fileName"
 
-
         //先显示小图
         showThumbnailImage {
             task = FileDownloader.getImpl().create(url)
@@ -181,12 +177,13 @@ internal class ImagePreviewFragment : BaseFragment() {
         iv_large_thumbnail?.apply {
             val that = this
             if (!TextUtils.isEmpty(smallUrl)) {
-                Glide.with(context).asBitmap().load(smallUrl).into(object : SimpleTarget<Bitmap>() {
-                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                        that.setImage(resource)
-                        fn.invoke()
-                    }
-                })
+//                Glide.with(context).asBitmap().load(smallUrl).into(object : SimpleTarget<Bitmap>() {
+//                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+//                        that.setImage(resource)
+//                        fn.invoke()
+//                    }
+//                })
+                iv_large_thumbnail.load(smallUrl)
             } else {
                 fn.invoke()
             }
@@ -196,8 +193,15 @@ internal class ImagePreviewFragment : BaseFragment() {
 
     //显示图片
     private fun showImage(file: File) {
+        //加载gif
+        if (file.name.endsWith(".gif")) {
+            iv_normal.visible()
+            iv_normal.load(file)
+            return
+        }
         //Logger.e("目标地址=${file.toString()}")
         if (iv_large_thumbnail == null || iv_large == null) return
+        iv_large.visible()
         try {
             val options = BitmapFactory.Options()
             /**

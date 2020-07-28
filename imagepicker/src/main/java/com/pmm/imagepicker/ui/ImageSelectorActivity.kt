@@ -217,11 +217,13 @@ internal class ImageSelectorActivity : BaseActivity() {
             override fun onPictureClick(media: LocalMedia, position: Int, view: View) {
                 when {
                     config.enablePreview -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            startPreviewWithAnim(position, view)
-                        } else {
-                            startPreview(position)
-                        }
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                            startPreviewWithAnim(position, view)
+//                        } else {
+//                            startPreview(position)
+//                        }
+                        //为了能显示gif图
+                        startPreview(position)
                     }
                     config.enableCrop -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -8,8 +8,12 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
+import com.github.chrisbanes.photoview.PhotoView
 import com.nineoldandroids.view.ViewHelper
+import com.pmm.imagepicker.R
 import com.pmm.ui.ktx.getScreenHeight
 import com.shizhefei.view.largeimage.LargeImageView
 
@@ -93,10 +97,34 @@ internal class DragViewPager : ViewPager, View.OnClickListener {
     //配合SubsamplingScaleImageView使用，根据需要拦截ACTION_MOVE
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         if (adapter !is DragViewAdapter) return super.onInterceptTouchEvent(ev)
-        val mImage: LargeImageView? = (adapter as DragViewAdapter).getImageView(currentItem) //特殊操作
-        setCurrentShowView(mImage)
-        if (mImage == null) return super.onInterceptTouchEvent(ev)
-        val canPullDown = mImage.canScrollVertically(0)//是否可以下拉
+
+
+        var targetView:View? = null//目标视图
+        var canScrollVertically = false//是否可以下拉
+        var imageHeight = 0//图片高度
+        var imageScale = 0f//图片的缩放度
+
+        val itemView: ViewGroup? = (adapter as DragViewAdapter).getItemView(currentItem) //特殊操作
+        val photoView = itemView?.findViewById<PhotoView>(R.id.iv_normal)
+        val largeImageView = itemView?.findViewById<LargeImageView>(R.id.iv_large)
+
+        if (photoView?.isVisible==true){
+            targetView = photoView
+            canScrollVertically = photoView.canScrollVertically(0)
+            imageHeight = photoView.height
+            imageScale = photoView.scale
+        }else{
+            targetView = largeImageView
+            canScrollVertically = largeImageView!!.canScrollVertically(0)
+            imageHeight = largeImageView.height
+            imageScale = largeImageView.scale
+        }
+
+
+        if (targetView == null) return super.onInterceptTouchEvent(ev)
+        setCurrentShowView(targetView)
+
+        val canPullDown = canScrollVertically//是否可以下拉
         when (ev.action) {
             MotionEvent.ACTION_DOWN ->
                 //Log.e("jc", "onInterceptTouchEvent:ACTION_DOWN currentStatus="+currentStatus);
@@ -108,7 +136,7 @@ internal class DragViewPager : ViewPager, View.OnClickListener {
                 //Log.e("jc", "onInterceptTouchEvent:ACTION_MOVE");
                 val centerY = height / 2
 
-                val slot = mImage.height.toFloat() / mImage.scale / 2f
+                val slot = imageHeight / imageScale / 2f
 
                 //todo  重要
                 //Log.e("jc", "centerY=" + centerY + " mImage.height=" + mImage.getHeight() + " scale=" + (mImage.getScale() / 2) + " pivotY=" + pivotY + " slot=" + slot);
@@ -296,7 +324,8 @@ internal class DragViewPager : ViewPager, View.OnClickListener {
     }
 
     interface DragViewAdapter {
-        fun getImageView(position: Int): LargeImageView?
+
+        fun getItemView(position: Int):ViewGroup
     }
 
 }

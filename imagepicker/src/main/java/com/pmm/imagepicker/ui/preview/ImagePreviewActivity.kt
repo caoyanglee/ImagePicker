@@ -47,6 +47,7 @@ internal class ImagePreviewActivity : BaseActivity() {
             intent.putExtra(EXTRA_POSITION, position)
             intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
             context.startActivityForResult(intent, REQUEST_PREVIEW)
+            context.overridePendingTransition(R.anim.fade_in, R.anim.noting)
         }
 
 
@@ -230,6 +231,7 @@ internal class ImagePreviewActivity : BaseActivity() {
 
     override fun onBackPressed() {
         onDoneClick(false)
+        overridePendingTransition(R.anim.noting, R.anim.fade_out)
     }
 
 }
