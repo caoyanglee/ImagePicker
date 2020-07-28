@@ -28,8 +28,8 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                         cursorLoader = CursorLoader(
                                 activity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                                 IMAGE_PROJECTION, MediaStore.Images.Media.MIME_TYPE + "=? or "
-                                + MediaStore.Images.Media.MIME_TYPE + "=?",
-                                arrayOf("image/jpeg", "image/png"), IMAGE_PROJECTION[2] + " DESC")
+                                + MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?",
+                                arrayOf("image/jpeg", "image/png", "image/gif","image/webp"), IMAGE_PROJECTION[2] + " DESC")
                     }
                     TYPE_VIDEO -> {
                         cursorLoader = CursorLoader(

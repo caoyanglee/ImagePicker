@@ -5,8 +5,10 @@ import android.content.Context
 import com.bumptech.glide.Glide
 import com.pmm.ui.core.recyclerview.BaseRecyclerAdapter
 import com.pmm.ui.core.recyclerview.BaseRecyclerViewHolder
+import com.pmm.ui.ktx.load4CenterCrop
 import io.weimu.www.imagepicker.R
 import kotlinx.android.synthetic.main.grid_item_image.view.*
+import java.io.File
 
 
 class ImageGridAdapter(mContext: Context, var maxImageNumber: Int = 9) : BaseRecyclerAdapter<Any, String>(mContext) {
@@ -21,7 +23,7 @@ class ImageGridAdapter(mContext: Context, var maxImageNumber: Int = 9) : BaseRec
     override fun itemViewChange(holder: BaseRecyclerViewHolder, position: Int) {
         val item = getItem(position)?:return
         holder.itemView.apply {
-            Glide.with(mContext).asBitmap().load(item).into(this.iv_cover)
+            this.iv_cover.load4CenterCrop(File(item))
             //点击事件
             this.iv_cover.setOnClickListener { imageActionListener?.onItemClick(position) }
             this.iv_cover_delete.setOnClickListener { imageActionListener?.onItemDeleteClick(position) }

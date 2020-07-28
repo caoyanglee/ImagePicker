@@ -3,6 +3,7 @@ package io.weimu.www.imagepicker.ui
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pmm.imagepicker.ImagePicker
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
                 //添加
                 override fun onItemAddClick() {
-                    ImagePicker.pickImage4One(this@MainActivity,cropAspectRatioX = 1,cropAspectRatioY = 1)
+                    ImagePicker.pickImage(this@MainActivity)
 //                    ImagePicker.pickAvatar(this@MainActivity);
 //                    ImagePicker.pickImage(this@MainActivity, 30)
 //                    ImagePicker.pickImage4One(
@@ -98,6 +99,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_IMAGE) {
             val target = data?.getSerializableExtra(ImagePicker.REQUEST_OUTPUT) as List<String>
+            Log.d("imagePicker",target.toString())
             mAdapter.addData(target)
         }
     }

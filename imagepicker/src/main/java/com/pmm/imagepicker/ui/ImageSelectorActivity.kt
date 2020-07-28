@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -161,7 +162,7 @@ internal class ImageSelectorActivity : BaseActivity() {
             this.setHasFixedSize(true)
             this.addItemDecoration(GridItemDecoration(config.gridSpanCount, dip2px(2f), dip2px(2f)))
             this.adapter = imageAdapter
-            this.setPadding(dip2px(2f),0,dip2px(2f),getNavigationBarHeight()+dip2px(48f))
+            this.setPadding(dip2px(2f), 0, dip2px(2f), getNavigationBarHeight() + dip2px(48f))
         }
     }
 
@@ -328,30 +329,60 @@ internal class ImageSelectorActivity : BaseActivity() {
     }
 
     //压缩图片
+    /**
+     * 压缩图片，暂时不支持GIf压缩，遇到Gif图片直接返回原地址
+     */
     private fun compressImage(photos: ArrayList<String>) {
         if (photos.size > 9) ProgressDialog.show(this@ImageSelectorActivity, message = "加载中")
         val newImageList = ArrayList<String>()
-        Luban.with(this)
-                .load(photos)                                   // 传入要压缩的图片列表
-                .ignoreBy(100)                            // 忽略不压缩图片的大小
-                .setCompressListener(object : OnCompressListener { //设置回调
-                    override fun onStart() {}
 
-                    override fun onSuccess(file: File) {
-                        //Log.d("weimu", "压缩成功 地址为：$file")
-                        newImageList.add(file.toString())
-                        //所有图片压缩成功
-                        if (newImageList.size == photos.size) {
-                            ProgressDialog.hide()
-                            setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, newImageList))
-                            onBackPressed()
+        val compressImg = arrayListOf<String>()
+        val gifMap = hashMapOf<String, Int>()//记录一下gif的位置
+        for ((idx, item) in photos.withIndex()) {
+            if (item.endsWith(".gif"))
+                gifMap[item] = idx
+            else
+                compressImg.add(item)
+        }
+        //结束选择
+        fun finishSelect() {
+            ProgressDialog.hide()
+            for (item in gifMap) {
+                if (item.value >= compressImg.size)
+                    newImageList.add(item.key)
+                else
+                    newImageList.add(item.value, item.key)
+            }
+            isLoadImgIng = false
+            setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, newImageList))
+            onBackPressed()
+        }
+
+        if (compressImg.isEmpty()) {
+            finishSelect()
+        } else {
+            Luban.with(this)
+                    .load(compressImg)                                   // 传入要压缩的图片列表
+                    .ignoreBy(100)                            // 忽略不压缩图片的大小
+                    .setCompressListener(object : OnCompressListener { //设置回调
+                        override fun onStart() {}
+
+                        override fun onSuccess(file: File) {
+                            Log.d("imagePicker", "压缩成功 地址为：$file")
+                            newImageList.add(file.toString())
+                            //所有图片压缩成功
+                            if (newImageList.size == compressImg.size) {
+
+                                finishSelect()
+                            }
                         }
-                    }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-                }).launch()    //启动压缩
+                        override fun onError(e: Throwable) {
+                            e.printStackTrace()
+                        }
+
+                    }).launch()    //启动压缩
+        }
     }
 
     override fun onDestroy() {
