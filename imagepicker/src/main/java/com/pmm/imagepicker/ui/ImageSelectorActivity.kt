@@ -14,8 +14,10 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pmm.imagepicker.*
@@ -23,7 +25,6 @@ import com.pmm.imagepicker.adapter.ImageListAdapter
 import com.pmm.imagepicker.ktx.createCameraFile
 import com.pmm.imagepicker.ktx.startActionCapture
 import com.pmm.imagepicker.model.LocalMedia
-import com.pmm.imagepicker.model.LocalMediaFolder
 import com.pmm.imagepicker.ui.preview.ImagePreviewActivity
 import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.core.activity.BaseActivity
@@ -39,16 +40,21 @@ import java.util.*
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
-
+/**
+ * Author:你需要一台永动机
+ * Date:2020/7/31 11:13
+ * Description:图片选择器
+ */
 internal class ImageSelectorActivity : BaseActivity() {
+    private val mVm by lazy { ViewModelProviders.of(this).get(ImageSelectorViewModel::class.java) }
 
     private lateinit var config: Config
 
     //ui
-    private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.folder_list) }
-    private val imageAdapter: ImageListAdapter by lazy { ImageListAdapter(this, config) }
-    private val folderLayout: LinearLayout by lazy { findViewById<LinearLayout>(R.id.folder_layout) }
-    private val folderWindow: FolderWindow by lazy { FolderWindow(this) }
+    private val mRecyclerView by lazy { findViewById<RecyclerView>(R.id.folder_list) }
+    private val imageAdapter by lazy { ImageListAdapter(this, config) }
+    private val mFolderName by lazy { findViewById<TextView>(R.id.tvFolderName) }
+    private val folderLayout by lazy { findViewById<LinearLayout>(R.id.folder_layout) }
 
     private var cameraPath: String? = null
 
@@ -60,10 +66,8 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     private var loadDelay = 0L//第一次为0，后面为300毫秒，为了让共享元素动画可以正常运行
 
-
     companion object {
         const val BUNDLE_CAMERA_PATH = "CameraPath"
-
 
         //直接开启activity
         fun start(activity: Activity, config: Config) {
@@ -101,13 +105,26 @@ internal class ImageSelectorActivity : BaseActivity() {
     }
 
     override fun afterViewAttach(savedInstanceState: Bundle?) {
-        initView()
-        registerListener()
-        initImageLoader()
+        initRender()
+        initObserver()
+        initInteraction()
+        mVm.loadImages(this)//加载图片
+    }
+
+    private fun initObserver() {
+        mVm.foldersLiveData.observe(this, androidx.lifecycle.Observer {
+            if (it != null) {
+                Handler().postDelayed({
+                    //load all images first
+                    imageAdapter.bindImages(it.first().images)
+                    if (loadDelay == 0L) loadDelay = 350
+                }, loadDelay)
+            }
+        })
     }
 
 
-    private fun initView() {
+    private fun initRender() {
         //ToolBar
         mToolBar.apply {
             this.showStatusView = true
@@ -156,7 +173,7 @@ internal class ImageSelectorActivity : BaseActivity() {
             }
         }
         //RecyclerView
-        recyclerView.apply {
+        mRecyclerView.apply {
             this.init()
             this.layoutManager = GridLayoutManager(this@ImageSelectorActivity, config.gridSpanCount)
             this.setHasFixedSize(true)
@@ -166,32 +183,23 @@ internal class ImageSelectorActivity : BaseActivity() {
         }
     }
 
-    private fun initImageLoader() {
-        LocalMediaLoader(this, LocalMediaLoader.TYPE_IMAGE).loadAllImage(object : LocalMediaLoader.LocalMediaLoadListener {
-            override fun loadComplete(folders: List<LocalMediaFolder>) {
-                Handler().postDelayed({
-                    folderWindow.bindFolder(folders)
-                    //load all images first
-                    val imagesInFirstFolder = folderWindow.getFolderImages()
-                    imageAdapter.bindImages(imagesInFirstFolder)
-                    if (loadDelay == 0L) loadDelay = 350
-                }, loadDelay)
-            }
-        })
-    }
-
-    private fun registerListener() {
+    private fun initInteraction() {
         folderLayout.click {
-            //Toast.makeText(ImageSelectorActivity.this, "文件夹长度  " + allFolders.size() + "  内部图片数量  " + allFolders.get(0).getImages().size(), Toast.LENGTH_SHORT).show();
-            if (folderWindow.isEmpty()) {
-                Toast.makeText(this@ImageSelectorActivity, "没有可选择的图片", Toast.LENGTH_SHORT).show()
+            val folderList = mVm.foldersLiveData.value ?: arrayListOf()
+            if (folderList.isEmpty()) {
+                Toast.makeText(this@ImageSelectorActivity, R.string.no_more_folder, Toast.LENGTH_SHORT).show()
                 return@click
             }
-            if (folderWindow.isShowing) {
-                folderWindow.dismiss()
-            } else {
-                folderWindow.showAsDropDown(mToolBar)
-            }
+            //文件夹弹窗
+            FolderDialog(this).apply {
+                folders = folderList
+                //点击某个文件件
+                onFolderClickListener = { folderName, images ->
+                    imageAdapter.bindImages(images)
+                    mFolderName.text = folderName
+                    mRecyclerView.smoothScrollToPosition(0)
+                }
+            }.show()
         }
 
         //recyclerView点击事件
@@ -239,11 +247,11 @@ internal class ImageSelectorActivity : BaseActivity() {
             }
         })
         //点击某个文件件
-        folderWindow.onFolderClickListener = { folderName, images ->
-            imageAdapter.bindImages(images)
-            mFolderName.text = folderName
-            recyclerView.smoothScrollToPosition(0)
-        }
+//        folderWindow.onFolderClickListener = { folderName, images ->
+//            imageAdapter.bindImages(images)
+//            mFolderName.text = folderName
+//            recyclerView.smoothScrollToPosition(0)
+//        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -7,19 +7,13 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical">
 
-    <com.pmm.ui.widget.ToolBarPro
-        android:id="@+id/mToolBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/mSelectBarLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mToolBar">
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <com.pmm.imagepicker.ui.preview.HackyViewPager
@@ -31,11 +25,18 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.pmm.ui.widget.ToolBarPro
+        android:id="@+id/mToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mSelectBarLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="#7f393a3e"
+        android:background="@color/black_alpha70"
         app:layout_constraintBottom_toBottomOf="parent">
 
 

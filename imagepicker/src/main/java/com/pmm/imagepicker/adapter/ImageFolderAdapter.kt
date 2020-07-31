@@ -21,17 +21,18 @@ import java.io.File
 
 internal typealias FolderClickCallBack = ((index: Int, folderName: String?, images: List<LocalMedia>) -> Unit)?
 
-internal class ImageFolderAdapter(mContext: Context) : BaseRecyclerAdapter<Any, LocalMediaFolder>(mContext) {
+internal class ImageFolderAdapter(
+        mContext: Context,
+        private var checkedIndex: Int = -1//选中的位置
+) : BaseRecyclerAdapter<Any, LocalMediaFolder>(mContext) {
 
     override fun getItemLayoutRes(): Int = R.layout.list_item_folder
 
-    private var checkedIndex = -1//选中的位置
     var onFolderClickListener: FolderClickCallBack = null
-
 
     @SuppressLint("StringFormatMatches")
     override fun itemViewChange(holder: BaseRecyclerViewHolder, position: Int) {
-        val item = getItem(position)?:return
+        val item = getItem(position) ?: return
         holder.itemView.apply {
             //图片
             this.first_image.load4CenterCrop(
