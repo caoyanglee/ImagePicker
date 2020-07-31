@@ -3,6 +3,8 @@ package com.pmm.imagepicker
 import android.database.Cursor
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
+import android.webkit.MimeTypeMap
 import androidx.fragment.app.FragmentActivity
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
@@ -13,8 +15,11 @@ import java.io.File
 import java.util.*
 
 
-internal class LocalMediaLoader(private val activity: FragmentActivity, var type: Int = TYPE_IMAGE) {
-
+internal class LocalMediaLoader(
+        private val activity: FragmentActivity,
+        private var type: Int = TYPE_IMAGE
+) {
+    private val TAG = "LocalMediaLoader"
 
     private val mDirPaths = HashSet<String>()//文件夹路径
 
@@ -22,14 +27,20 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
         LoaderManager.getInstance(activity).initLoader(type, null, object : LoaderManager.LoaderCallbacks<Cursor> {
 
             override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+
                 var cursorLoader: CursorLoader? = null
                 when (id) {
                     TYPE_IMAGE -> {
                         cursorLoader = CursorLoader(
-                                activity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                IMAGE_PROJECTION, MediaStore.Images.Media.MIME_TYPE + "=? or "
-                                + MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?",
-                                arrayOf("image/jpeg", "image/png", "image/gif","image/webp"), IMAGE_PROJECTION[2] + " DESC")
+                                activity,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                IMAGE_PROJECTION,
+                                MediaStore.Images.Media.MIME_TYPE + "=? or "
+                                        + MediaStore.Images.Media.MIME_TYPE + "=? or "
+                                        + MediaStore.Images.Media.MIME_TYPE + "=? or "
+                                        + MediaStore.Images.Media.MIME_TYPE + "=?",
+                                arrayOf("image/jpeg", "image/png", "image/gif", "image/webp"),
+                                IMAGE_PROJECTION[2] + " DESC")
                     }
                     TYPE_VIDEO -> {
                         cursorLoader = CursorLoader(
@@ -43,18 +54,18 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
             override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
                 if (data == null || data.isClosed) return
 
+
                 val imageFolders = ArrayList<LocalMediaFolder>()//一组文件夹
                 val imageFolder4All = LocalMediaFolder()//全部图片-文件夹
                 val allImages = ArrayList<LocalMedia>()//图片
 
-                if (!data.moveToFirst()) {
-                    return; }//issue链接：https://github.com/jeasonlzy/ImagePicker/issues/243#issuecomment-380353956
-
-                //while循环
-                while (data.moveToNext()) {
+                if (!data.moveToFirst()) return //issue链接：https://github.com/jeasonlzy/ImagePicker/issues/243#issuecomment-380353956
+                //while循环 必须先do，否则会缺失一张照片
+                do {
+                    //Log.d(TAG, "=========================================")
                     val path = data.getString(data.getColumnIndex(MediaStore.Images.Media.DATA))// 图片的路径
+                    //Log.d(TAG, "path = $path")
                     allImages.add(LocalMedia(path))
-
 
                     val file = File(path)
                     if (!file.exists())
@@ -65,6 +76,7 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                         continue
 
                     val dirPath = parentFile.absolutePath//文件夹路径
+                    //Log.d(TAG, "parentpath = $dirPath")
 
                     // 利用一个HashSet防止多次扫描同一个文件夹
                     if (mDirPaths.contains(dirPath)) {
@@ -73,15 +85,18 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                         mDirPaths.add(dirPath)
                     }
 
-                    if (parentFile.list() == null)
-                        continue
+                    if (parentFile.list() == null) continue
 
                     //处理文件夹数据
                     val localMediaFolder = getImageFolder(path, imageFolders)
 
                     //获取文件夹里的所有图片
                     val files = parentFile.listFiles { dir, filename ->
-                        filename.endsWith(".jpg") or filename.endsWith(".png") || filename.endsWith(".jpeg")
+                        filename.endsWith(".jpg") or
+                                filename.endsWith(".png") or
+                                filename.endsWith(".jpeg") or
+                                filename.endsWith(".gif") or
+                                filename.endsWith(".webp")
                     }
 
                     val images = ArrayList<LocalMedia>()
@@ -97,7 +112,10 @@ internal class LocalMediaLoader(private val activity: FragmentActivity, var type
                         localMediaFolder.imageNum = localMediaFolder.images.size
                         imageFolders.add(localMediaFolder)
                     }
-                }
+
+                    //Log.d(TAG, "\n")
+                } while (data.moveToNext())
+
 
                 imageFolder4All.images = allImages
                 imageFolder4All.imageNum = imageFolder4All.images.size
