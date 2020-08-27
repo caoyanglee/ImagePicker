@@ -10,6 +10,7 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -36,6 +37,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':imagepicker')
+    //multidex
+    implementation 'com.android.support:multidex:1.0.3'
 }
 repositories {
     mavenCentral()

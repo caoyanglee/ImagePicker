@@ -1,6 +1,8 @@
 package io.weimu.www.imagepicker
 
+import android.content.Context
 import android.graphics.Color
+import androidx.multidex.MultiDex
 import com.pmm.ui.OriginAppData
 import com.pmm.ui.ktx.getDrawablePro
 import com.pmm.ui.widget.ToolBarPro
@@ -27,6 +29,11 @@ class AppData : OriginAppData() {
             //navigation
             navigationDrawable = context.getDrawablePro(R.drawable.universal_arrow_back_white)
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
 
