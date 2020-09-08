@@ -30,7 +30,6 @@ internal class FolderDialog(
         mAdapter.setDataToAdapter(newValue)
     }
 
-            private set
     fun getFolderIndex() = folderIndex//文件夹指针
 
     var onFolderClickListener: ((folderName: String?, images: List<LocalMedia>) -> Unit)? = null
