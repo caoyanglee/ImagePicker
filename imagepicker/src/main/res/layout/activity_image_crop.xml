@@ -15,6 +15,7 @@
         android:id="@+id/cropImageView0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cropBorderCornerColor="@color/colorAccent"
         app:cropInitialCropWindowPaddingRatio="0.1" />
 
     <!--限制裁剪-->
@@ -22,6 +23,7 @@
         android:id="@+id/cropImageView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cropBorderCornerColor="@color/colorAccent"
         app:cropInitialCropWindowPaddingRatio="0.0" />
 
 </LinearLayout>

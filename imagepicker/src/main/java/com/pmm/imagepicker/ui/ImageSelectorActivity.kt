@@ -115,8 +115,9 @@ internal class ImageSelectorActivity : BaseActivity() {
         mVm.foldersLiveData.observe(this, androidx.lifecycle.Observer {
             if (it != null) {
                 Handler().postDelayed({
+                    //跳转其他app：在切换进来也会加载
                     //load all images first
-                    imageAdapter.bindImages(it.first().images)
+                    imageAdapter.bindImages(it[FolderDialog.folderIndex].images)
                     if (loadDelay == 0L) loadDelay = 350
                 }, loadDelay)
             }
@@ -159,7 +160,7 @@ internal class ImageSelectorActivity : BaseActivity() {
             }
         }
 
-        rl_navigator.setMargins(b = getNavigationBarHeight())
+        //rl_navigator.setMargins(b = getNavigationBarHeight())
 
         //CheckBox use Origin Pic
         tvOrigin.apply {
@@ -179,7 +180,7 @@ internal class ImageSelectorActivity : BaseActivity() {
             this.setHasFixedSize(true)
             this.addItemDecoration(GridItemDecoration(config.gridSpanCount, dip2px(2f), dip2px(2f)))
             this.adapter = imageAdapter
-            this.setPadding(dip2px(2f), 0, dip2px(2f), getNavigationBarHeight() + dip2px(48f))
+            this.setPadding(dip2px(2f), 0, dip2px(2f), dip2px(48f))
         }
     }
 
