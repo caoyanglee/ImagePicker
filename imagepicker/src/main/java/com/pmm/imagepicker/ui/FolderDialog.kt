@@ -20,16 +20,18 @@ import kotlin.properties.Delegates
  * Date:2020/7/31 11:21
  * Description:文件夹弹窗，底部弹出
  */
-internal class FolderDialog(context: ContextWrapper) : BottomSheetDialog(context) {
+internal class FolderDialog(
+        context: ContextWrapper,
+        private var folderIndex: Int = 0//文件夹的指针
+) : BottomSheetDialog(context) {
+
 
     var folders: List<LocalMediaFolder> by Delegates.observable(arrayListOf()) { _, _, newValue ->
         mAdapter.setDataToAdapter(newValue)
     }
 
-    companion object {
-        var folderIndex = 0 //文件夹对应的角标
             private set
-    }
+    fun getFolderIndex() = folderIndex//文件夹指针
 
     var onFolderClickListener: ((folderName: String?, images: List<LocalMedia>) -> Unit)? = null
 

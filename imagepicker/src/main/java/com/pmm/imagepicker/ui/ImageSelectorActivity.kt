@@ -66,6 +66,8 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     private var loadDelay = 0L//第一次为0，后面为300毫秒，为了让共享元素动画可以正常运行
 
+    private val folderDialog by lazy { FolderDialog(this) }
+
     companion object {
         const val BUNDLE_CAMERA_PATH = "CameraPath"
 
@@ -117,7 +119,7 @@ internal class ImageSelectorActivity : BaseActivity() {
                 Handler().postDelayed({
                     //跳转其他app：在切换进来也会加载
                     //load all images first
-                    imageAdapter.bindImages(it[FolderDialog.folderIndex].images)
+                    imageAdapter.bindImages(it[folderDialog.getFolderIndex()].images)
                     if (loadDelay == 0L) loadDelay = 350
                 }, loadDelay)
             }
@@ -192,7 +194,7 @@ internal class ImageSelectorActivity : BaseActivity() {
                 return@click
             }
             //文件夹弹窗
-            FolderDialog(this).apply {
+            folderDialog.apply {
                 folders = folderList
                 //点击某个文件件
                 onFolderClickListener = { folderName, images ->
