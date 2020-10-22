@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                         Permission.READ_EXTERNAL_STORAGE,
                         Permission.CAMERA),
                 granted = { },
-                content = "请给我权限！"
+                message = "请给我权限！"
         )
 
         mAdapter.addData("https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1091405991,859863778&fm=26&gp=0.jpg")

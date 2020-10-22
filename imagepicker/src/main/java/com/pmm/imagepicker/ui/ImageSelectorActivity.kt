@@ -17,7 +17,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pmm.imagepicker.*
@@ -37,6 +37,7 @@ import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
 import java.util.*
+import kotlin.coroutines.EmptyCoroutineContext.get
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
@@ -46,7 +47,7 @@ import kotlin.reflect.KProperty
  * Description:图片选择器
  */
 internal class ImageSelectorActivity : BaseActivity() {
-    private val mVm by lazy { ViewModelProviders.of(this).get(ImageSelectorViewModel::class.java) }
+    private val mVm by lazy { ViewModelProvider(this).get(ImageSelectorViewModel::class.java) }
 
     private lateinit var config: Config
 
