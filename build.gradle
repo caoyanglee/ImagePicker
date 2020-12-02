@@ -10,17 +10,17 @@ buildscript {
     //依赖
     ext.deps = [
             'core'     : [
-                    'ui'         : 'com.github.caoyanglee:universalui:0.6.1'
+                    'ui'         : 'com.github.caoyanglee:universalui:0.6.4'
             ]
     ]
     //常规
-    ext.kotlin_version = '1.4.10'
+    ext.kotlin_version = '1.4.20'
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 //        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.2'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'

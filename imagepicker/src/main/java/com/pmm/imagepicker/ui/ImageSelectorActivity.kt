@@ -30,14 +30,16 @@ import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.core.activity.BaseActivity
 import com.pmm.ui.core.dialog.ProgressDialog
 import com.pmm.ui.core.recyclerview.decoration.GridItemDecoration
+import com.pmm.ui.helper.FileHelper
 import com.pmm.ui.ktx.*
 import com.pmm.ui.widget.ToolBarPro
+import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.activity_imageselector.*
-import top.zibin.luban.Luban
-import top.zibin.luban.OnCompressListener
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
-import kotlin.coroutines.EmptyCoroutineContext.get
+import kotlin.collections.set
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
@@ -375,27 +377,21 @@ internal class ImageSelectorActivity : BaseActivity() {
         if (compressImg.isEmpty()) {
             finishSelect()
         } else {
-            Luban.with(this)
-                    .load(compressImg)                                   // 传入要压缩的图片列表
-                    .ignoreBy(100)                            // 忽略不压缩图片的大小
-                    .setCompressListener(object : OnCompressListener { //设置回调
-                        override fun onStart() {}
-
-                        override fun onSuccess(file: File) {
-                            Log.d("imagePicker", "压缩成功 地址为：$file")
-                            newImageList.add(file.toString())
-                            //所有图片压缩成功
-                            if (newImageList.size == compressImg.size) {
-
-                                finishSelect()
-                            }
-                        }
-
-                        override fun onError(e: Throwable) {
-                            e.printStackTrace()
-                        }
-
-                    }).launch()    //启动压缩
+            MainScope().launch {
+                for (image in compressImg) {
+                    Log.d("imagePicker", "--------------------------------------------- >>>")
+                    Log.d("imagePicker", "压缩前：")
+                    Log.d("imagePicker", "地址：$image")
+                    Log.d("imagePicker", "文件大小：${FileHelper.getFileSize(File(image))}")
+                    val compressedImg = Compressor.compress(this@ImageSelectorActivity, File(image))
+                    Log.d("imagePicker", "压缩后：")
+                    Log.d("imagePicker", "地址：$compressedImg")
+                    Log.d("imagePicker", "文件大小：${FileHelper.getFileSize(compressedImg)}")
+                    Log.d("imagePicker", "<<< ---------------------------------------------")
+                    newImageList.add(compressedImg.toString())
+                }
+                finishSelect()
+            }
         }
     }
 

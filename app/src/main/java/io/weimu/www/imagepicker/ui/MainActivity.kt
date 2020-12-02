@@ -84,10 +84,9 @@ class MainActivity : AppCompatActivity() {
 
 
         requestPermission(
-                permissions = arrayOf(Permission.WRITE_EXTERNAL_STORAGE,
-                        Permission.READ_EXTERNAL_STORAGE,
-                        Permission.CAMERA),
-                granted = { },
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.CAMERA,
+                allGrantedCallback = { },
                 message = "请给我权限！"
         )
 

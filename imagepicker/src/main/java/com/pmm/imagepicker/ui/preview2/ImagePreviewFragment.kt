@@ -7,9 +7,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.text.TextUtils
 import android.webkit.MimeTypeMap
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
