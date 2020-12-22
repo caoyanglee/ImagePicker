@@ -165,7 +165,7 @@ internal class ImageSelectorActivity : BaseActivity() {
             }
         }
 
-        //rl_navigator.setMargins(b = getNavigationBarHeight())
+        rl_navigator.setMargins(b = getNavigationBarHeight())
 
         //CheckBox use Origin Pic
         tvOrigin.apply {

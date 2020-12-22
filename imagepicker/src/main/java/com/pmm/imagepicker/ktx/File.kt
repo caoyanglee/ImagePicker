@@ -3,13 +3,21 @@ package com.pmm.imagepicker.ktx
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Point
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.Display
+import android.view.KeyCharacterMap
+import android.view.KeyEvent
+import android.view.ViewConfiguration
 import com.pmm.ui.ktx.formatDate
 import com.pmm.ui.ktx.getCurrentTimeStamp
 import com.pmm.ui.ktx.getUri4File
 import java.io.File
+
 
 /**
  * Author:你需要一台永动机
@@ -22,16 +30,18 @@ private fun Context.createMediaFile(childFoldName: String): File {
     val state = Environment.getExternalStorageState()
     val rootDir = if (state == Environment.MEDIA_MOUNTED) Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) else this.filesDir
     val folderDir = File("$rootDir/$childFoldName/")
-    if (!folderDir.exists() && folderDir.mkdirs()) { }
+    if (!folderDir.exists() && folderDir.mkdirs()) {
+    }
     val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.jpg"
     return File(folderDir, fileName)
 }
 
 private fun Context.createMediaFileInApp(childFoldName: String): File {
     val state = Environment.getExternalStorageState()
-    val rootDir = if (state == Environment.MEDIA_MOUNTED) "${(externalCacheDir?.absolutePath)?:""}/imagePicker_disk_cache" else this.cacheDir
+    val rootDir = if (state == Environment.MEDIA_MOUNTED) "${(externalCacheDir?.absolutePath) ?: ""}/imagePicker_disk_cache" else this.cacheDir
     val folderDir = File("$rootDir/$childFoldName/")
-    if (!folderDir.exists() && folderDir.mkdirs()) { }
+    if (!folderDir.exists() && folderDir.mkdirs()) {
+    }
     val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.jpg"//必须使用不同命名
     return File(folderDir, fileName)
 }

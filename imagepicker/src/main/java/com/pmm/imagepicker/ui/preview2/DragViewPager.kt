@@ -14,7 +14,7 @@ import androidx.viewpager.widget.ViewPager
 import com.github.chrisbanes.photoview.PhotoView
 import com.nineoldandroids.view.ViewHelper
 import com.pmm.imagepicker.R
-import com.pmm.ui.ktx.getScreenHeight
+import com.pmm.ui.ktx.getScreenContentHeight
 import com.shizhefei.view.largeimage.LargeImageView
 
 /**
@@ -70,7 +70,7 @@ internal class DragViewPager : ViewPager, View.OnClickListener {
     }
 
     fun init(context: Context) {
-        screenHeight = context.getScreenHeight().toFloat()
+        screenHeight = context.getScreenContentHeight().toFloat()
         setBackgroundColor(Color.BLACK)
         addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}

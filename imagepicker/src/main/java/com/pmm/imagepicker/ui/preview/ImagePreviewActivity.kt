@@ -139,6 +139,9 @@ internal class ImagePreviewActivity : BaseActivity() {
             }
         }
 
+        //bottom
+        mSelectBarLayout.setMargins(b = getNavigationBarHeight())
+
         onSelectNumChange()
 
         onImageSwitch(position)
