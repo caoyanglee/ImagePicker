@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/container"
     android:orientation="vertical">
 
     <com.pmm.ui.widget.ToolBarPro
@@ -14,18 +16,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/folder_list"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:fadingEdge="none"
-            android:overScrollMode="never"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingBottom="48dp"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical" />
+            android:animateLayoutChanges="true"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/mProgressBar"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/folder_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadingEdge="none"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:overScrollMode="never"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingBottom="48dp"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical" />
+        </FrameLayout>
+
 
         <RelativeLayout
             android:id="@+id/rl_navigator"

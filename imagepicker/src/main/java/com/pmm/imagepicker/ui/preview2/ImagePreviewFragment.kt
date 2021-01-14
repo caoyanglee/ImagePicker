@@ -1,25 +1,26 @@
 package com.pmm.imagepicker.ui.preview2
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
 import android.text.TextUtils
+import android.view.ViewGroup
 import android.webkit.MimeTypeMap
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
 import com.pmm.imagepicker.R
+import com.pmm.imagepicker.databinding.FragmentImagePreviewV2Binding
 import com.pmm.ui.OriginAppData
-import com.pmm.ui.core.fragment.BaseFragment
+import com.pmm.ui.core.fragment.BaseFragmentV2
 import com.pmm.ui.helper.AnimHelper
 import com.pmm.ui.helper.FileHelper
 import com.pmm.ui.helper.MediaScanner
 import com.pmm.ui.helper.security.MD5Helper
 import com.pmm.ui.ktx.*
 import com.shizhefei.view.largeimage.factory.FileBitmapDecoderFactory
-import kotlinx.android.synthetic.main.fragment_image_preview_v2.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
@@ -33,13 +34,10 @@ import java.util.*
  * 普通图片->PhotoView
  * 长图->WebView
  */
-internal class ImagePreviewFragment : BaseFragment() {
-
+internal class ImagePreviewFragment : BaseFragmentV2(R.layout.fragment_image_preview_v2) {
+    private val mVB by viewBinding(FragmentImagePreviewV2Binding::bind, R.id.container)
 
     val FILE_IMAGE_PREVIEW = "${OriginAppData.context.externalCacheDir}/images/"//  cache/images 下的图片
-
-
-    override fun getLayoutResID() = R.layout.fragment_image_preview_v2
 
 
     companion object {
@@ -78,14 +76,16 @@ internal class ImagePreviewFragment : BaseFragment() {
         }
     }
 
+    override fun getContentView(): ViewGroup = requireView() as ViewGroup
+
     override fun afterViewAttach(savedInstanceState: Bundle?) {
         //单点
-        iv_large.setOnClickListener {
-            if (activity == null || activity!!.isDestroyed) return@setOnClickListener
+        mVB.ivLarge.setOnClickListener {
+            if (activity == null || requireActivity().isDestroyed) return@setOnClickListener
             (activity as ImagePreviewActivity).transitionFinish()
         }
         //长按
-        iv_large.setOnLongClickListener { longClick() }
+        mVB.ivLarge.setOnLongClickListener { longClick() }
 
         initDownload()
 
@@ -114,7 +114,7 @@ internal class ImagePreviewFragment : BaseFragment() {
         val fileName = MD5Helper.sign(url, "weimu")
 
         val fileType = try {
-            url.substring(url.lastIndexOf(".")+1,url.length)
+            url.substring(url.lastIndexOf(".") + 1, url.length)
         } catch (e: Exception) {
             ""
         }
@@ -137,7 +137,7 @@ internal class ImagePreviewFragment : BaseFragment() {
                         override fun started(task: BaseDownloadTask?) {
                             super.started(task)
                             //Logger.e("started")
-                            crv?.visible()
+                            mVB.crv.visible()
                         }
 
                         override fun progress(task: BaseDownloadTask?, soFarBytes: Int, totalBytes: Int) {
@@ -150,25 +150,25 @@ internal class ImagePreviewFragment : BaseFragment() {
                         override fun completed(task: BaseDownloadTask?) {
                             //Logger.e("completed")
                             showImage(File(targetPath))
-                            crv?.invisible()
+                            mVB.crv.invisible()
                         }
 
                         override fun warn(task: BaseDownloadTask?) {
                             //在下载队列中(正在等待/正在下载)已经存在相同下载连接与相同存储路径的任务
                             //Logger.e("warn=${task!!.status}")
-                            crv?.invisible()
+                            mVB.crv.invisible()
                         }
 
 
                         override fun error(task: BaseDownloadTask?, e: Throwable?) {
                             //Logger.e("error")
-                            crv?.invisible()
+                            mVB.crv.invisible()
                         }
 
 
                         override fun paused(task: BaseDownloadTask?, soFarBytes: Int, totalBytes: Int) {
                             //Logger.e("paused")
-                            crv?.invisible()
+                            mVB.crv.invisible()
                         }
                     })
             task?.start()
@@ -177,9 +177,9 @@ internal class ImagePreviewFragment : BaseFragment() {
 
     //显示缩略图
     private fun showThumbnailImage(fn: (() -> Unit)) {
-        iv_large_thumbnail.visible()
-        iv_large_thumbnail?.apply {
+        mVB.ivLargeThumbnail.apply {
             val that = this
+            this.visible()
             if (!TextUtils.isEmpty(smallUrl)) {
 //                Glide.with(context).asBitmap().load(smallUrl).into(object : SimpleTarget<Bitmap>() {
 //                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
@@ -187,7 +187,7 @@ internal class ImagePreviewFragment : BaseFragment() {
 //                        fn.invoke()
 //                    }
 //                })
-                iv_large_thumbnail.load(smallUrl)
+                that.load(smallUrl)
             } else {
                 fn.invoke()
             }
@@ -199,13 +199,12 @@ internal class ImagePreviewFragment : BaseFragment() {
     private fun showImage(file: File) {
         //加载gif
         if (file.name.endsWith(".gif")) {
-            iv_normal.visible()
-            iv_normal.load(file)
+            mVB.ivNormal.visible()
+            mVB.ivNormal.load(file)
             return
         }
         //Logger.e("目标地址=${file.toString()}")
-        if (iv_large_thumbnail == null || iv_large == null) return
-        iv_large.visible()
+        mVB.ivLarge.visible()
         try {
             val options = BitmapFactory.Options()
             /**
@@ -220,20 +219,20 @@ internal class ImagePreviewFragment : BaseFragment() {
             val bitmapWidth = targetBitmap.width
             if (bitmapHeight >= 4 * bitmapWidth || bitmapWidth >= 4 * bitmapHeight) {
                 //加载大图
-                iv_large?.setImage(FileBitmapDecoderFactory(file))
+                mVB.ivLarge.setImage(FileBitmapDecoderFactory(file))
                 //做一下过渡动画比较不会太生硬
-                AnimHelper.alphaAnim(iv_large, 1000, onAnimEnd = {
+                AnimHelper.alphaAnim(mVB.ivLarge, 1000, onAnimEnd = {
                     //                    Handler().postDelayed({iv_large_thumbnail?.gone()},1000)
-                    cl_root?.removeView(iv_large_thumbnail)
+                    mVB.container.removeView(mVB.ivLargeThumbnail)
                 })
             } else {
                 //加载普通图
-                iv_large.setImage(targetBitmap)
+                mVB.ivLarge.setImage(targetBitmap)
             }
         } catch (e: OutOfMemoryError) {
-            iv_large?.setImage(FileBitmapDecoderFactory(file))
+            mVB.ivLarge.setImage(FileBitmapDecoderFactory(file))
         } catch (e: Exception) {
-            iv_large?.setImage(FileBitmapDecoderFactory(file))
+            mVB.ivLarge.setImage(FileBitmapDecoderFactory(file))
         }
     }
 

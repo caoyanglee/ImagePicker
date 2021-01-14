@@ -7,17 +7,18 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.R
+import com.pmm.imagepicker.databinding.ActivityImageCropBinding
 import com.pmm.imagepicker.ktx.getUri4Crop
-import com.pmm.ui.core.activity.BaseActivity
 import com.pmm.ui.core.StatusNavigationBar
+import com.pmm.ui.core.activity.BaseActivityV2
+import com.pmm.ui.ktx.click
 import com.pmm.ui.ktx.gone
 import com.pmm.ui.ktx.isLightColor
-import com.pmm.ui.ktx.click
 import com.pmm.ui.ktx.toast
 import com.pmm.ui.widget.ToolBarPro
-import kotlinx.android.synthetic.main.activity_image_crop.*
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -27,7 +28,8 @@ import java.io.OutputStream
  * Date:2019-05-25 15:24
  * Description:图片裁剪
  */
-internal class ImageCropActivity : BaseActivity() {
+internal class ImageCropActivity : BaseActivityV2(R.layout.activity_image_crop) {
+    private val mVB by viewBinding(ActivityImageCropBinding::bind, R.id.container)
 
     private var path = ""
     private var sourceUri: Uri? = null//源URI
@@ -60,16 +62,15 @@ internal class ImageCropActivity : BaseActivity() {
 
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
         //data
-        path = intent.getStringExtra(DATA_EXTRA_PATH)
+        path = intent.getStringExtra(DATA_EXTRA_PATH)?:""
         sourceUri = Uri.fromFile(File(path))
         config = intent.getSerializableExtra(Config.EXTRA_CONFIG) as Config
     }
 
-    override fun getLayoutResID(): Int = R.layout.activity_image_crop
 
     override fun afterViewAttach(savedInstanceState: Bundle?) {
         //ToolBar
-        mToolBar.apply {
+        mVB.mToolBar.apply {
             this.showStatusView=true
             this.navigationIcon {
                 if (ToolBarPro.GlobalConfig.navigationDrawable == null) {
@@ -88,16 +89,16 @@ internal class ImageCropActivity : BaseActivity() {
                 this.click {
                     //点击完成
                     if (cropType == 1) {
-                        saveOutput(cropImageView1.croppedImage)
+                        saveOutput(mVB.cropImageView1.croppedImage)
                     } else {
-                        saveOutput(cropImageView0.croppedImage)
+                        saveOutput(mVB.cropImageView0.croppedImage)
                     }
                 }
             }
         }
         //StatusBar
         StatusNavigationBar.apply {
-            val statusColor = mToolBar.getToolBarBgColor()
+            val statusColor = mVB.mToolBar.getToolBarBgColor()
             if (statusColor.isLightColor()) {
                 this.setLightMode(window,true)
             } else {
@@ -107,11 +108,11 @@ internal class ImageCropActivity : BaseActivity() {
 
 
         if ((config.cropMiniWidth > 0 && config.cropMiniHeight > 0)) {
-            cropImageView0.gone()
+            mVB.cropImageView0.gone()
             cropType = 1
             crop1init()
         } else {
-            cropImageView1.gone()
+            mVB.cropImageView1.gone()
             cropType = 0
             crop0init()
         }
@@ -119,7 +120,7 @@ internal class ImageCropActivity : BaseActivity() {
     }
 
     private fun crop0init() {
-        cropImageView0.apply {
+        mVB.cropImageView0.apply {
             //配置
             this.isAutoZoomEnabled = true//是否自动缩放
             //设置宽高比
@@ -130,7 +131,7 @@ internal class ImageCropActivity : BaseActivity() {
     }
 
     private fun crop1init() {
-        cropImageView1.apply {
+        mVB.cropImageView1.apply {
             //配置
             this.isAutoZoomEnabled = true//是否自动缩放
             //设置宽高比

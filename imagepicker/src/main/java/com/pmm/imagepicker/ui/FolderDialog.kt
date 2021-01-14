@@ -1,18 +1,19 @@
 package com.pmm.imagepicker.ui
 
 import android.content.ContextWrapper
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.adapter.ImageFolderAdapter
+import com.pmm.imagepicker.databinding.DialogFolderBinding
 import com.pmm.imagepicker.model.ImageData
 import com.pmm.imagepicker.model.LocalMediaFolder
 import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.ktx.dip2px
-import com.pmm.ui.ktx.inflate
 import com.pmm.ui.ktx.init
-import kotlinx.android.synthetic.main.dialog_folder.view.*
 import kotlin.properties.Delegates
 
 /**
@@ -37,19 +38,20 @@ internal class FolderDialog(
     private val mAdapter by lazy { ImageFolderAdapter(getContext(), folderIndex) }
 
     init {
-        this.setContentView(context.inflate(R.layout.dialog_folder).apply {
-            //初始化列表
-            with(this.recyFolder) {
-                this.init()
-                this.setPadding(0, context.dip2px(8f), 0, context.dip2px(8f))
-                this.adapter = mAdapter
-                mAdapter.onFolderClickListener = { index, folderName, images ->
-                    folderIndex = index
-                    onFolderClickListener?.invoke(folderName, images)
-                    dismiss()
-                }
+        val viewBinding = DialogFolderBinding.inflate(LayoutInflater.from(context))
+        this.setContentView(viewBinding.root)
+
+        //初始化列表
+        with(viewBinding.recyFolder) {
+            this.init()
+            this.setPadding(0, context.dip2px(8f), 0, context.dip2px(8f))
+            this.adapter = mAdapter
+            mAdapter.onFolderClickListener = { index, folderName, images ->
+                folderIndex = index
+                onFolderClickListener?.invoke(folderName, images)
+                dismiss()
             }
-        })
+        }
 
         //设置布局背景透明，才能显示的出圆角
         this.window?.apply {
@@ -75,5 +77,6 @@ internal class FolderDialog(
 
         }
     }
+
 
 }

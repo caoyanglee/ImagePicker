@@ -5,29 +5,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.github.chrisbanes.photoview.PhotoView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.R
+import com.pmm.imagepicker.databinding.ActivityImagePreviewV2Binding
 import com.pmm.ui.core.StatusNavigationBar
-import com.pmm.ui.core.activity.BaseActivity
+import com.pmm.ui.core.activity.BaseActivityV2
 import com.pmm.ui.core.pager.BaseFragmentStatePagerAdapter
 import com.pmm.ui.interfaces.MyViewPagerChangeListener
 import com.rd.animation.type.AnimationType
-import com.shizhefei.view.largeimage.LargeImageView
-import kotlinx.android.synthetic.main.activity_image_preview_v2.*
 import kotlin.math.max
 
 
-class ImagePreviewActivity : BaseActivity() {
-
-    override fun getLayoutResID() = R.layout.activity_image_preview_v2
+class ImagePreviewActivity : BaseActivityV2(R.layout.activity_image_preview_v2) {
+    private val mVB by viewBinding(ActivityImagePreviewV2Binding::bind, R.id.container)
 
     private lateinit var smallPicList: ArrayList<String>
     private var imageList: ArrayList<String> = ArrayList()
@@ -97,7 +92,7 @@ class ImagePreviewActivity : BaseActivity() {
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
         super.beforeViewAttach(savedInstanceState)
         position = intent.getIntExtra(IMAGE_INDEX, 0)
-        imageList = intent.getStringArrayListExtra(IMAGE_LIST)
+        imageList = intent.getStringArrayListExtra(IMAGE_LIST) ?: arrayListOf()
         smallPicList = intent.getStringArrayListExtra(IMAGE_INDEX_SMALL) ?: ArrayList()
     }
 
@@ -109,16 +104,18 @@ class ImagePreviewActivity : BaseActivity() {
     }
 
     private fun initPagerIndicator() {
-        pageIndicatorView.count = imageList.size
-        pageIndicatorView.setSelected(position)
-        pageIndicatorView.radius = 4
-        pageIndicatorView.setAnimationType(AnimationType.SLIDE)
+        mVB.pageIndicatorView.apply {
+            this.count = imageList.size
+            this.setSelected(position)
+            this.radius = 4
+            this.setAnimationType(AnimationType.SLIDE)
+        }
     }
 
     private fun initShareElement() {
         setEnterSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
-                val view = mAdapter.getItem(viewpager.currentItem).view?.findViewById<View>(R.id.iv_large)!!
+                val view = mAdapter.getItem(mVB.viewpager.currentItem).requireView().findViewById<View>(R.id.iv_large)!!
                 sharedElements?.clear()
                 sharedElements?.put("img", view)
             }
@@ -136,14 +133,14 @@ class ImagePreviewActivity : BaseActivity() {
             }
         }
 
-        viewpager.apply {
+        mVB.viewpager.apply {
             this.offscreenPageLimit = 1
             this.adapter = mAdapter
             this.currentItem = position
             //滚动监听
             this.addOnPageChangeListener(object : MyViewPagerChangeListener() {
                 override fun onPageSelected(position: Int) {
-                    pageIndicatorView.setSelected(position)
+                    mVB.pageIndicatorView.setSelected(position)
                 }
 
             })
@@ -174,7 +171,7 @@ class ImagePreviewActivity : BaseActivity() {
 
         override fun getCount(): Int = max(smallPicList.size, imageList.size)
 
-        override fun getItemView(position: Int): ViewGroup = getFragment(position).view?.findViewById<ViewGroup>(R.id.cl_root)!!
+        override fun getItemView(position: Int): ViewGroup = getFragment(position).requireView().findViewById(R.id.container)!!
 
     }
 
@@ -182,7 +179,7 @@ class ImagePreviewActivity : BaseActivity() {
     fun transitionFinish() {
         val intent = Intent()
         val bundle = Bundle()
-        bundle.putInt(IMAGE_INDEX, viewpager.currentItem)
+        bundle.putInt(IMAGE_INDEX, mVB.viewpager.currentItem)
         intent.putExtras(bundle)
         setResult(Activity.RESULT_OK, intent)
         finish()

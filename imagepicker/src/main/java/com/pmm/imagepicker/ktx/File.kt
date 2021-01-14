@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Display
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
@@ -26,30 +27,17 @@ import java.io.File
  * Date:2019-05-25 15:39
  * Description:
  */
-
-//创建图片文件
-private fun Context.createMediaFile(childFoldName: String): File {
-    val state = Environment.getExternalStorageState()
-    val rootDir = if (state == Environment.MEDIA_MOUNTED) Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) else this.filesDir
-    val folderDir = File("$rootDir/$childFoldName/")
-    if (!folderDir.exists() && folderDir.mkdirs()) {
-    }
-    val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.jpg"
-    return File(folderDir, fileName)
-}
-
 private fun Context.createMediaFileInApp(childFoldName: String): File {
     val state = Environment.getExternalStorageState()
     val rootDir = if (state == Environment.MEDIA_MOUNTED) "${(externalCacheDir?.absolutePath) ?: ""}/imagePicker_disk_cache" else this.cacheDir
     val folderDir = File("$rootDir/$childFoldName/")
-    if (!folderDir.exists() && folderDir.mkdirs()) {
-    }
+    if (!folderDir.exists() && folderDir.mkdirs()) { }
     val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.jpg"//必须使用不同命名
     return File(folderDir, fileName)
 }
 
 //创建相机图片
-internal fun Context.createCameraFile(): File = createMediaFile("Camera")
+internal fun Context.createCameraFile(): File = createMediaFileInApp("Camera")
 
 //创建裁剪图片
 internal fun Context.createCropFile(): File = createMediaFileInApp("Crop")
@@ -97,6 +85,7 @@ internal fun Context.getImageContentUri(path: String): Uri? {
         val baseUri = Uri.parse("content://media/external/images/media")
         Uri.withAppendedPath(baseUri, "" + id)
     } else { // 如果图片不在手机的共享图片数据库，就先把它插入。
+        Log.e("LocalMediaLoader", "最新插入 $path", )
         if (File(path).exists()) {
             val values = ContentValues()
             values.put(MediaStore.Images.Media.DATA, path)

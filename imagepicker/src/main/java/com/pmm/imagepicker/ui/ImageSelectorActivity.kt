@@ -20,21 +20,24 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.*
 import com.pmm.imagepicker.adapter.ImageListAdapter
+import com.pmm.imagepicker.databinding.ActivityImageCropBinding
+import com.pmm.imagepicker.databinding.ActivityImageselectorBinding
 import com.pmm.imagepicker.ktx.createCameraFile
 import com.pmm.imagepicker.ktx.startActionCapture
 import com.pmm.imagepicker.model.ImageData
 import com.pmm.imagepicker.ui.preview.ImagePreviewActivity
 import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.core.activity.BaseActivity
+import com.pmm.ui.core.activity.BaseActivityV2
 import com.pmm.ui.core.dialog.ProgressDialog
 import com.pmm.ui.core.recyclerview.decoration.GridItemDecoration
 import com.pmm.ui.helper.FileHelper
 import com.pmm.ui.ktx.*
 import com.pmm.ui.widget.ToolBarPro
 import id.zelory.compressor.Compressor
-import kotlinx.android.synthetic.main.activity_imageselector.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.io.File
@@ -48,7 +51,8 @@ import kotlin.reflect.KProperty
  * Date:2020/7/31 11:13
  * Description:图片选择器
  */
-internal class ImageSelectorActivity : BaseActivity() {
+internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imageselector) {
+    private val mVB by viewBinding(ActivityImageselectorBinding::bind, R.id.container)
     private val mVm by lazy { ViewModelProvider(this).get(ImageSelectorViewModel::class.java) }
 
     private lateinit var config: Config
@@ -62,7 +66,7 @@ internal class ImageSelectorActivity : BaseActivity() {
     private var cameraPath: String? = null
 
     private var isUseOrigin by Delegates.observable(false) { property: KProperty<*>, oldValue: Boolean, newValue: Boolean ->
-        tvOrigin.isActivated = newValue
+        mVB.tvOrigin.isActivated = newValue
     }//是否使用原图
 
     private var isLoadImgIng = false//是否正在加载图片->返回给app
@@ -89,8 +93,6 @@ internal class ImageSelectorActivity : BaseActivity() {
         }
     }
 
-
-    override fun getLayoutResID(): Int = R.layout.activity_imageselector
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -119,6 +121,8 @@ internal class ImageSelectorActivity : BaseActivity() {
     private fun initObserver() {
         mVm.foldersLiveData.observe(this, androidx.lifecycle.Observer {
             if (it != null) {
+                mVB.mProgressBar.gone()
+                mVB.folderList.visible()
                 Handler().postDelayed({
                     //跳转其他app：在切换进来也会加载
                     //load all images first
@@ -132,7 +136,7 @@ internal class ImageSelectorActivity : BaseActivity() {
 
     private fun initRender() {
         //ToolBar
-        mToolBar.apply {
+        mVB.mToolBar.apply {
             this.showStatusView = true
             this.navigationIcon {
                 if (ToolBarPro.GlobalConfig.navigationDrawable == null) {
@@ -157,18 +161,18 @@ internal class ImageSelectorActivity : BaseActivity() {
         }
 
         StatusNavigationBar.apply {
-            val statusColor = mToolBar.getToolBarBgColor()
+            val statusColor = mVB.mToolBar.getToolBarBgColor()
             if (statusColor.isLightColor()) {
-                this.setLightMode(window, true)
+                this.change2LightStatusBar(window)
             } else {
-                this.setDarkMode(window, true)
+                this.change2DarkStatusBar(window)
             }
         }
 
-        rl_navigator.setMargins(b = getNavigationBarHeight())
+        mVB.rlNavigator.setMargins(b = getNavigationBarHeight())
 
         //CheckBox use Origin Pic
-        tvOrigin.apply {
+        mVB.tvOrigin.apply {
             if (!config.showIsCompress) {
                 this.visibility = View.GONE
             } else {
@@ -212,7 +216,7 @@ internal class ImageSelectorActivity : BaseActivity() {
         imageAdapter.setOnImageSelectChangedListener(object : ImageListAdapter.OnImageSelectChangedListener {
             @SuppressLint("SetTextI18n")
             override fun onChange(selectImages: List<ImageData>) {
-                mToolBar.menuText1 {
+                mVB.mToolBar.menuText1 {
                     val enable = selectImages.isNotEmpty()
                     if (enable) {
                         this.text = "${getString(R.string.done_num)}(${selectImages.size}/${config.maxSelectNum})"
@@ -258,6 +262,9 @@ internal class ImageSelectorActivity : BaseActivity() {
 //            mFolderName.text = folderName
 //            recyclerView.smoothScrollToPosition(0)
 //        }
+
+        mVB.mProgressBar.visible()
+        mVB.folderList.invisible()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -331,7 +338,15 @@ internal class ImageSelectorActivity : BaseActivity() {
         if (isLoadImgIng) return
         isLoadImgIng = true
         if (isUseOrigin) {
-            val intent = Intent().putParcelableArrayListExtra(ImagePicker.REQUEST_OUTPUT, medias)
+
+            for (image in medias) {
+                Log.d("imagePicker", "--------------------------------------------- >>>")
+                Log.d("imagePicker", "原图：")
+                Log.d("imagePicker", "地址：$image")
+                Log.d("imagePicker", "文件大小：${FileHelper.getFileSize(File(image.path))}")
+            }
+
+            val intent = Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, medias.map { it.path } as ArrayList<String>)
             setResult(Activity.RESULT_OK, intent)
             onBackPressed()
         } else {
@@ -350,10 +365,10 @@ internal class ImageSelectorActivity : BaseActivity() {
         val compressImg = arrayListOf<String>()
         val gifMap = hashMapOf<String, Int>()//记录一下gif的位置
         for ((idx, item) in photos.withIndex()) {
-            if (item.path?.endsWith(".gif")==true)
+            if (item.path?.endsWith(".gif") == true)
                 gifMap[item.path] = idx
             else
-                compressImg.add(item.path?:"")
+                compressImg.add(item.path ?: "")
         }
         //结束选择
         fun finishSelect() {

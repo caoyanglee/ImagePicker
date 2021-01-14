@@ -1,24 +1,28 @@
 package io.weimu.www.imagepicker.ui
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.assent.Permission
+import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.ImagePicker
 import com.pmm.imagepicker.ui.preview2.ImagePreviewActivity
 import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.core.recyclerview.decoration.GridItemDecoration
 import com.pmm.ui.ktx.click
 import com.pmm.ui.ktx.dip2px
+import com.pmm.ui.ktx.getStatusBarHeight
 import com.pmm.ui.ktx.requestPermission
 import io.weimu.www.imagepicker.R
+import io.weimu.www.imagepicker.databinding.ActivityMainBinding
 import io.weimu.www.imagepicker.fragment.adapter.ImageGridAdapter
-import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
+
+    val mVB by viewBinding(ActivityMainBinding::bind, R.id.container)
 
     private val maxImageNumber = 9
     private val spanCount = 4
@@ -38,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
                 //添加
                 override fun onItemAddClick() {
-                    ImagePicker.pickImage(this@MainActivity)
+//                    ImagePicker.pickImage(this@MainActivity)
 //                    ImagePicker.pickAvatar(this@MainActivity);
 //                    ImagePicker.pickImage(this@MainActivity, 30)
 //                    ImagePicker.pickImage4One(
@@ -51,12 +55,12 @@ class MainActivity : AppCompatActivity() {
 //                ImagePicker.takePhoto(this@MainActivity, true);//使用摄像头
 
 
-//                ImagePicker.custom(this@MainActivity, Config().apply {
-//                    selectMode = Config.MODE_SINGLE
-//                    enableCrop = true
-//                    cropAspectRatioX = 1
-//                    cropAspectRatioY = 1
-//                })
+                ImagePicker.custom(this@MainActivity, Config().apply {
+                    selectMode = Config.MODE_SINGLE
+                    enableCrop = true
+                    cropAspectRatioX = 1
+                    cropAspectRatioY = 1
+                })
                 }
             }
 
@@ -66,11 +70,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         StatusNavigationBar.setStatusNavigationBarTransparent(window)
-        StatusNavigationBar.setDarkMode(window, true)
-        setContentView(R.layout.activity_main)
+        StatusNavigationBar.change2DarkStatusBar(window)
+
+        Log.e("pmmlee", "statusHeight: ${getStatusBarHeight()}")
 
         //ToolBar
-        mToolBar.apply {
+        mVB.mToolBar.apply {
             this.showStatusView = true
             this.navigationIcon {
                 this.click { onBackPressed() }
@@ -96,7 +101,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerVIew() {
-        this.id_RecyclerView.apply {
+        mVB.recyclerView.apply {
             this.adapter = mAdapter
             this.layoutManager = GridLayoutManager(this@MainActivity, spanCount)
             this.addItemDecoration(GridItemDecoration(spanCount, dip2px(8f), dip2px(8f)))

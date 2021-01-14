@@ -3,14 +3,15 @@ package com.pmm.imagepicker.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.R
+import com.pmm.imagepicker.databinding.ListItemFolderBinding
 import com.pmm.imagepicker.model.ImageData
 import com.pmm.imagepicker.model.LocalMediaFolder
 import com.pmm.ui.core.recyclerview.BaseRecyclerAdapter
 import com.pmm.ui.core.recyclerview.BaseRecyclerViewHolder
-import com.pmm.ui.ktx.load4CenterCrop
 import com.pmm.ui.ktx.click
-import kotlinx.android.synthetic.main.list_item_folder.view.*
+import com.pmm.ui.ktx.load4CenterCrop
 import java.io.File
 
 /**
@@ -30,28 +31,34 @@ internal class ImageFolderAdapter(
 
     var onFolderClickListener: FolderClickCallBack = null
 
+    override fun getViewHolder(itemView: View?): BaseRecyclerViewHolder = ItemViewHolder(itemView)
+
     @SuppressLint("StringFormatMatches")
     override fun itemViewChange(holder: BaseRecyclerViewHolder, position: Int) {
         val item = getItem(position) ?: return
-        holder.itemView.apply {
+        (holder as ItemViewHolder).mVB.apply {
             //图片
-            this.first_image.load4CenterCrop(
+            this.firstImage.load4CenterCrop(
                     file = File(item.firstImagePath),
                     placeholder = R.drawable.ic_image_24dp
             )
             //文件夹 名称
-            this.folder_name.text = item.name
+            this.folderName.text = item.name
             //文件夹的图片数
-            this.image_num.text = context.getString(R.string.num_postfix, item.imageNum)
+            this.imageNum.text = mContext.getString(R.string.num_postfix, item.imageNum)
             //是否显示
-            this.is_selected.visibility = if (checkedIndex == position) View.VISIBLE else View.GONE
+            this.isSelected.visibility = if (checkedIndex == position) View.VISIBLE else View.GONE
             //点击事件
-            this.click {
+            container.click {
                 checkedIndex = position
                 notifyDataSetChanged()
                 onFolderClickListener?.invoke(position, item.name, item.images)
             }
         }
+    }
+
+    private class ItemViewHolder(itemView: View?) : BaseRecyclerViewHolder(itemView) {
+        val mVB by viewBinding(ListItemFolderBinding::bind, R.id.container)
     }
 }
 

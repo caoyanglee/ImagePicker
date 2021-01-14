@@ -13,21 +13,25 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.ImageStaticHolder
 import com.pmm.imagepicker.R
+import com.pmm.imagepicker.databinding.ActivityImagePreviewBinding
+import com.pmm.imagepicker.databinding.ActivityImageselectorBinding
 import com.pmm.imagepicker.model.ImageData
 import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.core.activity.BaseActivity
+import com.pmm.ui.core.activity.BaseActivityV2
 import com.pmm.ui.core.pager.BaseFragmentStatePagerAdapter
 import com.pmm.ui.ktx.*
 import com.pmm.ui.widget.ToolBarPro
-import kotlinx.android.synthetic.main.activity_image_preview.*
 import java.util.*
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
 
-internal class ImagePreviewActivity : BaseActivity() {
+internal class ImagePreviewActivity : BaseActivityV2(R.layout.activity_image_preview) {
+    private val mVB by viewBinding(ActivityImagePreviewBinding::bind, R.id.container)
 
     companion object {
         val REQUEST_PREVIEW = 68
@@ -72,21 +76,19 @@ internal class ImagePreviewActivity : BaseActivity() {
     var isShowBar by Delegates.observable(false) { property, oldValue, newValue ->
         //todo是否显示
         if (newValue) {
-            mToolBar.visible()
-            mSelectBarLayout.visible()
+            mVB.mToolBar.visible()
+            mVB.mSelectBarLayout.visible()
             StatusNavigationBar.showStatusBar(window)
         } else {
-            mToolBar.gone()
-            mSelectBarLayout.gone()
+            mVB.mToolBar.gone()
+            mVB.mSelectBarLayout.gone()
             StatusNavigationBar.hideStatusBar(window)
         }
     }
 
     private var isSelected by Delegates.observable(false) { property: KProperty<*>, oldValue: Boolean, newValue: Boolean ->
-        mTvSelect.isActivated = newValue
+        mVB.mTvSelect.isActivated = newValue
     }//是否选中
-
-    override fun getLayoutResID(): Int = R.layout.activity_image_preview
 
 
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
@@ -104,7 +106,7 @@ internal class ImagePreviewActivity : BaseActivity() {
 
 
     private fun initView() {
-        mToolBar.apply {
+        mVB.mToolBar.apply {
             this.showStatusView=true
             this.navigationIcon {
                 if (ToolBarPro.GlobalConfig.navigationDrawable == null) {
@@ -129,7 +131,7 @@ internal class ImagePreviewActivity : BaseActivity() {
 
         //StatusBar
         StatusNavigationBar.apply {
-            val statusColor = mToolBar.getToolBarBgColor()
+            val statusColor = mVB.mToolBar.getToolBarBgColor()
             //this.setColor(window, statusColor)
             this.setStatusNavigationBarTransparent(window)
             if (statusColor.isLightColor()) {
@@ -140,7 +142,7 @@ internal class ImagePreviewActivity : BaseActivity() {
         }
 
         //bottom
-        mSelectBarLayout.setMargins(b = getNavigationBarHeight())
+        mVB.mSelectBarLayout.setMargins(b = getNavigationBarHeight())
 
         onSelectNumChange()
 
@@ -156,7 +158,7 @@ internal class ImagePreviewActivity : BaseActivity() {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
                 override fun onPageSelected(position: Int) {
-                    mToolBar.centerTitle { this.text = ((position + 1).toString() + "/" + images.size) }
+                    mVB.mToolBar.centerTitle { this.text = ((position + 1).toString() + "/" + images.size) }
                     onImageSwitch(position)
                 }
 
@@ -169,11 +171,11 @@ internal class ImagePreviewActivity : BaseActivity() {
 
     @SuppressLint("StringFormatMatches")
     fun registerListener() {
-        mTvSelect.setOnClickListener(View.OnClickListener {
+        mVB.mTvSelect.setOnClickListener(View.OnClickListener {
             isSelected = !isSelected
             if (selectImages.size >= maxSelectNum && isSelected) {
                 Toast.makeText(this@ImagePreviewActivity, getString(R.string.message_max_num, maxSelectNum), Toast.LENGTH_LONG).show()
-                mTvSelect.isActivated = false
+                mVB.mTvSelect.isActivated = false
                 return@OnClickListener
             }
             val image = images[viewPager.currentItem]
@@ -200,7 +202,7 @@ internal class ImagePreviewActivity : BaseActivity() {
     @SuppressLint("SetTextI18n")
     fun onSelectNumChange() {
         val enable = selectImages.size != 0
-        mToolBar.menuText1 {
+        mVB.mToolBar.menuText1 {
             if (enable) {
                 this.visible()
                 this.text = "${getString(R.string.done_num)}(${selectImages.size}/${maxSelectNum})"

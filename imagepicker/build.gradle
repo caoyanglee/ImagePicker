@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 // JitPack Maven
 apply plugin: 'com.github.dcendents.android-maven'
@@ -30,7 +29,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {

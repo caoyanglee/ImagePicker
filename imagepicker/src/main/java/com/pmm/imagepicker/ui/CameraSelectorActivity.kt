@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.FrameLayout
 import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.ImagePicker
@@ -14,6 +15,7 @@ import com.pmm.imagepicker.ktx.createCameraFile
 import com.pmm.imagepicker.ktx.startActionCapture
 import com.pmm.ui.core.activity.BaseActivity
 import com.pmm.ui.helper.FileHelper
+import com.pmm.ui.helper.MediaScanner
 import com.pmm.ui.ktx.gone
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.MainScope
@@ -73,7 +75,7 @@ internal class CameraSelectorActivity : BaseActivity() {
         if (resultCode == Activity.RESULT_OK) {
             // on take photo success
             if (requestCode == ImagePicker.REQUEST_CAMERA) {
-                sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(cameraPath))))
+                sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(cameraPath?:""))))
                 if (config.enableCrop) {
                     startCrop(cameraPath)
                 } else {

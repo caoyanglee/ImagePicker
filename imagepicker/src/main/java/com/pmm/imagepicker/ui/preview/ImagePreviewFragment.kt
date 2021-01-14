@@ -2,13 +2,16 @@ package com.pmm.imagepicker.ui.preview
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.ViewGroup
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.R
-import com.pmm.ui.core.fragment.BaseFragment
+import com.pmm.imagepicker.databinding.FragmentImagePreviewBinding
+import com.pmm.ui.core.fragment.BaseFragmentV2
 import com.pmm.ui.ktx.load
-import kotlinx.android.synthetic.main.fragment_image_preview.*
 
 
-internal class ImagePreviewFragment : BaseFragment() {
+internal class ImagePreviewFragment : BaseFragmentV2(R.layout.fragment_image_preview) {
+    private val mVB by viewBinding(FragmentImagePreviewBinding::bind, R.id.container)
 
     private var path = ""
     private var uri: Uri? = null
@@ -28,21 +31,21 @@ internal class ImagePreviewFragment : BaseFragment() {
         }
     }
 
-    override fun getLayoutResID(): Int = R.layout.fragment_image_preview
-
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
-        path = "${arguments!!.getString(PATH)}"
-        uri = arguments!!.getParcelable(URI)
+        path = "${requireArguments().getString(PATH)}"
+        uri = requireArguments().getParcelable(URI)
     }
 
+    override fun getContentView(): ViewGroup = requireView() as ViewGroup
+
     override fun afterViewAttach(savedInstanceState: Bundle?) {
-        photo_view.load(uri!!)
-        photo_view.setOnPhotoTapListener { view, x, y ->
+        mVB.photoView.load(uri!!)
+        mVB.photoView.setOnPhotoTapListener { view, x, y ->
             val activity = activity as ImagePreviewActivity
             activity.isShowBar = !activity.isShowBar
         }
 
-        mTvSelect.text = path + "\n" + uri
+        mVB.mTvSelect.text = path + "\n" + uri
     }
 
 
