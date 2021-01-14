@@ -6,7 +6,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.adapter.ImageFolderAdapter
-import com.pmm.imagepicker.model.LocalMedia
+import com.pmm.imagepicker.model.ImageData
 import com.pmm.imagepicker.model.LocalMediaFolder
 import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.ktx.dip2px
@@ -32,7 +32,7 @@ internal class FolderDialog(
 
     fun getFolderIndex() = folderIndex//文件夹指针
 
-    var onFolderClickListener: ((folderName: String?, images: List<LocalMedia>) -> Unit)? = null
+    var onFolderClickListener: ((folderName: String?, images: List<ImageData>) -> Unit)? = null
 
     private val mAdapter by lazy { ImageFolderAdapter(getContext(), folderIndex) }
 

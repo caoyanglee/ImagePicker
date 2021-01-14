@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import com.pmm.imagepicker.R
-import com.pmm.imagepicker.model.LocalMedia
+import com.pmm.imagepicker.model.ImageData
 import com.pmm.imagepicker.model.LocalMediaFolder
 import com.pmm.ui.core.recyclerview.BaseRecyclerAdapter
 import com.pmm.ui.core.recyclerview.BaseRecyclerViewHolder
@@ -19,7 +19,7 @@ import java.io.File
  * Description:文件夹适配器
  */
 
-internal typealias FolderClickCallBack = ((index: Int, folderName: String?, images: List<LocalMedia>) -> Unit)?
+internal typealias FolderClickCallBack = ((index: Int, folderName: String?, images: List<ImageData>) -> Unit)?
 
 internal class ImageFolderAdapter(
         mContext: Context,

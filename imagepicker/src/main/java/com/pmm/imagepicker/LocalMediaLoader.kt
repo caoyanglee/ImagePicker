@@ -1,6 +1,7 @@
 package com.pmm.imagepicker
 
 import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -9,7 +10,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import com.pmm.imagepicker.model.LocalMedia
+import com.pmm.imagepicker.ktx.getImageContentUri
+import com.pmm.imagepicker.model.ImageData
 import com.pmm.imagepicker.model.LocalMediaFolder
 import java.io.File
 import java.util.*
@@ -52,20 +54,23 @@ internal class LocalMediaLoader(
             }
 
             override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
+                Log.d(TAG, "=========================================")
                 if (data == null || data.isClosed) return
-
 
                 val imageFolders = ArrayList<LocalMediaFolder>()//一组文件夹
                 val imageFolder4All = LocalMediaFolder()//全部图片-文件夹
-                val allImages = ArrayList<LocalMedia>()//图片
+                val allImages = ArrayList<ImageData>()//图片
 
                 if (!data.moveToFirst()) return //issue链接：https://github.com/jeasonlzy/ImagePicker/issues/243#issuecomment-380353956
                 //while循环 必须先do，否则会缺失一张照片
                 do {
-                    //Log.d(TAG, "=========================================")
                     val path = data.getString(data.getColumnIndex(MediaStore.Images.Media.DATA))// 图片的路径
-                    //Log.d(TAG, "path = $path")
-                    allImages.add(LocalMedia(path))
+                    val id = data.getInt(data.getColumnIndex(MediaStore.MediaColumns._ID))
+                    val baseUri = Uri.parse("content://media/external/images/media")
+                    val uri = Uri.withAppendedPath(baseUri, "" + id)
+                    Log.d(TAG, "path = $path")
+                    Log.d(TAG, "uri = $uri")
+                    allImages.add(ImageData(path,uri))
 
                     val file = File(path)
                     if (!file.exists())
@@ -76,7 +81,7 @@ internal class LocalMediaLoader(
                         continue
 
                     val dirPath = parentFile.absolutePath//文件夹路径
-                    //Log.d(TAG, "parentpath = $dirPath")
+                    Log.d(TAG, "parentpath = $dirPath")
 
                     // 利用一个HashSet防止多次扫描同一个文件夹
                     if (mDirPaths.contains(dirPath)) {
@@ -99,16 +104,20 @@ internal class LocalMediaLoader(
                                 filename.endsWith(".webp")
                     }
 
-                    val images = ArrayList<LocalMedia>()
+                    val images = ArrayList<ImageData>()
 
                     for (i in files.indices) {
                         //allImages.add(localMedia);
-                        images.add(LocalMedia(files[i].absolutePath))
+                        val path2 = files[i].absolutePath
+                        val uri2 = activity.getImageContentUri(path2)
+
+                        images.add(ImageData(path2, uri2))
                     }
                     if (images.size > 0) {
                         images.sort()
                         localMediaFolder.images = images
                         localMediaFolder.firstImagePath = images[0].path
+                        localMediaFolder.firstImageUri = images[0].uri
                         localMediaFolder.imageNum = localMediaFolder.images.size
                         imageFolders.add(localMediaFolder)
                     }
