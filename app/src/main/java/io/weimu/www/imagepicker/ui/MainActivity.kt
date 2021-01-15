@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_IMAGE) {
-            val target = data?.getSerializableExtra(ImagePicker.REQUEST_OUTPUT) as List<String>
+            val target = data?.getStringArrayListExtra(ImagePicker.REQUEST_OUTPUT)
             Log.d("imagePicker", target.toString())
             mAdapter.addData(target)
         }

@@ -2,8 +2,10 @@ package io.weimu.www.imagepicker.fragment.adapter
 
 
 import android.content.Context
+import android.net.Uri
 import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.pmm.imagepicker.model.MedialFile
 import com.pmm.ui.core.recyclerview.BaseRecyclerAdapter
 import com.pmm.ui.core.recyclerview.BaseRecyclerViewHolder
 import com.pmm.ui.ktx.load4CenterCrop

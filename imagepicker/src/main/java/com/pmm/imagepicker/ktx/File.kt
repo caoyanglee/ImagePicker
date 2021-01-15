@@ -3,6 +3,7 @@ package com.pmm.imagepicker.ktx
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Resources
 import android.database.Cursor
@@ -10,16 +11,20 @@ import android.graphics.Point
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Display
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.ViewConfiguration
+import com.pmm.imagepicker.model.MedialFile
+import com.pmm.ui.helper.FileHelper
 import com.pmm.ui.ktx.formatDate
 import com.pmm.ui.ktx.getCurrentTimeStamp
 import com.pmm.ui.ktx.getUri4File
 import java.io.File
+import java.io.FileInputStream
 
 
 /**
@@ -29,10 +34,11 @@ import java.io.File
  */
 private fun Context.createMediaFileInApp(childFoldName: String): File {
     val state = Environment.getExternalStorageState()
-    val rootDir = if (state == Environment.MEDIA_MOUNTED) "${(externalCacheDir?.absolutePath) ?: ""}/imagePicker_disk_cache" else this.cacheDir
+    val rootDir = if (state == Environment.MEDIA_MOUNTED) "${(externalCacheDir?.absolutePath) ?: ""}/imagePickerDiskCache" else this.cacheDir
     val folderDir = File("$rootDir/$childFoldName/")
-    if (!folderDir.exists() && folderDir.mkdirs()) { }
-    val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.jpg"//必须使用不同命名
+    if (!folderDir.exists() && folderDir.mkdirs()) {
+    }
+    val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.png"//必须使用不同命名
     return File(folderDir, fileName)
 }
 
@@ -85,7 +91,7 @@ internal fun Context.getImageContentUri(path: String): Uri? {
         val baseUri = Uri.parse("content://media/external/images/media")
         Uri.withAppendedPath(baseUri, "" + id)
     } else { // 如果图片不在手机的共享图片数据库，就先把它插入。
-        Log.e("LocalMediaLoader", "最新插入 $path", )
+        Log.e("LocalMediaLoader", "最新插入 $path")
         if (File(path).exists()) {
             val values = ContentValues()
             values.put(MediaStore.Images.Media.DATA, path)
@@ -94,4 +100,36 @@ internal fun Context.getImageContentUri(path: String): Uri? {
             null
         }
     }
+}
+
+/**
+ * 保存一份公共图片到沙盒里，方能做裁剪，压缩,上传操作
+ * ⭐️⭐️⭐️⭐️⭐️
+ */
+fun ContextWrapper.saveImgFromPublicToPrivate(originList: List<MedialFile>): ArrayList<String> {
+    val state = Environment.getExternalStorageState()
+    val pictureCopyPath = if (state == Environment.MEDIA_MOUNTED)
+        "${(externalCacheDir?.absolutePath) ?: ""}/imagePickerDiskCache/imagePickerCopy"
+    else
+        this.cacheDir.absolutePath
+    File(pictureCopyPath).apply {
+        if (!this.exists()) {
+            this.mkdirs()
+        }
+    }
+    val resolvedList = arrayListOf<String>()
+    for (img in originList) {
+        val filePath = "${pictureCopyPath}/${img.name}"
+        val file = File(filePath)
+        file.createNewFile()
+        val pfd: ParcelFileDescriptor = contentResolver.openFileDescriptor(img.uri
+                ?: continue, "r") ?: continue
+        val fd = pfd.fileDescriptor
+        val fis = FileInputStream(fd)
+
+        FileHelper.writeFile(file, fis)
+
+        resolvedList.add(filePath)
+    }
+    return resolvedList
 }

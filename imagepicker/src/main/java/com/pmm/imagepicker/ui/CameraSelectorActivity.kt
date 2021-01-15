@@ -27,6 +27,7 @@ import java.util.*
  * 相机选择
  */
 internal class CameraSelectorActivity : BaseActivity() {
+
     companion object {
         val REQUEST_OUTPUT = "outputList"
 
@@ -75,7 +76,6 @@ internal class CameraSelectorActivity : BaseActivity() {
         if (resultCode == Activity.RESULT_OK) {
             // on take photo success
             if (requestCode == ImagePicker.REQUEST_CAMERA) {
-                sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(cameraPath?:""))))
                 if (config.enableCrop) {
                     startCrop(cameraPath)
                 } else {

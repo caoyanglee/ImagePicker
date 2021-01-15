@@ -5,11 +5,13 @@ import java.io.Serializable
 import java.util.ArrayList
 
 
-internal class LocalMediaFolder : Serializable {
-    var name: String? = null
-    var path: String? = null
+internal class MediaFolder(
+        var name: String,
+        var path: String = "/"
+) : Serializable {
+
     var firstImagePath: String? = null
     var firstImageUri: Uri? = null
     var imageNum: Int = 0
-    var images: List<ImageData> = ArrayList()
+    var images: ArrayList<MedialFile> = ArrayList()
 }

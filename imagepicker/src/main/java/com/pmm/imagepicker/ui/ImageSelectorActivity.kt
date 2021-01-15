@@ -8,9 +8,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
+import android.os.*
+import android.os.Build.VERSION_CODES
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -23,14 +22,13 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.*
 import com.pmm.imagepicker.adapter.ImageListAdapter
-import com.pmm.imagepicker.databinding.ActivityImageCropBinding
 import com.pmm.imagepicker.databinding.ActivityImageselectorBinding
 import com.pmm.imagepicker.ktx.createCameraFile
+import com.pmm.imagepicker.ktx.saveImgFromPublicToPrivate
 import com.pmm.imagepicker.ktx.startActionCapture
-import com.pmm.imagepicker.model.ImageData
+import com.pmm.imagepicker.model.MedialFile
 import com.pmm.imagepicker.ui.preview.ImagePreviewActivity
 import com.pmm.ui.core.StatusNavigationBar
-import com.pmm.ui.core.activity.BaseActivity
 import com.pmm.ui.core.activity.BaseActivityV2
 import com.pmm.ui.core.dialog.ProgressDialog
 import com.pmm.ui.core.recyclerview.decoration.GridItemDecoration
@@ -40,11 +38,13 @@ import com.pmm.ui.widget.ToolBarPro
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import java.io.File
+import java.io.*
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.set
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
+
 
 /**
  * Author:你需要一台永动机
@@ -215,7 +215,7 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
         //recyclerView点击事件
         imageAdapter.setOnImageSelectChangedListener(object : ImageListAdapter.OnImageSelectChangedListener {
             @SuppressLint("SetTextI18n")
-            override fun onChange(selectImages: List<ImageData>) {
+            override fun onChange(selectImages: List<MedialFile>) {
                 mVB.mToolBar.menuText1 {
                     val enable = selectImages.isNotEmpty()
                     if (enable) {
@@ -232,7 +232,7 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
                 startCamera()
             }
 
-            override fun onPictureClick(media: ImageData, position: Int, view: View) {
+            override fun onPictureClick(media: MedialFile, position: Int, view: View) {
                 when {
                     config.enablePreview -> {
 //                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -244,10 +244,11 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
                         startPreview(position)
                     }
                     config.enableCrop -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            startCrop("${media.path}")
+                        val image = saveImgFromPublicToPrivate(arrayListOf(media))[0]
+                        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                            startCrop(image)
                         } else {
-                            startCrop(media.path)
+                            startCrop(image)
                         }
                     }
                     else -> {
@@ -272,25 +273,33 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
         if (resultCode == Activity.RESULT_OK) {
             // on take photo success
             if (requestCode == ImagePicker.REQUEST_CAMERA) {
-                sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(cameraPath))))
                 if (config.enableCrop) {
                     startCrop(cameraPath)
                 } else {
-                    onSelectDone(ImageData(cameraPath ?: "", null))
+                    val path = cameraPath ?: ""
+                    if (isUseOrigin) {
+                        val intent = Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, arrayListOf(path))
+                        setResult(Activity.RESULT_OK, intent)
+                        onBackPressed()
+                    } else {
+                        compressImage(arrayListOf(path))
+                    }
                 }
             } else if (requestCode == ImagePreviewActivity.REQUEST_PREVIEW) {
                 val isDone = data?.getBooleanExtra(ImagePreviewActivity.OUTPUT_ISDONE, false)
                         ?: false
-                val images = data?.getSerializableExtra(ImagePreviewActivity.OUTPUT_LIST) as ArrayList<ImageData>
+                val images = data?.getSerializableExtra(ImagePreviewActivity.OUTPUT_LIST) as ArrayList<MedialFile>
                 if (isDone) {
                     onSelectDone(images)
                 } else {
                     if (images.isEmpty()) return
-                    imageAdapter.bindSelectImages(images as ArrayList<ImageData>)
+                    imageAdapter.bindSelectImages(images as ArrayList<MedialFile>)
                 }
             } else if (requestCode == ImageCropActivity.REQUEST_CROP) {
                 val path = data?.getStringExtra(ImageCropActivity.OUTPUT_PATH) ?: ""
-                onSelectDone(ImageData(path, null))
+                val intent = Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, arrayListOf(path))
+                setResult(Activity.RESULT_OK, intent)
+                onBackPressed()
             }
         }
     }
@@ -325,16 +334,16 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
     }
 
     //选择完成
-    private fun onSelectDone(medias: ArrayList<ImageData>) {
+    private fun onSelectDone(medias: ArrayList<MedialFile>) {
         onResult(medias)
     }
 
-    fun onSelectDone(media: ImageData) {
+    fun onSelectDone(media: MedialFile) {
         onResult(arrayListOf(media))
     }
 
     //返回图片
-    private fun onResult(medias: ArrayList<ImageData>) {
+    private fun onResult(medias: ArrayList<MedialFile>) {
         if (isLoadImgIng) return
         isLoadImgIng = true
         if (isUseOrigin) {
@@ -343,14 +352,16 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
                 Log.d("imagePicker", "--------------------------------------------- >>>")
                 Log.d("imagePicker", "原图：")
                 Log.d("imagePicker", "地址：$image")
-                Log.d("imagePicker", "文件大小：${FileHelper.getFileSize(File(image.path))}")
+                Log.d("imagePicker", "文件大小：${image.getSizeStr()}")
             }
 
-            val intent = Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, medias.map { it.path } as ArrayList<String>)
+            val imageList = saveImgFromPublicToPrivate(medias)
+            val intent = Intent().putStringArrayListExtra(ImagePicker.REQUEST_OUTPUT, imageList)
             setResult(Activity.RESULT_OK, intent)
             onBackPressed()
         } else {
-            compressImage(medias)
+            val imageList = saveImgFromPublicToPrivate(medias)
+            compressImage(imageList)
         }
     }
 
@@ -358,17 +369,17 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
     /**
      * 压缩图片，暂时不支持GIf压缩，遇到Gif图片直接返回原地址
      */
-    private fun compressImage(photos: ArrayList<ImageData>) {
+    private fun compressImage(photos: ArrayList<String>) {
         if (photos.size > 9) ProgressDialog.show(this@ImageSelectorActivity, message = "加载中")
         val newImageList = ArrayList<String>()
 
         val compressImg = arrayListOf<String>()
         val gifMap = hashMapOf<String, Int>()//记录一下gif的位置
         for ((idx, item) in photos.withIndex()) {
-            if (item.path?.endsWith(".gif") == true)
-                gifMap[item.path] = idx
+            if (item.endsWith(".gif"))
+                gifMap[item] = idx
             else
-                compressImg.add(item.path ?: "")
+                compressImg.add(item)
         }
         //结束选择
         fun finishSelect() {

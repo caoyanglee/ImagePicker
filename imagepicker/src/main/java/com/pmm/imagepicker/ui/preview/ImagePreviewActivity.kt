@@ -17,7 +17,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.ImageStaticHolder
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.databinding.ActivityImagePreviewBinding
-import com.pmm.imagepicker.model.ImageData
+import com.pmm.imagepicker.model.MedialFile
 import com.pmm.ui.core.StatusNavigationBar
 import com.pmm.ui.core.activity.BaseActivityV2
 import com.pmm.ui.core.pager.BaseFragmentStatePagerAdapter
@@ -41,9 +41,9 @@ internal class ImagePreviewActivity : BaseActivityV2(R.layout.activity_image_pre
         val OUTPUT_ISDONE = "isDone"
 
 
-        fun startPreview(context: Activity, selectImages: List<ImageData>, maxSelectNum: Int, position: Int) {
+        fun startPreview(context: Activity, selectImages: List<MedialFile>, maxSelectNum: Int, position: Int) {
             val intent = Intent(context, ImagePreviewActivity::class.java)
-            intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, selectImages as ArrayList<ImageData>)
+            intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, selectImages as ArrayList<MedialFile>)
 
             intent.putExtra(EXTRA_POSITION, position)
             intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
@@ -53,9 +53,9 @@ internal class ImagePreviewActivity : BaseActivityV2(R.layout.activity_image_pre
 
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        fun startPreviewWithAnim(context: Activity, selectImages: List<ImageData>, maxSelectNum: Int, position: Int, view: View) {
+        fun startPreviewWithAnim(context: Activity, selectImages: List<MedialFile>, maxSelectNum: Int, position: Int, view: View) {
             val intent = Intent(context, ImagePreviewActivity::class.java)
-            intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, selectImages as ArrayList<ImageData>)
+            intent.putExtra(EXTRA_PREVIEW_SELECT_LIST, selectImages as ArrayList<MedialFile>)
 
             intent.putExtra(EXTRA_POSITION, position)
             intent.putExtra(EXTRA_MAX_SELECT_NUM, maxSelectNum)
@@ -67,8 +67,8 @@ internal class ImagePreviewActivity : BaseActivityV2(R.layout.activity_image_pre
 
     private var position: Int = 0
     private var maxSelectNum = 1
-    private var images: List<ImageData> = ArrayList()//所有图片
-    private var selectImages: ArrayList<ImageData> = ArrayList()//选择的图片
+    private var images: List<MedialFile> = ArrayList()//所有图片
+    private var selectImages: ArrayList<MedialFile> = ArrayList()//选择的图片
 
 
     var isShowBar by Delegates.observable(false) { property, oldValue, newValue ->
@@ -92,7 +92,7 @@ internal class ImagePreviewActivity : BaseActivityV2(R.layout.activity_image_pre
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
         //images = getIntent().getParcelableArrayListExtra(EXTRA_PREVIEW_LIST);
         images = ImageStaticHolder.getChooseImages()
-        selectImages = intent.getSerializableExtra(EXTRA_PREVIEW_SELECT_LIST) as ArrayList<ImageData>
+        selectImages = intent.getSerializableExtra(EXTRA_PREVIEW_SELECT_LIST) as ArrayList<MedialFile>
         maxSelectNum = intent.getIntExtra(EXTRA_MAX_SELECT_NUM, 9)
         position = intent.getIntExtra(EXTRA_POSITION, 1)
     }

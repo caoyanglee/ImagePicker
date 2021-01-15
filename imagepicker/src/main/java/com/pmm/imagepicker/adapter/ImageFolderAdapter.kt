@@ -6,13 +6,12 @@ import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.databinding.ListItemFolderBinding
-import com.pmm.imagepicker.model.ImageData
-import com.pmm.imagepicker.model.LocalMediaFolder
+import com.pmm.imagepicker.model.MedialFile
+import com.pmm.imagepicker.model.MediaFolder
 import com.pmm.ui.core.recyclerview.BaseRecyclerAdapter
 import com.pmm.ui.core.recyclerview.BaseRecyclerViewHolder
 import com.pmm.ui.ktx.click
 import com.pmm.ui.ktx.load4CenterCrop
-import java.io.File
 
 /**
  * Author:你需要一台永动机
@@ -20,12 +19,12 @@ import java.io.File
  * Description:文件夹适配器
  */
 
-internal typealias FolderClickCallBack = ((index: Int, folderName: String?, images: List<ImageData>) -> Unit)?
+internal typealias FolderClickCallBack = ((index: Int, folderName: String?, images: List<MedialFile>) -> Unit)?
 
 internal class ImageFolderAdapter(
         mContext: Context,
         private var checkedIndex: Int = -1//选中的位置
-) : BaseRecyclerAdapter<Any, LocalMediaFolder>(mContext) {
+) : BaseRecyclerAdapter<Any, MediaFolder>(mContext) {
 
     override fun getItemLayoutRes(): Int = R.layout.list_item_folder
 
@@ -39,7 +38,7 @@ internal class ImageFolderAdapter(
         (holder as ItemViewHolder).mVB.apply {
             //图片
             this.firstImage.load4CenterCrop(
-                    file = File(item.firstImagePath),
+                    uri = item.firstImageUri!!,
                     placeholder = R.drawable.ic_image_24dp
             )
             //文件夹 名称

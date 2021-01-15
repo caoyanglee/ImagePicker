@@ -1,6 +1,6 @@
 package com.pmm.imagepicker
 
-import com.pmm.imagepicker.model.ImageData
+import com.pmm.imagepicker.model.MedialFile
 
 
 /**
@@ -10,13 +10,13 @@ import com.pmm.imagepicker.model.ImageData
  */
 internal object ImageStaticHolder {
     //共享选择图片列表
-    private var chooseImages: ArrayList<ImageData> = arrayListOf()
+    private var chooseImages: ArrayList<MedialFile> = arrayListOf()
 
-    fun getChooseImages(): List<ImageData> {
+    fun getChooseImages(): List<MedialFile> {
         return chooseImages
     }
 
-    fun setChooseImages(images: List<ImageData>) {
+    fun setChooseImages(images: List<MedialFile>) {
         this.chooseImages.clear()
         this.chooseImages.addAll(images)
     }

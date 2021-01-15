@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.ImageStaticHolder
 import com.pmm.imagepicker.R
-import com.pmm.imagepicker.model.ImageData
+import com.pmm.imagepicker.model.MedialFile
 import com.pmm.ui.ktx.load4CenterCrop
 import kotlin.collections.ArrayList
 
@@ -22,24 +22,24 @@ internal class ImageListAdapter(
         private var context: Context,
         private val config: Config) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var images: List<ImageData> = ArrayList()
+    var images: List<MedialFile> = ArrayList()
         private set
-    private var selectImages: ArrayList<ImageData> = ArrayList()
+    private var selectImages: ArrayList<MedialFile> = ArrayList()
 
     private var imageSelectChangedListener: OnImageSelectChangedListener? = null
 
-    val selectedImages: ArrayList<ImageData>
+    val selectedImages: ArrayList<MedialFile>
         get() = selectImages
 
 
-    fun bindImages(images: List<ImageData>) {
+    fun bindImages(images: List<MedialFile>) {
         //讲选中的集合引用 给到appData
         ImageStaticHolder.setChooseImages(images)
         this.images = images
         notifyDataSetChanged()
     }
 
-    fun bindSelectImages(images: ArrayList<ImageData>) {
+    fun bindSelectImages(images: ArrayList<MedialFile>) {
         this.selectImages = images
         notifyDataSetChanged()
         imageSelectChangedListener?.onChange(selectImages)
@@ -103,7 +103,7 @@ internal class ImageListAdapter(
     }
 
     @SuppressLint("StringFormatMatches")
-    private fun changeCheckboxState(contentHolder: ViewHolder, image: ImageData) {
+    private fun changeCheckboxState(contentHolder: ViewHolder, image: MedialFile) {
         val isChecked = contentHolder.ivCheckCircle.isActivated
         if (selectImages.size >= config.maxSelectNum && !isChecked) {
             Toast.makeText(context, context.getString(R.string.message_max_num, config.maxSelectNum), Toast.LENGTH_LONG).show()
@@ -123,7 +123,7 @@ internal class ImageListAdapter(
         imageSelectChangedListener?.onChange(selectImages)
     }
 
-    private fun isSelected(image: ImageData): Boolean {
+    private fun isSelected(image: MedialFile): Boolean {
         for (media in selectImages) {
             if (media.path == image.path) {
                 return true
@@ -149,11 +149,11 @@ internal class ImageListAdapter(
     }
 
     interface OnImageSelectChangedListener {
-        fun onChange(selectImages: List<ImageData>)
+        fun onChange(selectImages: List<MedialFile>)
 
         fun onTakePhoto()
 
-        fun onPictureClick(media: ImageData, position: Int, view: View)
+        fun onPictureClick(media: MedialFile, position: Int, view: View)
     }
 
     fun setOnImageSelectChangedListener(imageSelectChangedListener: OnImageSelectChangedListener) {

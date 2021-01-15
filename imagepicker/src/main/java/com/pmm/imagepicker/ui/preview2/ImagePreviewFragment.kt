@@ -166,7 +166,10 @@ internal class ImagePreviewFragment : BaseFragmentV2(R.layout.fragment_image_pre
 
                         override fun paused(task: BaseDownloadTask?, soFarBytes: Int, totalBytes: Int) {
                             //Logger.e("paused")
-                            mVB.crv.invisible()
+                            try {
+                                mVB.crv.invisible()
+                            } catch (e: Exception) {
+                            }
                         }
                     })
             task?.start()
