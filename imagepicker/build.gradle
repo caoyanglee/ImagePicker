@@ -51,7 +51,7 @@ dependencies {
     //显示大图
     compile 'com.shizhefei:LargeImageView:1.1.0'
     //压缩
-    implementation 'id.zelory:compressor:3.0.0'
+    compile 'id.zelory:compressor:3.0.0'
 }
 repositories {
     mavenCentral()
