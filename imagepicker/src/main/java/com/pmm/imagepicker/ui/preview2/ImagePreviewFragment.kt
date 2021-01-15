@@ -76,8 +76,6 @@ internal class ImagePreviewFragment : BaseFragmentV2(R.layout.fragment_image_pre
         }
     }
 
-    override fun getContentView(): ViewGroup = requireView() as ViewGroup
-
     override fun afterViewAttach(savedInstanceState: Bundle?) {
         //单点
         mVB.ivLarge.setOnClickListener {

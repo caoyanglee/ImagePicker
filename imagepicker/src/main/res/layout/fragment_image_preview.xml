@@ -20,6 +20,7 @@
         android:drawablePadding="6dp"
         android:gravity="center"
         android:paddingStart="8dp"
+        android:visibility="gone"
         android:paddingEnd="16dp"
         android:text="@string/choose"
         android:textColor="@color/white"

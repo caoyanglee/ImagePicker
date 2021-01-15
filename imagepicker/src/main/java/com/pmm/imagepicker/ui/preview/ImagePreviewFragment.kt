@@ -36,8 +36,6 @@ internal class ImagePreviewFragment : BaseFragmentV2(R.layout.fragment_image_pre
         uri = requireArguments().getParcelable(URI)
     }
 
-    override fun getContentView(): ViewGroup = requireView() as ViewGroup
-
     override fun afterViewAttach(savedInstanceState: Bundle?) {
         mVB.photoView.load(uri!!)
         mVB.photoView.setOnPhotoTapListener { view, x, y ->
@@ -45,7 +43,7 @@ internal class ImagePreviewFragment : BaseFragmentV2(R.layout.fragment_image_pre
             activity.isShowBar = !activity.isShowBar
         }
 
-        mVB.mTvSelect.text = path + "\n" + uri
+        //mVB.mTvSelect.text = path + "\n" + uri
     }
 
 

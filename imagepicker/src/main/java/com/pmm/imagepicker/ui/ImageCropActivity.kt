@@ -100,9 +100,9 @@ internal class ImageCropActivity : BaseActivityV2(R.layout.activity_image_crop) 
         StatusNavigationBar.apply {
             val statusColor = mVB.mToolBar.getToolBarBgColor()
             if (statusColor.isLightColor()) {
-                this.setLightMode(window,true)
+                this.change2LightStatusBar(window)
             } else {
-                this.setDarkMode(window,true)
+                this.change2DarkStatusBar(window)
             }
         }
 

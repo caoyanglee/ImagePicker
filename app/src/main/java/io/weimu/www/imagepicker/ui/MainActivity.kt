@@ -22,7 +22,7 @@ import io.weimu.www.imagepicker.fragment.adapter.ImageGridAdapter
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    val mVB by viewBinding(ActivityMainBinding::bind, R.id.container)
+    private val mVB by viewBinding(ActivityMainBinding::bind, R.id.container)
 
     private val maxImageNumber = 9
     private val spanCount = 4
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
                 //添加
                 override fun onItemAddClick() {
-//                    ImagePicker.pickImage(this@MainActivity)
+                    ImagePicker.pickImage(this@MainActivity)
 //                    ImagePicker.pickAvatar(this@MainActivity);
 //                    ImagePicker.pickImage(this@MainActivity, 30)
 //                    ImagePicker.pickImage4One(
@@ -55,12 +55,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 //                ImagePicker.takePhoto(this@MainActivity, true);//使用摄像头
 
 
-                ImagePicker.custom(this@MainActivity, Config().apply {
-                    selectMode = Config.MODE_SINGLE
-                    enableCrop = true
-                    cropAspectRatioX = 1
-                    cropAspectRatioY = 1
-                })
+//                ImagePicker.custom(this@MainActivity, Config().apply {
+//                    selectMode = Config.MODE_SINGLE
+//                    enableCrop = true
+//                    cropAspectRatioX = 1
+//                    cropAspectRatioY = 1
+//                })
                 }
             }
 

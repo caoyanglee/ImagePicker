@@ -17,10 +17,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.ImageStaticHolder
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.databinding.ActivityImagePreviewBinding
-import com.pmm.imagepicker.databinding.ActivityImageselectorBinding
 import com.pmm.imagepicker.model.ImageData
 import com.pmm.ui.core.StatusNavigationBar
-import com.pmm.ui.core.activity.BaseActivity
 import com.pmm.ui.core.activity.BaseActivityV2
 import com.pmm.ui.core.pager.BaseFragmentStatePagerAdapter
 import com.pmm.ui.ktx.*
@@ -107,7 +105,7 @@ internal class ImagePreviewActivity : BaseActivityV2(R.layout.activity_image_pre
 
     private fun initView() {
         mVB.mToolBar.apply {
-            this.showStatusView=true
+            this.showStatusView = true
             this.navigationIcon {
                 if (ToolBarPro.GlobalConfig.navigationDrawable == null) {
                     this.setImageResource(R.drawable.ic_nav_back_24dp)
@@ -135,9 +133,9 @@ internal class ImagePreviewActivity : BaseActivityV2(R.layout.activity_image_pre
             //this.setColor(window, statusColor)
             this.setStatusNavigationBarTransparent(window)
             if (statusColor.isLightColor()) {
-                this.setLightMode(window,true)
+                this.change2LightStatusBar(window)
             } else {
-                this.setDarkMode(window,true)
+                this.change2DarkStatusBar(window)
             }
         }
 
