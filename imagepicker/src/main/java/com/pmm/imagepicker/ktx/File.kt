@@ -36,8 +36,7 @@ private fun Context.createMediaFileInApp(childFoldName: String): File {
     val state = Environment.getExternalStorageState()
     val rootDir = if (state == Environment.MEDIA_MOUNTED) "${(externalCacheDir?.absolutePath) ?: ""}/imagePickerDiskCache" else this.cacheDir
     val folderDir = File("$rootDir/$childFoldName/")
-    if (!folderDir.exists() && folderDir.mkdirs()) {
-    }
+    if (!folderDir.exists() && folderDir.mkdirs()) { }
     val fileName = "${getCurrentTimeStamp().formatDate("yyyyMMdd_HHmmss")}.png"//必须使用不同命名
     return File(folderDir, fileName)
 }
@@ -113,23 +112,24 @@ fun ContextWrapper.saveImgFromPublicToPrivate(originList: List<MedialFile>): Arr
     else
         this.cacheDir.absolutePath
     File(pictureCopyPath).apply {
-        if (!this.exists()) {
-            this.mkdirs()
-        }
+        if (!this.exists()) this.mkdirs()
     }
     val resolvedList = arrayListOf<String>()
     for (img in originList) {
-        val filePath = "${pictureCopyPath}/${img.name}"
-        val file = File(filePath)
-        file.createNewFile()
-        val pfd: ParcelFileDescriptor = contentResolver.openFileDescriptor(img.uri
-                ?: continue, "r") ?: continue
-        val fd = pfd.fileDescriptor
-        val fis = FileInputStream(fd)
+        try {
+            val filePath = "${pictureCopyPath}/${img.name}"
+            val file = File(filePath)
+            file.createNewFile()
+            val pfd: ParcelFileDescriptor = contentResolver.openFileDescriptor(img.uri ?: continue, "r") ?: continue
+            val fd = pfd.fileDescriptor
+            val fis = FileInputStream(fd)
 
-        FileHelper.writeFile(file, fis)
+            FileHelper.writeFile(file, fis)
 
-        resolvedList.add(filePath)
+            resolvedList.add(filePath)
+        } catch (e: Exception) {
+            //nothing
+        }
     }
     return resolvedList
 }
