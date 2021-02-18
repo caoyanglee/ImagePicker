@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
@@ -32,7 +33,7 @@ internal class LocalMediaLoader(
 ) {
     private val TAG = "LocalMediaLoader"
 
-    fun loadAllImage(loadComplete: ((folders: List<MediaFolder>) -> Unit)) {
+    fun loadAllImage(loadComplete: ((folders: List<MediaFolder>?) -> Unit)) {
         LoaderManager.getInstance(activity).initLoader(type, null, object : LoaderManager.LoaderCallbacks<Cursor> {
 
             override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
@@ -144,6 +145,10 @@ internal class LocalMediaLoader(
                         //data.close()// 不用手动关闭
                     } catch (e: Exception) {
                         //nothing
+                        withContext(Dispatchers.Main) {
+                            //Toast.makeText(activity, "错误：${e}", Toast.LENGTH_LONG).show()
+                            loadComplete.invoke(null)
+                        }
                     }
                 }
 

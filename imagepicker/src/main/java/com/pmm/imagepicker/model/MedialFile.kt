@@ -19,7 +19,7 @@ class MedialFile(
         @Deprecated("Android10后开始弃用")
         val path: String?,
         val uri: Uri?,
-        val name: String = "",
+        val name: String? = "",
         val size: Int = 0,
         val createTime: Long = 0L
 ) : Parcelable, Comparable<MedialFile> {

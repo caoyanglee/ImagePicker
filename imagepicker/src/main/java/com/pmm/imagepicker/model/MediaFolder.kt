@@ -6,7 +6,7 @@ import java.util.ArrayList
 
 
 internal class MediaFolder(
-        var name: String,
+        var name: String?,
         var path: String = "/"
 ) : Serializable {
 

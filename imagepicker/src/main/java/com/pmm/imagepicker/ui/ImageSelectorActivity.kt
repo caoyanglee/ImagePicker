@@ -119,7 +119,7 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
     }
 
     private fun initObserver() {
-        mVm.foldersLiveData.observe(this, androidx.lifecycle.Observer {
+        mVm.foldersLiveData.observe(this, {
             if (it != null) {
                 mVB.mProgressBar.gone()
                 mVB.folderList.visible()
