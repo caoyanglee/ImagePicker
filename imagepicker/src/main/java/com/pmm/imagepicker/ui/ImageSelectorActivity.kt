@@ -244,11 +244,11 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
                         startPreview(position)
                     }
                     config.enableCrop -> {
-                        val image = saveImgFromPublicToPrivate(arrayListOf(media))[0]
-                        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                        try {
+                            val image = saveImgFromPublicToPrivate(arrayListOf(media))[0]
                             startCrop(image)
-                        } else {
-                            startCrop(image)
+                        } catch (e: Exception) {
+                            //nothing
                         }
                     }
                     else -> {

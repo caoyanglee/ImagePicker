@@ -10,11 +10,11 @@ buildscript {
     //依赖
     ext.deps = [
             'core'     : [
-                    'ui'         : 'com.github.caoyanglee:universalui:0.6.9'
+                    'ui'         : 'com.github.caoyanglee:universalui:0.6.11'
             ]
     ]
     //常规
-    ext.kotlin_version = '1.4.30'
+    ext.kotlin_version = '1.4.31'
     repositories {
         jcenter()
         google()
