@@ -10,7 +10,7 @@ buildscript {
     //依赖
     ext.deps = [
             'core'     : [
-                    'ui'         : 'com.github.caoyanglee:universalui:0.6.17'
+                    'ui'         : 'com.github.caoyanglee:universalui:0.6.18'
             ]
     ]
     //常规
