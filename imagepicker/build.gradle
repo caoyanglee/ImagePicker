@@ -32,6 +32,16 @@ android {
     viewBinding {
         enabled = true
     }
+    //jitpack
+    project.afterEvaluate {
+        publishing {
+            publications {
+                release(MavenPublication) {
+                    from components.release
+                }
+            }
+        }
+    }
 }
 
 dependencies {
