@@ -10,17 +10,18 @@ buildscript {
     //依赖
     ext.deps = [
             'core'     : [
-                    'ui'         : 'com.github.caoyanglee:universalui:0.6.11'
+                    'ui'         : 'com.github.caoyanglee:universalui:0.6.17'
             ]
     ]
     //常规
-    ext.kotlin_version = '1.4.31'
+    ext.kotlin_version = '1.5.10'
     repositories {
         jcenter()
         google()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:7.0.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 //        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.2'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
@@ -29,6 +30,7 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         jcenter()
         google()
         maven { url "https://jitpack.io" }
