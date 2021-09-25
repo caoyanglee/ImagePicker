@@ -1,9 +1,9 @@
 package io.weimu.www.imagepicker
 
+import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import androidx.multidex.MultiDex
-import com.pmm.ui.OriginAppData
 import com.pmm.ui.ktx.getDrawablePro
 import com.pmm.ui.widget.ToolBarPro
 
@@ -12,8 +12,7 @@ import com.pmm.ui.widget.ToolBarPro
  * Date:2018/1/17 13:59
  * Description:
  */
-class AppData : OriginAppData() {
-    override fun isDebug(): Boolean = BuildConfig.DEBUG
+class AppData : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -27,7 +26,7 @@ class AppData : OriginAppData() {
             centerTitleSize = 17f
 
             //navigation
-            navigationDrawable = context.getDrawablePro(R.drawable.universal_arrow_back_white)
+            navigationDrawable = applicationContext.getDrawablePro(R.drawable.universal_arrow_back_white)
         }
     }
 

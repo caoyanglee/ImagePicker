@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
 import android.text.TextUtils
-import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.liulishuo.filedownloader.BaseDownloadTask
@@ -13,7 +12,6 @@ import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.databinding.FragmentImagePreviewV2Binding
-import com.pmm.ui.OriginAppData
 import com.pmm.ui.core.fragment.BaseFragmentV2
 import com.pmm.ui.helper.AnimHelper
 import com.pmm.ui.helper.FileHelper
@@ -36,9 +34,6 @@ import java.util.*
  */
 internal class ImagePreviewFragment : BaseFragmentV2(R.layout.fragment_image_preview_v2) {
     private val mVB by viewBinding(FragmentImagePreviewV2Binding::bind, R.id.container)
-
-    val FILE_IMAGE_PREVIEW = "${OriginAppData.context.externalCacheDir}/images/"//  cache/images 下的图片
-
 
     companion object {
         val PATH = "path"
@@ -106,8 +101,8 @@ internal class ImagePreviewFragment : BaseFragmentV2(R.layout.fragment_image_pre
             return
         }
 
-
-        val targetDir = FILE_IMAGE_PREVIEW
+        //FILE_IMAGE_PREVIEW
+        val targetDir = "${requireContext().externalCacheDir}/images/"//  cache/images 下的图片
         //Logger.e("目标路径=$targetDir")
         val fileName = MD5Helper.sign(url, "weimu")
 
@@ -124,54 +119,54 @@ internal class ImagePreviewFragment : BaseFragmentV2(R.layout.fragment_image_pre
         //先显示小图
         showThumbnailImage {
             task = FileDownloader.getImpl().create(url)
-                    .setPath(targetPath)
-                    .setListener(object : FileDownloadListener() {
+                .setPath(targetPath)
+                .setListener(object : FileDownloadListener() {
 
 
-                        override fun pending(task: BaseDownloadTask?, soFarBytes: Int, totalBytes: Int) {
-                            //Logger.e("pending")
-                        }
+                    override fun pending(task: BaseDownloadTask?, soFarBytes: Int, totalBytes: Int) {
+                        //Logger.e("pending")
+                    }
 
-                        override fun started(task: BaseDownloadTask?) {
-                            super.started(task)
-                            //Logger.e("started")
-                            mVB.crv.visible()
-                        }
+                    override fun started(task: BaseDownloadTask?) {
+                        super.started(task)
+                        //Logger.e("started")
+                        mVB.crv.visible()
+                    }
 
-                        override fun progress(task: BaseDownloadTask?, soFarBytes: Int, totalBytes: Int) {
-                            //Logger.e("progress soFarBytes=$soFarBytes totalBytes=$totalBytes")
-                            //val percent = soFarBytes * 100 / totalBytes
-                            //crv?.setProgressValue(percent)
-                        }
+                    override fun progress(task: BaseDownloadTask?, soFarBytes: Int, totalBytes: Int) {
+                        //Logger.e("progress soFarBytes=$soFarBytes totalBytes=$totalBytes")
+                        //val percent = soFarBytes * 100 / totalBytes
+                        //crv?.setProgressValue(percent)
+                    }
 
 
-                        override fun completed(task: BaseDownloadTask?) {
-                            //Logger.e("completed")
-                            showImage(File(targetPath))
+                    override fun completed(task: BaseDownloadTask?) {
+                        //Logger.e("completed")
+                        showImage(File(targetPath))
+                        mVB.crv.invisible()
+                    }
+
+                    override fun warn(task: BaseDownloadTask?) {
+                        //在下载队列中(正在等待/正在下载)已经存在相同下载连接与相同存储路径的任务
+                        //Logger.e("warn=${task!!.status}")
+                        mVB.crv.invisible()
+                    }
+
+
+                    override fun error(task: BaseDownloadTask?, e: Throwable?) {
+                        //Logger.e("error")
+                        mVB.crv.invisible()
+                    }
+
+
+                    override fun paused(task: BaseDownloadTask?, soFarBytes: Int, totalBytes: Int) {
+                        //Logger.e("paused")
+                        try {
                             mVB.crv.invisible()
+                        } catch (e: Exception) {
                         }
-
-                        override fun warn(task: BaseDownloadTask?) {
-                            //在下载队列中(正在等待/正在下载)已经存在相同下载连接与相同存储路径的任务
-                            //Logger.e("warn=${task!!.status}")
-                            mVB.crv.invisible()
-                        }
-
-
-                        override fun error(task: BaseDownloadTask?, e: Throwable?) {
-                            //Logger.e("error")
-                            mVB.crv.invisible()
-                        }
-
-
-                        override fun paused(task: BaseDownloadTask?, soFarBytes: Int, totalBytes: Int) {
-                            //Logger.e("paused")
-                            try {
-                                mVB.crv.invisible()
-                            } catch (e: Exception) {
-                            }
-                        }
-                    })
+                    }
+                })
             task?.start()
         }
     }
