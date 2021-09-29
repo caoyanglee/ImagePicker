@@ -16,22 +16,28 @@ import java.io.FileInputStream
  * Description:
  */
 class MedialFile(
-        @Deprecated("Android10后开始弃用")
-        val path: String?,
-        val uri: Uri?,
-        val name: String? = "",
-        val size: Int = 0,
-        val createTime: Long = 0L
+    @Deprecated("Android10后开始弃用")
+    val path: String?,
+    val uri: Uri?,
+    val name: String? = "",
+    val size: Int = 0,
+    val createTime: Long = 0L
 ) : Parcelable, Comparable<MedialFile> {
 
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readParcelable(Uri::class.java.classLoader)) {
-    }
+        parcel.readString(),
+        parcel.readParcelable(Uri::class.java.classLoader),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readLong(),
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(path)
         parcel.writeParcelable(uri, flags)
+        parcel.writeString(name)
+        parcel.writeInt(size)
+        parcel.writeLong(createTime)
     }
 
     override fun describeContents(): Int {

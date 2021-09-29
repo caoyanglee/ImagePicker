@@ -52,6 +52,8 @@ import kotlin.reflect.KProperty
  * Description:图片选择器
  */
 internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imageselector) {
+    private val TAG = "imagePicker"
+
     private val mVB by viewBinding(ActivityImageselectorBinding::bind, R.id.container)
     private val mVm by lazy { ViewModelProvider(this).get(ImageSelectorViewModel::class.java) }
 
@@ -287,7 +289,7 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
                 }
             } else if (requestCode == ImagePreviewActivity.REQUEST_PREVIEW) {
                 val isDone = data?.getBooleanExtra(ImagePreviewActivity.OUTPUT_ISDONE, false)
-                        ?: false
+                    ?: false
                 val images = data?.getSerializableExtra(ImagePreviewActivity.OUTPUT_LIST) as ArrayList<MedialFile>
                 if (isDone) {
                     onSelectDone(images)
@@ -325,8 +327,10 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     fun startCropWithAnim(path: String, view: View) {
-        startActivityForResult(ImageCropActivity.newIntent(this, path, config), ImageCropActivity.REQUEST_CROP,
-                ActivityOptions.makeSceneTransitionAnimation(this, view, "share_image").toBundle())
+        startActivityForResult(
+            ImageCropActivity.newIntent(this, path, config), ImageCropActivity.REQUEST_CROP,
+            ActivityOptions.makeSceneTransitionAnimation(this, view, "share_image").toBundle()
+        )
     }
 
     fun startCrop(path: String?) {
@@ -346,13 +350,14 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
     private fun onResult(medias: ArrayList<MedialFile>) {
         if (isLoadImgIng) return
         isLoadImgIng = true
+
         if (isUseOrigin) {
 
             for (image in medias) {
-                Log.d("imagePicker", "--------------------------------------------- >>>")
-                Log.d("imagePicker", "原图：")
-                Log.d("imagePicker", "地址：$image")
-                Log.d("imagePicker", "文件大小：${image.getSizeStr()}")
+                Log.d(TAG, "--------------------------------------------- >>>")
+                Log.d(TAG, "原图：")
+                Log.d(TAG, "地址：$image")
+                Log.d(TAG, "文件大小：${image.getSizeStr()}")
             }
 
             val imageList = saveImgFromPublicToPrivate(medias)
@@ -400,15 +405,15 @@ internal class ImageSelectorActivity : BaseActivityV2(R.layout.activity_imagesel
         } else {
             MainScope().launch {
                 for (image in compressImg) {
-                    Log.d("imagePicker", "--------------------------------------------- >>>")
-                    Log.d("imagePicker", "压缩前：")
-                    Log.d("imagePicker", "地址：$image")
-                    Log.d("imagePicker", "文件大小：${FileHelper.getFileSize(File(image))}")
+                    Log.d(TAG, "--------------------------------------------- >>>")
+                    Log.d(TAG, "压缩前：")
+                    Log.d(TAG, "地址：$image")
+                    Log.d(TAG, "文件大小：${FileHelper.getFileSize(File(image))}")
                     val compressedImg = Compressor.compress(this@ImageSelectorActivity, File(image))
-                    Log.d("imagePicker", "压缩后：")
-                    Log.d("imagePicker", "地址：$compressedImg")
-                    Log.d("imagePicker", "文件大小：${FileHelper.getFileSize(compressedImg)}")
-                    Log.d("imagePicker", "<<< ---------------------------------------------")
+                    Log.d(TAG, "压缩后：")
+                    Log.d(TAG, "地址：$compressedImg")
+                    Log.d(TAG, "文件大小：${FileHelper.getFileSize(compressedImg)}")
+                    Log.d(TAG, "<<< ---------------------------------------------")
                     newImageList.add(compressedImg.toString())
                 }
                 finishSelect()

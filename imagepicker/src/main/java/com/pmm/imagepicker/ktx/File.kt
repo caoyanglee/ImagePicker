@@ -32,6 +32,9 @@ import java.io.FileInputStream
  * Date:2019-05-25 15:39
  * Description:
  */
+
+private val TAG = "imagePicker"
+
 private fun Context.createMediaFileInApp(childFoldName: String): File {
     val state = Environment.getExternalStorageState()
     val rootDir = if (state == Environment.MEDIA_MOUNTED) "${(externalCacheDir?.absolutePath) ?: ""}/imagePickerDiskCache" else this.cacheDir
@@ -129,6 +132,7 @@ fun ContextWrapper.saveImgFromPublicToPrivate(originList: List<MedialFile>): Arr
             resolvedList.add(filePath)
         } catch (e: Exception) {
             //nothing
+            Log.e(TAG, "saveImgFromPublicToPrivate: $e ", )
         }
     }
     return resolvedList
