@@ -1,13 +1,12 @@
 package io.weimu.www.imagepicker.ui
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.afollestad.assent.Permission
-import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.ImagePicker
 import com.pmm.imagepicker.ui.preview2.ImagePreviewActivity
 import com.pmm.ui.core.StatusNavigationBar
@@ -89,10 +88,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
 
         requestPermission(
-                Permission.READ_EXTERNAL_STORAGE,
-                Permission.CAMERA,
-                allGrantedCallback = { },
-                message = "请给我权限！"
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+            allGrantedCallback = { },
+            message = "请给我权限！"
         )
 
         mAdapter.addData("https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1091405991,859863778&fm=26&gp=0.jpg")
