@@ -6,16 +6,20 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.FrameLayout
 import com.pmm.imagepicker.Config
 import com.pmm.imagepicker.ImagePicker
 import com.pmm.imagepicker.R
 import com.pmm.imagepicker.ktx.createCameraFile
 import com.pmm.imagepicker.ktx.startActionCapture
-import com.weimu.universalview.core.activity.BaseActivity
-import com.weimu.universalview.ktx.gone
-import top.zibin.luban.Luban
-import top.zibin.luban.OnCompressListener
+import com.pmm.ui.core.activity.BaseActivity
+import com.pmm.ui.helper.FileHelper
+import com.pmm.ui.helper.MediaScanner
+import com.pmm.ui.ktx.gone
+import id.zelory.compressor.Compressor
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
@@ -23,6 +27,7 @@ import java.util.*
  * 相机选择
  */
 internal class CameraSelectorActivity : BaseActivity() {
+
     companion object {
         val REQUEST_OUTPUT = "outputList"
 
@@ -67,10 +72,10 @@ internal class CameraSelectorActivity : BaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             // on take photo success
             if (requestCode == ImagePicker.REQUEST_CAMERA) {
-                sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(cameraPath))))
                 if (config.enableCrop) {
                     startCrop(cameraPath)
                 } else {
@@ -102,28 +107,23 @@ internal class CameraSelectorActivity : BaseActivity() {
     //压缩图片
     private fun compressImage(photos: ArrayList<String>) {
         val newImageList = ArrayList<String>()
-        Luban.with(this)
-                .load(photos)                                   // 传人要压缩的图片列表
-                .ignoreBy(100)                                  // 忽略不压缩图片的大小
-                .setCompressListener(object : OnCompressListener { //设置回调
-                    override fun onStart() {
-                        //Log.d("weimu", "开始压缩")
-                    }
+        MainScope().launch {
+            for (image in photos){
+                Log.d("imagePicker", "--------------------------------------------- >>>")
+                Log.d("imagePicker", "压缩前：")
+                Log.d("imagePicker", "地址：$image")
+                Log.d("imagePicker", "文件大小：${FileHelper.getFileSize(File(image))}")
+                val compressedImg = Compressor.compress(this@CameraSelectorActivity, File(image))
+                Log.d("imagePicker", "压缩后：")
+                Log.d("imagePicker", "地址：$compressedImg")
+                Log.d("imagePicker", "文件大小：${FileHelper.getFileSize(compressedImg)}")
+                Log.d("imagePicker", "<<< ---------------------------------------------")
+                newImageList.add(compressedImg.toString())
+            }
 
-                    override fun onSuccess(file: File) {
-                        //Log.d("weimu", "压缩成功 地址为：$file")
-                        newImageList.add(file.toString())
-                        //所有图片压缩成功
-                        if (newImageList.size == photos.size) {
-                            setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(REQUEST_OUTPUT, newImageList))
-                            onBackPressed()
-                        }
-                    }
-
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-                }).launch()    //启动压缩
+            setResult(Activity.RESULT_OK, Intent().putStringArrayListExtra(REQUEST_OUTPUT, newImageList))
+            onBackPressed()
+        }
     }
 
     override fun onBackPressed() {

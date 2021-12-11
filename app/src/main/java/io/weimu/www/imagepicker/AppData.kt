@@ -1,17 +1,18 @@
 package io.weimu.www.imagepicker
 
+import android.app.Application
+import android.content.Context
 import android.graphics.Color
-import com.weimu.universalview.OriginAppData
-import com.weimu.universalview.ktx.getDrawablePro
-import com.weimu.universalview.widget.ToolBarPro
+import androidx.multidex.MultiDex
+import com.pmm.ui.ktx.getDrawablePro
+import com.pmm.ui.widget.ToolBarPro
 
 /**
  * Author:你需要一台永动机
  * Date:2018/1/17 13:59
  * Description:
  */
-class AppData : OriginAppData() {
-    override fun isDebug(): Boolean = BuildConfig.DEBUG
+class AppData : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -25,8 +26,13 @@ class AppData : OriginAppData() {
             centerTitleSize = 17f
 
             //navigation
-            navigationDrawable = context.getDrawablePro(R.drawable.universal_arrow_back_white)
+            navigationDrawable = applicationContext.getDrawablePro(R.drawable.universal_arrow_back_white)
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
 

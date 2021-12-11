@@ -2,17 +2,18 @@ package io.weimu.www.imagepicker.fragment.adapter
 
 
 import android.content.Context
-import com.bumptech.glide.Glide
-import com.weimu.universalview.core.BaseB
-import com.weimu.universalview.core.recyclerview.BaseRecyclerAdapter
-import com.weimu.universalview.core.recyclerview.BaseRecyclerViewHolder
-import com.weimu.universalview.ktx.gone
-import com.weimu.universalview.ktx.visible
+import android.net.Uri
+import android.view.View
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.pmm.imagepicker.model.MedialFile
+import com.pmm.ui.core.recyclerview.BaseRecyclerAdapter
+import com.pmm.ui.core.recyclerview.BaseRecyclerViewHolder
+import com.pmm.ui.ktx.load4CenterCrop
 import io.weimu.www.imagepicker.R
-import kotlinx.android.synthetic.main.grid_item_image.view.*
+import io.weimu.www.imagepicker.databinding.GridItemImageBinding
 
 
-class ImageGridAdapter(mContext: Context, var maxImageNumber: Int = 9) : BaseRecyclerAdapter<BaseB, String>(mContext) {
+class ImageGridAdapter(mContext: Context, var maxImageNumber: Int = 9) : BaseRecyclerAdapter<Any, String>(mContext) {
 
 
     var imageActionListener: ImageActionListener? = null
@@ -21,15 +22,20 @@ class ImageGridAdapter(mContext: Context, var maxImageNumber: Int = 9) : BaseRec
 
     override fun getItemLayoutRes(): Int = R.layout.grid_item_image
 
-    override fun itemViewChange(holder: BaseRecyclerViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.itemView.apply {
-            Glide.with(mContext).asBitmap().load(item).into(this.iv_cover)
-            //点击事件
-            this.iv_cover.setOnClickListener { imageActionListener?.onItemClick(position) }
-            this.iv_cover_delete.setOnClickListener { imageActionListener?.onItemDeleteClick(position) }
-        }
+    private class ItemViewHolder(itemView: View?) : BaseRecyclerViewHolder(itemView) {
+        val mVB by viewBinding(GridItemImageBinding::bind, R.id.container)
+    }
 
+    override fun getViewHolder(itemView: View?): BaseRecyclerViewHolder = ItemViewHolder(itemView)
+
+    override fun itemViewChange(holder: BaseRecyclerViewHolder, position: Int) {
+        val item = getItem(position) ?: return
+        (holder as ItemViewHolder).mVB.apply {
+            this.ivCover.load4CenterCrop(item)
+            //点击事件
+            this.ivCover.setOnClickListener { imageActionListener?.onItemClick(position) }
+            this.ivCoverDelete.setOnClickListener { imageActionListener?.onItemDeleteClick(position) }
+        }
     }
 
     override fun getFooterLayoutRes(): Int = R.layout.grid_item_image_add

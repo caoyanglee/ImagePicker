@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
-
     <style name="WindowStyle">
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
         <item name="android:windowExitAnimation">@anim/fade_out</item>
@@ -10,13 +8,14 @@
 
 
     <!--图片预览主题-->
-    <style name="ImagePreviewTheme" parent="AppTheme">
+    <style name="ImagePreviewTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@color/colorTransparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentTransitions">true</item>
-        <!--<item name="android:windowAnimationStyle">@style/ImagePreviewActivityAnim</item>-->
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:navigationBarColor">@color/colorTransparent</item>
     </style>
 
     <!--图片预览 ProgressBar-->

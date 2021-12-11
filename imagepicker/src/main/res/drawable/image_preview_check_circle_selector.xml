@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ic_check_circle_d_16dp" android:state_activated="false" />
-    <item android:drawable="@drawable/ic_check_circle_p_16dp" android:state_activated="true" />
+    <item android:drawable="@drawable/ic_radio_button_d" android:state_activated="false" />
+    <item android:drawable="@drawable/ic_radio_button_p" android:state_activated="true" />
 </selector>

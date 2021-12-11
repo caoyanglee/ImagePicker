@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="select_image">選擇圖片</string>
+    <string name="all_image">所有圖片</string>
+    <string name="take_picture">拍攝照片</string>
+    <string name="preview_num">預覽(%1$s)</string>
+    <string name="choose">選擇</string>
+    <string name="done">完成</string>
+    <string name="use">使用</string>
+    <string name="done_num">完成</string>
+    <string name="num_postfix">%1$s張</string>
+    <string name="message_max_num">你最多可以選擇%1$s張圖片</string>
+    <string name="save_ing">保存圖片中…</string>
+    <string name="crop_picture">裁剪圖片</string>
+    <string name="origin_image">原圖</string>
+    <string name="no_more_folder">沒有更多文件夾</string>
+</resources>

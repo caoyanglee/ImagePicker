@@ -29,15 +29,21 @@ implementation 'com.github.caoyanglee:ImagePicker:{latestVersion}'
 ```
 
 ```gradle
-//以下为此aar所依赖的第三方
-implementation 'com.android.support:appcompat-v7:28.0.0'
-implementation 'com.android.support:recyclerview-v7:28.0.0'
-implementation 'com.android.support:design:28.0.0'
-implementation 'com.github.bumptech.glide:glide:4.8.0'
-annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-implementation 'com.github.chrisbanes:PhotoView:2.1.3'
-implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
-implementation 'top.zibin:Luban:1.1.3'
+//以下为此库所依赖的第三方
+//图片裁剪
+compile 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+//图片预览
+compile 'com.github.chrisbanes:PhotoView:2.1.3'
+//downloader
+compile 'com.liulishuo.filedownloader:library:1.7.7'
+//viewPager底部圆圈指示器
+compile 'com.romandanylyk:pageindicatorview:1.0.3@aar'
+//nineold 配合下拉图片
+compile 'com.nineoldandroids:library:2.4.0'
+//显示大图
+compile 'com.shizhefei:LargeImageView:1.1.0'
+//压缩
+compile 'id.zelory:compressor:3.0.0'
 ```
 
 2.增加权限
@@ -46,7 +52,6 @@ implementation 'top.zibin:Luban:1.1.3'
 <!-- 相机权限 -->
 <uses-permission android:name="android.permission.CAMERA" />
 <!-- 存储权限 -->
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```  
 

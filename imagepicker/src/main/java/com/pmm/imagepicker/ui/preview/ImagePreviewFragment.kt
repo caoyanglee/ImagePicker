@@ -1,41 +1,49 @@
 package com.pmm.imagepicker.ui.preview
 
+import android.net.Uri
 import android.os.Bundle
+import android.view.ViewGroup
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pmm.imagepicker.R
-import com.weimu.universalview.core.fragment.BaseFragment
-import com.weimu.universalview.ktx.load
-import kotlinx.android.synthetic.main.fragment_image_preview.*
+import com.pmm.imagepicker.databinding.FragmentImagePreviewBinding
+import com.pmm.ui.core.fragment.BaseFragmentV2
+import com.pmm.ui.ktx.load
 
 
-internal class ImagePreviewFragment : BaseFragment() {
+internal class ImagePreviewFragment : BaseFragmentV2(R.layout.fragment_image_preview) {
+    private val mVB by viewBinding(FragmentImagePreviewBinding::bind, R.id.container)
 
     private var path = ""
+    private var uri: Uri? = null
 
     companion object {
 
         val PATH = "path"
+        val URI = "uri"
 
-        fun newInstance(path: String): ImagePreviewFragment {
+        fun newInstance(path: String?, uri: Uri?): ImagePreviewFragment {
             val fragment = ImagePreviewFragment()
             val bundle = Bundle()
             bundle.putString(PATH, path)
+            bundle.putParcelable(URI, uri)
             fragment.arguments = bundle
             return fragment
         }
     }
 
-    override fun getLayoutResID(): Int = R.layout.fragment_image_preview
-
     override fun beforeViewAttach(savedInstanceState: Bundle?) {
-        path = "${arguments!!.getString(PATH)}"
+        path = "${requireArguments().getString(PATH)}"
+        uri = requireArguments().getParcelable(URI)
     }
 
     override fun afterViewAttach(savedInstanceState: Bundle?) {
-        photo_view.load(path)
-        photo_view.setOnPhotoTapListener { view, x, y ->
+        mVB.photoView.load(uri!!)
+        mVB.photoView.setOnPhotoTapListener { view, x, y ->
             val activity = activity as ImagePreviewActivity
             activity.isShowBar = !activity.isShowBar
         }
+
+        //mVB.mTvSelect.text = path + "\n" + uri
     }
 
 

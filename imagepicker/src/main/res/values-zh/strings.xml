@@ -13,4 +13,5 @@
     <string name="save_ing">保存图片中…</string>
     <string name="crop_picture">裁剪图片</string>
     <string name="origin_image">原图</string>
+    <string name="no_more_folder">没有更多文件夹</string>
 </resources>

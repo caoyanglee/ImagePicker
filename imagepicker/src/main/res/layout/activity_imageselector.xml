@@ -1,42 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/container"
     android:orientation="vertical">
 
-    <com.weimu.universalview.widget.ToolBarPro
+    <com.pmm.ui.widget.ToolBarPro
         android:id="@+id/mToolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/folder_list"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:fadingEdge="none"
-            android:overScrollMode="never"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingBottom="48dp"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical" />
+            android:animateLayoutChanges="true"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/mProgressBar"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/folder_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadingEdge="none"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:overScrollMode="never"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingBottom="48dp"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical" />
+        </FrameLayout>
+
 
         <RelativeLayout
+            android:id="@+id/rl_navigator"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="#7f393a3e"
-            android:gravity="center_vertical">
+            android:background="@color/black_alpha70"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <LinearLayout
                 android:id="@+id/folder_layout"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="48dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="16dp"
@@ -44,7 +66,7 @@
 
 
                 <TextView
-                    android:id="@+id/folder_name"
+                    android:id="@+id/tvFolderName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/all_image"
@@ -62,7 +84,7 @@
             <TextView
                 android:id="@+id/tvOrigin"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
                 android:drawableStart="@drawable/image_preview_check_circle_selector"
                 android:drawablePadding="6dp"
@@ -75,6 +97,6 @@
 
 
         </RelativeLayout>
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

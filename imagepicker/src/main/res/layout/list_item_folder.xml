@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="16dp"
@@ -43,5 +45,5 @@
         android:id="@+id/is_selected"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/ic_check_circle_p_16dp" />
+        android:src="@drawable/ic_radio_button_p" />
 </LinearLayout>

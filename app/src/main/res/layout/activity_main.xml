@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -9,7 +9,7 @@
     tools:context="io.weimu.www.imagepicker.ui.MainActivity">
 
 
-    <com.weimu.universalview.widget.ToolBarPro
+    <com.pmm.ui.widget.ToolBarPro
         android:id="@+id/mToolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -22,8 +22,8 @@
         android:textSize="16sp" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/id_RecyclerView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"

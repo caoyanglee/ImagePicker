@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.weimu.universalview.widget.ToolBarPro
+    <com.pmm.ui.widget.ToolBarPro
         android:id="@+id/mToolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -15,6 +16,7 @@
         android:id="@+id/cropImageView0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cropBorderCornerColor="@color/colorAccent"
         app:cropInitialCropWindowPaddingRatio="0.1" />
 
     <!--限制裁剪-->
@@ -22,6 +24,7 @@
         android:id="@+id/cropImageView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cropBorderCornerColor="@color/colorAccent"
         app:cropInitialCropWindowPaddingRatio="0.0" />
 
 </LinearLayout>

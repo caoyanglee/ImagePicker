@@ -2,23 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pmm.imagepicker">
 
-    <!-- 相机权限 -->
-    <uses-permission android:name="android.permission.CAMERA" />
 
-    <!-- 存储权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.ImageSelectorActivity" />
         <activity android:name=".ui.preview.ImagePreviewActivity" />
         <activity android:name=".ui.ImageCropActivity" />
         <activity
-            android:name=".ui.CameraSelectorActivity"
-            android:theme="@style/ImagePreviewTheme" />
+            android:name=".ui.CameraSelectorActivity" />
         <activity
             android:name=".ui.preview2.ImagePreviewActivity"
             android:theme="@style/ImagePreviewTheme" />
